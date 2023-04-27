@@ -1,16 +1,18 @@
 const User = require('./../models/User')
 const jwt = require('jsonwebtoken')
 
-const userValidationErrorHandler = (err) => {
+const userValidationErrorHandler = async (err, email) => {
   let errors = {
+    firstName: '',
+    lastName: '',
     email: '',
     password: '',
   }
 
   // Already registered ?
-  if (err.code === 11000) {
-    errors.email = 'This email is already registered'
-    return errors
+  const existingUser = await User.findOne({ email })
+  if (existingUser) {
+    errors.email = 'Email address is already registered.'
   }
 
   // Valid email and password ?
@@ -36,18 +38,18 @@ signup_get = (req, res) => {
 }
 
 signup_post = async (req, res) => {
-  try {
-    // 1. Get email & password
-    const { email, password } = req.body
+  // 1. Get email & password
+  const { firstName, lastName, email, password } = req.body
 
+  try {
     // 2. Create a user in db
-    const user = await User.create({ email, password })
+    const user = await User.create({ firstName, lastName, email, password })
 
     // 3. Create jwt cookie
     const maxAge = 24 * 60 * 60 // 1 day in msec
 
     // 3.1 Generate jwt token that expires in 1 day
-    const token = jwt.sign({ id: user._id }, 'secret-key', {
+    const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY, {
       expiresIn: maxAge,
     })
 
@@ -56,10 +58,9 @@ signup_post = async (req, res) => {
 
     res.status(201).json({ id: user._id })
   } catch (err) {
-    const errors = userValidationErrorHandler(err)
+    const errors = await userValidationErrorHandler(err, email)
 
-    if (errors.email === '' && errors.password === '')
-      console.log(`signup post error: ${err}`)
+    console.log(`signup post error: ${err}`)
 
     res.status(400).json(errors)
   }
