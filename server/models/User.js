@@ -23,10 +23,9 @@ const userSchema = new mongoose.Schema({
     required: [true, 'Please enter the password'],
     minLength: [6, 'Minimum password length is 6 characters'],
   },
-  role: {
-    type: String,
-    enum: ['admin', 'basic'],
-    default: 'basic',
+  isAdmin: {
+    type: Boolean,
+    default: false,
   },
   createdAt: {
     type: Date,
@@ -40,6 +39,24 @@ userSchema.pre('save', async function (next) {
   this.password = await bcrypt.hash(this.password, salt)
   next()
 })
+
+// static method to login user
+// a user defined method defined on the schema that can be called on the model itself, rather than on an instance of the model
+userSchema.statics.login = async function (email, password) {
+  const user = await this.findOne({ email }) //this = User model
+
+  if (user) {
+    const auth = await bcrypt.compare(password, user.password)
+
+    if (auth) {
+      return user
+    } else {
+      throw Error('incorrect password')
+    }
+  }
+
+  throw Error('incorrect email')
+}
 
 const User = mongoose.model('user', userSchema)
 module.exports = User

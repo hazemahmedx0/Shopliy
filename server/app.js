@@ -1,20 +1,23 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const authRoutes = require('./routes/authRoutes')
-//TODO: cookieParser pkg
+const cookieParser = require('cookie-parser')
 
 require('dotenv').config()
 
 const app = express()
 
-// middleware
+// middlewares
 
 app.use(express.json()) // parse incoming requests with JSON payloads
+app.use(cookieParser())
+const { requireAuth } = require('./middleware/auth')
+const { isAdmin } = require('./middleware/isAdmin')
+
+// Connecting to db
 
 const port = process.env.PORT || 3000
-// Connecting to db
 const dbURI = process.env.DB_URI
-
 mongoose
   .connect(dbURI)
   .then(() => {
@@ -28,7 +31,15 @@ mongoose
   })
 
 app.get('/', (req, res) => {
-  res.json('Home')
+  res.status(200).json('Home')
+})
+
+app.get('/test-user', requireAuth, (req, res) => {
+  res.status(200).json('hello user')
+})
+
+app.get('/test-admin', [requireAuth, isAdmin], (req, res) => {
+  res.status(200).json('hello admin')
 })
 
 app.use(authRoutes)
