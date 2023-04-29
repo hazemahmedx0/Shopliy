@@ -1,2 +1,3 @@
 import logo from './images/logo.svg'
-export { logo }
+import fullLogo from './images/FullLogo.svg'
+export { logo, fullLogo }

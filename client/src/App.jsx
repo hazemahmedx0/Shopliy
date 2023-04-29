@@ -1,21 +1,17 @@
 import './App.css'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
+
+// Route Pages
+import Home from './pages/Home'
+import PageNotFound from './pages/PageNotFound'
 
 function App() {
   return (
     <>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<AuthLayout />}>
-            <Route path="login" element={<Login />} />
-            <Route path="signup" element={<Signup />} />
-          </Route>
-
-          <Route path="/" element={<AppLayout />}>
-            <Route index element={<Home />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/*" element={<PageNotFound />} />
+      </Routes>
     </>
   )
 }
