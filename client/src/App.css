@@ -8,3 +8,27 @@
 .mantine-Container-root {
   max-width: 1200px;
 }
+
+/* Footer Css */
+.footerGrad {
+  overflow: hidden;
+  border-top-right-radius: 16px;
+  border-top-left-radius: 16px;
+  background: linear-gradient(
+    180deg,
+    #f2f4f7 0%,
+    rgba(255, 255, 255, 0) 125.74%
+  );
+}
+
+.footericon {
+  color: #98a2b3;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.5s;
+}
+
+.footericon:hover {
+  color: #15be53;
+  background-color: #d1fadf;
+}

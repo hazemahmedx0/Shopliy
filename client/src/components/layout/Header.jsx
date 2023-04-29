@@ -16,7 +16,7 @@ import { useDisclosure } from '@mantine/hooks'
 import { Search, Heart, ShoppingBag, ProfileCircle } from 'iconoir-react'
 
 import { logo } from './../../assets'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 // Static values
 
@@ -122,6 +122,7 @@ const useStyles = createStyles((theme) => ({
 }))
 
 function MainHeader() {
+  const navigate = useNavigate()
   const [opened, { toggle, close }] = useDisclosure(false)
   const [active, setActive] = useState(links[0].link)
   const { classes, cx } = useStyles()
@@ -136,6 +137,7 @@ function MainHeader() {
       onClick={(event) => {
         event.preventDefault()
         setActive(link.link)
+        navigate(link.link)
         close()
       }}
     >
@@ -174,7 +176,10 @@ function MainHeader() {
             {
               <div className=" flex flex-row items-center gap-2">
                 <ProfileCircle color="#98A2B3" strokeWidth={2} />
-                <Link className=" font-medium text-sm text-gray-500" to={'#'}>
+                <Link
+                  className=" font-medium text-sm text-gray-500"
+                  to="/signin"
+                >
                   SignIn
                 </Link>
               </div>
