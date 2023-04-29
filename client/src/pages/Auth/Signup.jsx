@@ -7,7 +7,6 @@ import {
   PasswordInput,
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
-import { fullLogo } from '../../assets'
 import { Link } from 'react-router-dom'
 const SignUp = () => {
   const form = useForm({

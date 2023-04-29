@@ -6,6 +6,7 @@ import AppLayout from './components/layout/AppLayout'
 import Home from './pages/Home'
 
 import SignUp from './pages/Auth/SignUp'
+import Login from './pages/Auth/Login'
 
 import PageNotFound from './pages/PageNotFound'
 
@@ -16,6 +17,7 @@ function App() {
         <Route path="/" element={<AppLayout />}>
           <Route index element={<Home />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/*" element={<PageNotFound />} />
         </Route>
       </Routes>
