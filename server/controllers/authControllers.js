@@ -1,4 +1,4 @@
-const User = require('./../models/User')
+const { User } = require('./../models/User')
 const jwt = require('jsonwebtoken')
 
 const handleLoginErrors = (err) => {
@@ -26,6 +26,7 @@ const handleSignupErrors = async (err, email) => {
   }
   // Already registered ?
   const existingUser = await User.findOne({ email })
+  console.log(existingUser)
   if (existingUser) {
     errors.email = 'Email address is already registered.'
   }
@@ -49,8 +50,15 @@ const handleSignupErrors = async (err, email) => {
 
 module.exports.signup_get = (req, res) => {
   console.log(res.locals.user)
-
-  res.json('signup form')
+  const user = res.locals.user
+  if (!user) {
+    return res.json('signup form')
+  }
+  if (user.isAdmin) {
+    res.redirect('/dashboard')
+  } else {
+    res.redirect('/')
+  }
   //res.render()
 }
 
@@ -75,7 +83,15 @@ module.exports.signup_post = async (req, res) => {
 
 module.exports.login_get = (req, res) => {
   console.log(res.locals.user)
-  res.json('login form')
+  const user = res.locals.user
+  if (!user) {
+    return res.json('login form')
+  }
+  if (user.isAdmin) {
+    res.redirect('/dashboard')
+  } else {
+    res.redirect('/')
+  }
 }
 
 module.exports.login_post = async (req, res) => {

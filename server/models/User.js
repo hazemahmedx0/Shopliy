@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const { isEmail } = require('validator')
+
 const bcrypt = require('bcrypt')
 
 const userSchema = new mongoose.Schema({
@@ -26,6 +27,15 @@ const userSchema = new mongoose.Schema({
   isAdmin: {
     type: Boolean,
     default: false,
+  },
+  photo: {
+    type: String,
+    default:
+      'https://riatarealty.com/wp-content/uploads/2020/03/generic-person-silhouette-32.png',
+  },
+  shippingAddress: {
+    type: String,
+    default: '',
   },
   createdAt: {
     type: Date,
@@ -59,4 +69,4 @@ userSchema.statics.login = async function (email, password) {
 }
 
 const User = mongoose.model('user', userSchema)
-module.exports = User
+module.exports = { User }

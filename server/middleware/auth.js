@@ -1,10 +1,10 @@
 const jwt = require('jsonwebtoken')
-const User = require('./../models/User')
+const { User } = require('./../models/User')
 
-const requireAuth = (req, res, next) => {
+const isAuthenticated = (req, res, next) => {
   const token = req.cookies.jwt
   if (!token) {
-    return res.redirect('/login')
+    return res.status(301).redirect('/login')
   }
   // check json web token exists & is verified
   try {
@@ -13,7 +13,7 @@ const requireAuth = (req, res, next) => {
     console.log('decdecodedToken', decodedToken)
     next()
   } catch (err) {
-    console.log(`requireAuth err: ${err}`)
+    console.log(`isAuthenticated err: ${err}`)
   }
 }
 
@@ -36,4 +36,27 @@ const checkUser = async (req, res, next) => {
   }
   next()
 }
-module.exports = { requireAuth, checkUser }
+
+const isAdmin = async (req, res, next) => {
+  const token = req.cookies.jwt
+  if (!token) {
+    console.log('you are not authenticated.')
+    return res.status(301).redirect('/login')
+  }
+
+  try {
+    const { isAdmin } = jwt.verify(token, process.env.SECRET_KEY)
+    if (isAdmin) {
+      next()
+    } else {
+      return res
+        .status(403)
+        .json({ message: 'You are not authorized to access this resource.' })
+    }
+  } catch (err) {
+    console.log(`isAdmin middleware error: ${err.message}`)
+    return res.status(500).json({ message: 'An error occurred.' })
+  }
+  next()
+}
+module.exports = { isAuthenticated, checkUser, isAdmin }
