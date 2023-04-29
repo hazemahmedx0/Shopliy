@@ -3,6 +3,18 @@
   text-align: center;
 }
 
+/* Form  */
+
+.mantine-InputWrapper-label {
+  text-align: left;
+  color: #344054;
+}
+form .mantine-Input-wrapper {
+  width: 100%;
+}
+form .mantine-PasswordInput-description {
+  text-align: left;
+}
 /* Header Custom Css */
 
 .mantine-Container-root {
