@@ -25,7 +25,10 @@ body {
 /* Buttons */
 
 .mantine-oqpohy {
+  background-color: #15be53;
   transition: all 0.2s;
+  height: 44px;
+  border-radius: 12px;
 }
 .mantine-oqpohy:active {
   transform: translateY(0rem);
