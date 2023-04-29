@@ -10,12 +10,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@cloudinary/react": "^1.11.2",
+    "@cloudinary/url-gen": "^1.10.0",
     "@emotion/react": "^11.10.8",
+    "@mantine/carousel": "^6.0.9",
     "@mantine/core": "^6.0.9",
     "@mantine/form": "^6.0.9",
     "@mantine/hooks": "^6.0.9",
     "@reduxjs/toolkit": "^1.9.5",
     "axios": "^1.4.0",
+    "embla-carousel-react": "^7.1.0",
     "iconoir-react": "^6.6.0",
     "query-string": "^8.1.0",
     "react": "^18.2.0",
