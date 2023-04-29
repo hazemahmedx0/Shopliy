@@ -11,9 +11,7 @@ const app = express()
 
 app.use(express.json()) // parse incoming requests with JSON payloads
 app.use(cookieParser())
-const { requireAuth } = require('./middleware/auth')
-const { isAdmin } = require('./middleware/isAdmin')
-
+const { requireAuth, checkUser } = require('./middleware/auth')
 // Connecting to db
 
 const port = process.env.PORT || 3000
@@ -29,17 +27,16 @@ mongoose
   .catch((err) => {
     console.error(`Error connecting to MongoDB: ${err}`)
   })
-
+app.get('*', checkUser)
 app.get('/', (req, res) => {
+  console.log(res.locals.user)
   res.status(200).json('Home')
 })
 
 app.get('/test-user', requireAuth, (req, res) => {
-  res.status(200).json('hello user')
-})
+  console.log(res.locals.user)
 
-app.get('/test-admin', [requireAuth, isAdmin], (req, res) => {
-  res.status(200).json('hello admin')
+  res.status(200).json('hello user')
 })
 
 app.use(authRoutes)

@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken')
+const User = require('./../models/User')
 
 const requireAuth = (req, res, next) => {
   const token = req.cookies.jwt
@@ -8,7 +9,6 @@ const requireAuth = (req, res, next) => {
   // check json web token exists & is verified
   try {
     //recreate the signuture based on the header, payload and compare signetures
-    console.log('ath')
     const decodedToken = jwt.verify(token, process.env.SECRET_KEY)
     console.log('decdecodedToken', decodedToken)
     next()
@@ -17,4 +17,23 @@ const requireAuth = (req, res, next) => {
   }
 }
 
-module.exports = { requireAuth }
+const checkUser = async (req, res, next) => {
+  const token = req.cookies.jwt
+  if (!token) {
+    res.locals.user = null
+    next()
+    return
+  }
+
+  try {
+    const { id } = jwt.verify(token, process.env.SECRET_KEY)
+
+    const user = await User.findById(id)
+    res.locals.user = user
+  } catch (err) {
+    console.log(err.message)
+    res.locals.user = null
+  }
+  next()
+}
+module.exports = { requireAuth, checkUser }

@@ -47,14 +47,16 @@ const handleSignupErrors = async (err, email) => {
   return errors
 }
 
-signup_get = (req, res) => {
+module.exports.signup_get = (req, res) => {
+  console.log(res.locals.user)
+
   res.json('signup form')
   //res.render()
 }
 
 const maxAge = 24 * 60 * 60 // 1 day in msec
 
-signup_post = async (req, res) => {
+module.exports.signup_post = async (req, res) => {
   const { firstName, lastName, email, password } = req.body
 
   try {
@@ -71,11 +73,12 @@ signup_post = async (req, res) => {
   }
 }
 
-login_get = (req, res) => {
+module.exports.login_get = (req, res) => {
+  console.log(res.locals.user)
   res.json('login form')
 }
 
-login_post = async (req, res) => {
+module.exports.login_post = async (req, res) => {
   const { email, password } = req.body
 
   try {
@@ -98,9 +101,10 @@ login_post = async (req, res) => {
   }
 }
 
-logout_get = (req, res) => {
+module.exports.logout_get = (req, res) => {
+  console.log(res.locals.user)
+
   token = ''
   res.cookie('jwt', token, { maxAge: 1 })
   res.redirect('/')
 }
-module.exports = { signup_get, signup_post, login_get, login_post, logout_get }
