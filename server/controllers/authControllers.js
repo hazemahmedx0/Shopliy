@@ -1,16 +1,32 @@
-const User = require('./../models/User')
+const { User } = require('./../models/User')
 const jwt = require('jsonwebtoken')
 
-const userValidationErrorHandler = async (err, email) => {
+const handleLoginErrors = (err) => {
+  let errors = {
+    email: '',
+    password: '',
+  }
+
+  if (err.message === 'incorrect email') {
+    errors.email = 'This email is not registered.'
+  }
+
+  if (err.message === 'incorrect password') {
+    errors.password = 'incorrect password.'
+  }
+  return errors
+}
+
+const handleSignupErrors = async (err, email) => {
   let errors = {
     firstName: '',
     lastName: '',
     email: '',
     password: '',
   }
-
   // Already registered ?
   const existingUser = await User.findOne({ email })
+  console.log(existingUser)
   if (existingUser) {
     errors.email = 'Email address is already registered.'
   }
@@ -32,33 +48,32 @@ const userValidationErrorHandler = async (err, email) => {
   return errors
 }
 
-signup_get = (req, res) => {
-  res.json('here is the form')
+module.exports.signup_get = (req, res) => {
+  console.log(res.locals.user)
+  const user = res.locals.user
+  if (!user) {
+    return res.json('signup form')
+  }
+  if (user.isAdmin) {
+    res.redirect('/dashboard')
+  } else {
+    res.redirect('/')
+  }
   //res.render()
 }
 
-signup_post = async (req, res) => {
-  // 1. Get email & password
+const maxAge = 24 * 60 * 60 // 1 day in msec
+
+module.exports.signup_post = async (req, res) => {
   const { firstName, lastName, email, password } = req.body
 
   try {
-    // 2. Create a user in db
     const user = await User.create({ firstName, lastName, email, password })
 
-    // 3. Create jwt cookie
-    const maxAge = 24 * 60 * 60 // 1 day in msec
-
-    // 3.1 Generate jwt token that expires in 1 day
-    const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY, {
-      expiresIn: maxAge,
-    })
-
-    // 3.2 Set token in a cookie in the response object (also expires in 1 day)
-    res.cookie('jwt', token, { httpOnly: true }, { maxAge: maxAge * 1000 })
-
-    res.status(201).json({ id: user._id })
+    console.log(user._id)
+    res.status(201).redirect('/login')
   } catch (err) {
-    const errors = await userValidationErrorHandler(err, email)
+    const errors = await handleSignupErrors(err, email)
 
     console.log(`signup post error: ${err}`)
 
@@ -66,4 +81,46 @@ signup_post = async (req, res) => {
   }
 }
 
-module.exports = { signup_get, signup_post }
+module.exports.login_get = (req, res) => {
+  console.log(res.locals.user)
+  const user = res.locals.user
+  if (!user) {
+    return res.json('login form')
+  }
+  if (user.isAdmin) {
+    res.redirect('/dashboard')
+  } else {
+    res.redirect('/')
+  }
+}
+
+module.exports.login_post = async (req, res) => {
+  const { email, password } = req.body
+
+  try {
+    const user = await User.login(email, password)
+
+    const payload = { id: user._id, isAdmin: user.isAdmin }
+    const token = jwt.sign(payload, process.env.SECRET_KEY, {
+      expiresIn: maxAge,
+    })
+
+    res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 })
+    res.status(200).json({ user: user._id })
+  } catch (err) {
+    const errors = handleLoginErrors(err)
+
+    console.log(`login post error: ${err}`)
+
+    res.status(400).json(errors)
+    //400 not a sucess
+  }
+}
+
+module.exports.logout_get = (req, res) => {
+  console.log(res.locals.user)
+
+  token = ''
+  res.cookie('jwt', token, { maxAge: 1 })
+  res.redirect('/')
+}
