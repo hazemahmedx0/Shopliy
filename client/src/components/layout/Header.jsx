@@ -179,9 +179,8 @@ function MainHeader() {
                 <ProfileCircle color="#98A2B3" strokeWidth={2} />
                 <Link
                   className=" font-medium text-sm text-gray-500"
-                  to="/signin"
-                >
-                  SignIn
+                  to="/login" >
+                  Login
                 </Link>
               </div>
             }
