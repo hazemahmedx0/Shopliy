@@ -1,7 +1,5 @@
-import AppLayout from '../components/layout/AppLayout'
-
 const PageNotFound = () => {
-  return <AppLayout>PageNotFound</AppLayout>
+  return <div>PageNotFound</div>
 }
 
 export default PageNotFound

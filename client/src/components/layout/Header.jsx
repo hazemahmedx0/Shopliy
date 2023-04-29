@@ -16,7 +16,7 @@ import { useDisclosure } from '@mantine/hooks'
 import { Search, Heart, ShoppingBag, ProfileCircle } from 'iconoir-react'
 
 import { logo } from './../../assets'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 
 // Static values
 
@@ -123,8 +123,9 @@ const useStyles = createStyles((theme) => ({
 
 function MainHeader() {
   const navigate = useNavigate()
+  const curLink = useParams()
   const [opened, { toggle, close }] = useDisclosure(false)
-  const [active, setActive] = useState(links[0].link)
+  const [active, setActive] = useState(`/${curLink['*'] ? curLink['*'] : ''}`)
   const { classes, cx } = useStyles()
 
   const items = links.map((link) => (
