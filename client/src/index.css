@@ -24,6 +24,12 @@ body {
 
 /* Buttons */
 
+.mantine-Carousel-indicator {
+  background-color: #fff;
+  transition: all 0.2s;
+  border-radius: 12px;
+}
+
 .mantine-oqpohy {
   background-color: #15be53;
   transition: all 0.2s;

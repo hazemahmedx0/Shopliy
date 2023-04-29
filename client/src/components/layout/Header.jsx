@@ -152,7 +152,9 @@ function MainHeader() {
         {/* Left side */}
 
         <div className="flex felx-col gap-7">
-          <img src={logo} alt="logo" />
+          <Link to="/">
+            <img src={logo} alt="logo" />
+          </Link>
           <Group spacing={5} className={classes.links}>
             {items}
           </Group>
