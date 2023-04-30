@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { useAuth } from '../../context/auth'
+
 import {
   createStyles,
   Header,
@@ -9,6 +11,7 @@ import {
   Transition,
   rem,
   Input,
+  Avatar,
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 
@@ -123,6 +126,8 @@ const useStyles = createStyles((theme) => ({
 
 function MainHeader() {
   const navigate = useNavigate()
+  const [auth, setAuth] = useAuth()
+  const isUser = auth.user
   const curLink = useParams()
   const [opened, { toggle, close }] = useDisclosure(false)
   const [active, setActive] = useState(`/${curLink['*'] ? curLink['*'] : ''}`)
@@ -178,13 +183,32 @@ function MainHeader() {
           <div>
             {
               <div className=" flex flex-row items-center gap-2">
-                <ProfileCircle color="#98A2B3" strokeWidth={2} />
-                <Link
-                  className=" font-medium text-sm text-gray-500"
-                  to="/signin"
-                >
-                  SignIn
-                </Link>
+                {!isUser ? (
+                  <>
+                    <ProfileCircle color="#98A2B3" strokeWidth={2} />
+                    <Link
+                      className=" font-medium text-sm text-gray-500"
+                      to="/login"
+                    >
+                      Login
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <Avatar
+                      className=" rounded-full"
+                      src={isUser.photo}
+                      alt="it's me"
+                    />
+                    <Link
+                      className=" font-medium text-sm text-gray-500"
+                      to="/my-account"
+                    >
+                      {' '}
+                      {isUser.firstName}
+                    </Link>
+                  </>
+                )}
               </div>
             }
           </div>

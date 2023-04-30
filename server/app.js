@@ -8,6 +8,14 @@ require('dotenv').config()
 
 const app = express()
 
+const cors = require('cors')
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+  })
+)
+
 // middlewares
 app.use(express.json()) // parse incoming requests with JSON payloads
 app.use(cookieParser())

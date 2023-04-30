@@ -67,7 +67,7 @@ const PageNotFound = () => {
       </Text>
       <Group position="center">
         <a href="/">
-          <Button variant="subtle" size="md">
+          <Button className=" text-white" variant="subtle" size="md">
             Take me back to home page
           </Button>
         </a>

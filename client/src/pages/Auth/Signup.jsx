@@ -46,10 +46,7 @@ const SignUp = () => {
         email: values.email,
         password: values.password,
       })
-
-      console.log(res)
     } catch (err) {
-      console.log(err)
       setloading(false)
     }
     setloading(false)
