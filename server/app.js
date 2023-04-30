@@ -4,11 +4,19 @@ const authRoutes = require('./routes/authRoutes')
 const cookieParser = require('cookie-parser')
 const userRoutes = require('./routes/userRoutes')
 const { isAuthenticated, checkUser, isAdmin } = require('./middleware/auth')
+const cors = require('cors')
 require('dotenv').config()
 
 const app = express()
 
 // middlewares
+
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+  })
+)
 app.use(express.json()) // parse incoming requests with JSON payloads
 app.use(cookieParser())
 
