@@ -30,12 +30,21 @@ body {
   border-radius: 12px;
 }
 
-.mantine-oqpohy {
-  background-color: #15be53;
-  transition: all 0.2s;
-  height: 44px;
-  border-radius: 12px;
+.mantine-oqpohy,
+.mantine-Button-root {
+  background-color: #15be53 !important;
+  transition: all 0.2s !important;
+  height: 44px !important;
+  border-radius: 12px !important;
 }
-.mantine-oqpohy:active {
-  transform: translateY(0rem);
+.mantine-Button-root:hover {
+  background-color: #16a34a !important;
+  transition: all 0.2s !important;
+  height: 44px !important;
+  border-radius: 12px !important;
+}
+
+.mantine-oqpohy:active,
+button:active {
+  transform: translateY(0rem) !important;
 }

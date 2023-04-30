@@ -4,6 +4,7 @@ import App from './App.jsx'
 import './index.css'
 import { MantineProvider } from '@mantine/core'
 import { BrowserRouter } from 'react-router-dom'
+import { Notifications } from '@mantine/notifications'
 
 import { AuthProvider } from './context/auth'
 
@@ -40,6 +41,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
               'Inter,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;',
           }}
         >
+          <Notifications />
+
           <App />
         </MantineProvider>
       </AuthProvider>
