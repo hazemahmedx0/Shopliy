@@ -16,9 +16,9 @@ function AppLayout({ title, description }) {
       try {
         const res = await authAPI.verifyUser() // this is user -> GET me
         console.log('this is res', res)
-        // if (res === 'login form') {
-        //   throw new Error('Error message')
-        // }
+        if (res === 'login form') {
+          throw new Error('Error message')
+        }
         setAuth({
           ...auth,
           user: res,
