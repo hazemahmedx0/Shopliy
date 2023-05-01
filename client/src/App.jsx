@@ -22,9 +22,12 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           {/* <Route path="/upldaz" element={<ImageUpladtext />} /> */}
           <Route path="/login" element={<Login />} />
-          <Route path="/adminlogin" element={<AdminLogin />} />
+
           <Route path="/*" element={<PageNotFound />} />
         </Route>
+
+        {/* Admin section */}
+        <Route path="/adminlogin" element={<AdminLogin />} />
       </Routes>
     </>
   )
