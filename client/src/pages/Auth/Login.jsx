@@ -46,7 +46,7 @@ const Login = () => {
 
   return (
     <Box className=" mt-20 mb-20" maw={400} mx="auto">
-      <h1 className=" text-3xl font-medium text-gray-600 mb-8">LogIn</h1>
+      <h1 className=" text-3xl font-medium text-gray-600 mb-8">Login</h1>
 
       <form
         className="mb-6"
@@ -63,7 +63,7 @@ const Login = () => {
           className="flex flex-col w-full items-start"
           withAsterisk
           label="Password"
-          placeholder="Choose a strong password"
+          placeholder="Type your password"
           {...form.getInputProps('password')}
         />
 
@@ -74,9 +74,9 @@ const Login = () => {
         </Group>
       </form>
       <span className=" text-gray-400 pt-3">
-        Do not have an account?{' '}
+        Do not have an account??{' '}
         <Link to="/signup" className="text-primary font-medium">
-          SignUp
+          Sign Up
         </Link>
       </span>
     </Box>

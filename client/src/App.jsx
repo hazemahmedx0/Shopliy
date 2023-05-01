@@ -5,8 +5,10 @@ import { Route, Routes } from 'react-router-dom'
 import AppLayout from './components/layout/AppLayout'
 import Home from './pages/Home'
 
-import SignUp from './pages/Auth/SignUp'
+import SignUp from './pages/Auth/Signup'
 import Login from './pages/Auth/Login'
+
+import AdminLogin from './pages/Admin/Login'
 
 import PageNotFound from './pages/PageNotFound'
 import ImageUpladtext from './pages/imageUpladtext'
@@ -20,6 +22,7 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           {/* <Route path="/upldaz" element={<ImageUpladtext />} /> */}
           <Route path="/login" element={<Login />} />
+          <Route path="/adminlogin" element={<AdminLogin />} />
           <Route path="/*" element={<PageNotFound />} />
         </Route>
       </Routes>
