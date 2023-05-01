@@ -1,7 +1,14 @@
+import { useEffect, useState } from 'react'
+
 import { TextInput, Button, Group, Box, PasswordInput } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { Link } from 'react-router-dom'
+import authAPI from '../../api/AuthAPI'
+import { useAuth } from '../../context/auth'
+import { User } from 'iconoir-react'
 const Login = () => {
+  const [loading, setloading] = useState(false)
+  const [auth, setAuth] = useAuth()
   const form = useForm({
     initialValues: {
       email: '',
@@ -13,13 +20,37 @@ const Login = () => {
     },
   })
 
+  const submitHandler = async (values) => {
+    // e.preventDefault()
+    setloading(true)
+    try {
+      setloading(true)
+
+      const res = await authAPI.login({
+        email: values.email,
+        password: values.password,
+      })
+      console.log('this res', res)
+
+      setAuth({
+        ...auth,
+        token: res.user,
+      })
+    } catch (err) {
+      console.log(err)
+      console.log('this error', err)
+      setloading(false)
+    }
+    setloading(false)
+  }
+
   return (
     <Box className=" mt-20 mb-20" maw={400} mx="auto">
       <h1 className=" text-3xl font-medium text-gray-600 mb-8">Login</h1>
 
       <form
         className="mb-6"
-        onSubmit={form.onSubmit((values) => console.log(values))}
+        onSubmit={form.onSubmit((values) => submitHandler(values))}
       >
         <TextInput
           className="flex flex-col w-full items-start mb-4"
@@ -37,7 +68,7 @@ const Login = () => {
         />
 
         <Group position="right" mt="md">
-          <Button className="w-full mt-4" type="submit">
+          <Button className="w-full mt-4" type="submit" loading={loading}>
             Submit
           </Button>
         </Group>

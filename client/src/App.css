@@ -44,3 +44,15 @@ form .mantine-PasswordInput-description {
   color: #15be53;
   background-color: #d1fadf;
 }
+
+/*  Text */
+
+/* Trim card text */
+
+.trimTextCard {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

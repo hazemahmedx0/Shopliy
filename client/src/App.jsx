@@ -11,6 +11,7 @@ import Login from './pages/Auth/Login'
 import AdminLogin from './pages/Admin/Login'
 
 import PageNotFound from './pages/PageNotFound'
+import ImageUpladtext from './pages/imageUpladtext'
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/" element={<AppLayout />}>
           <Route index element={<Home />} />
           <Route path="/signup" element={<SignUp />} />
+          {/* <Route path="/upldaz" element={<ImageUpladtext />} /> */}
           <Route path="/login" element={<Login />} />
           <Route path="/adminlogin" element={<AdminLogin />} />
           <Route path="/*" element={<PageNotFound />} />

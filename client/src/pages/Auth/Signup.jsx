@@ -7,8 +7,11 @@ import {
   PasswordInput,
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import authAPI from '../../api/AuthAPI'
 const SignUp = () => {
+  const [loading, setloading] = useState(false)
   const form = useForm({
     initialValues: {
       fname: '',
@@ -31,13 +34,31 @@ const SignUp = () => {
     },
   })
 
+  const submitHandler = async (values) => {
+    // e.preventDefault()
+    setloading(true)
+    try {
+      setloading(true)
+
+      const res = await authAPI.signup({
+        firstName: values.fname,
+        lastName: values.lname,
+        email: values.email,
+        password: values.password,
+      })
+    } catch (err) {
+      setloading(false)
+    }
+    setloading(false)
+  }
+
   return (
     <Box className=" mt-20 mb-20" maw={400} mx="auto">
       <h1 className=" text-3xl font-medium text-gray-600 mb-8">SignUp</h1>
 
       <form
         className="mb-6"
-        onSubmit={form.onSubmit((values) => console.log(values))}
+        onSubmit={form.onSubmit((values) => submitHandler(values))}
       >
         <span className="flex flex-row gap-4 mb-4">
           <TextInput
@@ -77,7 +98,7 @@ const SignUp = () => {
         />
 
         <Group position="right" mt="md">
-          <Button className="w-full" type="submit">
+          <Button className="w-full" type="submit" loading={loading}>
             Submit
           </Button>
         </Group>
