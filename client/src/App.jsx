@@ -8,6 +8,8 @@ import Home from './pages/Home'
 import SignUp from './pages/Auth/Signup'
 import Login from './pages/Auth/Login'
 
+import AdminLogin from './pages/Admin/Login'
+
 import PageNotFound from './pages/PageNotFound'
 
 function App() {
@@ -18,6 +20,7 @@ function App() {
           <Route index element={<Home />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/adminlogin" element={<AdminLogin />} />
           <Route path="/*" element={<PageNotFound />} />
         </Route>
       </Routes>
