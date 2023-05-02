@@ -34,8 +34,21 @@ const userSchema = new mongoose.Schema({
       'https://riatarealty.com/wp-content/uploads/2020/03/generic-person-silhouette-32.png',
   },
   shippingAddress: {
-    type: String,
-    default: '',
+    street: {
+      type: String,
+    },
+    city: {
+      type: String,
+    },
+    state: {
+      type: String,
+    },
+    zip: {
+      type: String,
+    },
+    country: {
+      type: String,
+    },
   },
   createdAt: {
     type: Date,

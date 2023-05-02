@@ -6,7 +6,7 @@ const userRoutes = require('./routes/userRoutes')
 const { isAuthenticated, checkUser, isAdmin } = require('./middleware/auth')
 const cors = require('cors')
 require('dotenv').config()
-
+// TODO : in all catch fields , return internal server error if not predefined err
 const app = express()
 
 // middlewares
@@ -40,19 +40,16 @@ mongoose
 app.get('*', checkUser) // to get access user info in all views
 
 // Routes
-app.get('/', (req, res) => {
-  console.log(res.locals.user)
-  res.status(200).json('Home')
-})
 
 app.get('/test-user', isAuthenticated, (req, res) => {
   console.log(res.locals.user)
-  res.status(200).json('hello user')
+  const user = res.locals.user
+  res.status(200).json(user)
 })
 
 app.get('/dashboard', isAdmin, (req, res) => {
   const user = res.locals.user
-  res.status(200).json(`hello admin, ${user.firstName} ${user.lastName}`)
+  res.status(200).json(user)
 })
 
 app.use(authRoutes)
