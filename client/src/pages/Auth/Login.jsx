@@ -1,12 +1,16 @@
 import { useEffect, useState } from 'react'
 
 import { TextInput, Button, Group, Box, PasswordInput } from '@mantine/core'
+import { notifications } from '@mantine/notifications'
+
 import { useForm } from '@mantine/form'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import authAPI from '../../api/AuthAPI'
 import { useAuth } from '../../context/auth'
 import { User } from 'iconoir-react'
 const Login = () => {
+  const navigate = useNavigate()
+
   const [loading, setloading] = useState(false)
   const [auth, setAuth] = useAuth()
   const form = useForm({
@@ -30,15 +34,20 @@ const Login = () => {
         email: values.email,
         password: values.password,
       })
-      console.log('this res', res)
 
       setAuth({
         ...auth,
         token: res.user,
       })
+      navigate('/')
     } catch (err) {
-      console.log(err)
-      console.log('this error', err)
+      notifications.show({
+        color: 'red',
+        title: 'Invalid credentials',
+        message: `${err.data.email} ${err.data.password}`,
+      })
+      form.setErrors({ email: 'Cloud not find your accounts', password: ' ' })
+
       setloading(false)
     }
     setloading(false)
@@ -74,7 +83,7 @@ const Login = () => {
         </Group>
       </form>
       <span className=" text-gray-400 pt-3">
-        Do not have an account??{' '}
+        Do not have an account?{' '}
         <Link to="/signup" className="text-primary font-medium">
           Sign Up
         </Link>

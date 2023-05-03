@@ -1,4 +1,4 @@
-import { SimpleCart } from 'iconoir-react'
+import { SimpleCart, Heart } from 'iconoir-react'
 import {
   Card,
   Image,
@@ -54,6 +54,18 @@ const ProductCard = (props) => {
       }
     >
       <Card.Section>
+        <ActionIcon
+          className=" addToWishListbtn transition-all w-9 h-9 bg-red-100  hover:bg-red-50"
+          variant="light"
+          onClick={() =>
+            notifications.show({
+              title: 'Default notification',
+              message: 'Hey there, your code is awesome! 🤥',
+            })
+          }
+        >
+          <Heart color="#F34141" strokeWidth={2} height={20} width={20} />
+        </ActionIcon>
         <Image src={props.image} alt={props.title} height={240} />
       </Card.Section>
 

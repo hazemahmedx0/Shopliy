@@ -23,7 +23,9 @@ body {
 }
 
 /* Buttons */
-
+.mantine-ActionIcon-root svg {
+  stroke: #15be53;
+}
 .mantine-Carousel-indicator {
   background-color: #fff;
   transition: all 0.2s;
@@ -47,4 +49,16 @@ body {
 .mantine-oqpohy:active,
 button:active {
   transform: translateY(0rem) !important;
+}
+
+.addToWishListbtn {
+  position: absolute;
+  display: none;
+  z-index: 1000;
+  right: 10px;
+  top: 9px;
+}
+
+.mantine-Card-root:hover .addToWishListbtn {
+  display: flex;
 }

@@ -7,10 +7,13 @@ import {
   PasswordInput,
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
+import { notifications } from '@mantine/notifications'
+
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import authAPI from '../../api/AuthAPI'
 const SignUp = () => {
+  const navigate = useNavigate()
   const [loading, setloading] = useState(false)
   const form = useForm({
     initialValues: {
@@ -46,8 +49,26 @@ const SignUp = () => {
         email: values.email,
         password: values.password,
       })
+      navigate('/login')
+      notifications.show({
+        color: 'primary',
+        title: 'Success',
+        message: `Your Account has been created successfully`,
+      })
     } catch (err) {
       setloading(false)
+
+      notifications.show({
+        color: 'red',
+        title: 'An error occured',
+        message: `Please fill the form correctly`,
+      })
+      form.setErrors({
+        fname: `${err.data?.firstName}`,
+        lname: `${err.data?.lastName}`,
+        email: `${err.data?.email}`,
+        password: `${err.data?.password}`,
+      })
     }
     setloading(false)
   }
