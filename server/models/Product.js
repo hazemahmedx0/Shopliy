@@ -1,27 +1,23 @@
 const mongoose = require('mongoose')
 
 const productSchema = new mongoose.Schema({
-  id: {
-    type: String,
-    required: true,
-    unique: true,
-  },
   name: {
     type: String,
-    required: true,
+    required: [true, 'Product name is required.'],
   },
   description: {
     type: String,
-    required: true,
+    required: [true, 'product description is required.'],
   },
   price: {
     type: Number,
-    required: true,
-    min: 0,
+    required: [true, 'Price is required.'],
+    min: [0, 'Price must be a positive number.'],
   },
   image: {
     type: String,
-    required: true,
+    required: [true, 'product image is required.'],
+    max: [4, 'Maximum number of product images reached.'],
   },
   availability: {
     type: Boolean,
@@ -38,7 +34,7 @@ const productSchema = new mongoose.Schema({
   //   },
   label: {
     type: String,
-    enum: ['New', 'Sale', 'Hot'],
+    enum: ['New Arrival', 'On Sale', 'Bestseller'],
   },
   //   purchased: {
   //     type: Number,
