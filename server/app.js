@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const authRoutes = require('./routes/authRoutes')
 const cookieParser = require('cookie-parser')
 const userRoutes = require('./routes/userRoutes')
+const productRoutes = require('./routes/productRoutes')
 const { isAuthenticated, checkUser, isAdmin } = require('./middleware/auth')
 const cors = require('cors')
 require('dotenv').config()
@@ -54,3 +55,4 @@ app.get('/dashboard', isAdmin, (req, res) => {
 
 app.use(authRoutes)
 app.use(userRoutes)
+app.use(productRoutes)
