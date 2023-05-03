@@ -48,20 +48,6 @@ const handleSignupErrors = async (err, email) => {
   return errors
 }
 
-module.exports.signup_get = (req, res) => {
-  console.log(res.locals.user)
-  const user = res.locals.user
-  if (!user) {
-    return res.json('signup form')
-  }
-  if (user.isAdmin) {
-    res.redirect('/dashboard')
-  } else {
-    res.redirect('/')
-  }
-  //res.render()
-}
-
 const maxAge = 24 * 60 * 60 // 1 day in msec
 
 module.exports.signup_post = async (req, res) => {
@@ -71,26 +57,23 @@ module.exports.signup_post = async (req, res) => {
     const user = await User.create({ firstName, lastName, email, password })
 
     console.log(user._id)
-    res.status(201).redirect('/login')
+
+    const payload = { id: user._id, isAdmin: user.isAdmin }
+    const token = jwt.sign(payload, process.env.SECRET_KEY, {
+      expiresIn: maxAge,
+    })
+
+    res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 })
+
+    delete user._doc.password
+
+    res.status(200).json(user)
   } catch (err) {
     const errors = await handleSignupErrors(err, email)
 
     console.log(`signup post error: ${err}`)
 
     res.status(400).json(errors)
-  }
-}
-
-module.exports.login_get = (req, res) => {
-  console.log(res.locals.user)
-  const user = res.locals.user
-  if (!user) {
-    return res.json('login form')
-  }
-  if (user.isAdmin) {
-    res.redirect('/dashboard')
-  } else {
-    res.redirect('/')
   }
 }
 
@@ -106,7 +89,9 @@ module.exports.login_post = async (req, res) => {
     })
 
     res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 })
-    res.status(200).json({ user: user._id })
+    delete user._doc.password
+
+    res.status(200).json(user)
   } catch (err) {
     const errors = handleLoginErrors(err)
 
@@ -122,5 +107,5 @@ module.exports.logout_get = (req, res) => {
 
   token = ''
   res.cookie('jwt', token, { maxAge: 1 })
-  res.redirect('/')
+  res.status(200).json({ message: 'Logged out successfully' })
 }

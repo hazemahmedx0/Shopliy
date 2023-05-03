@@ -1,22 +1,12 @@
 const jwt = require('jsonwebtoken')
 const { User } = require('./../models/User')
 
-const isAuthenticated = (req, res, next) => {
-  const token = req.cookies.jwt
-  if (!token) {
-    return res.status(301).redirect('/login')
-  }
-  // check json web token exists & is verified
-  try {
-    //recreate the signuture based on the header, payload and compare signetures
-    const decodedToken = jwt.verify(token, process.env.SECRET_KEY)
-    console.log('decdecodedToken', decodedToken)
-    next()
-  } catch (err) {
-    console.log(`isAuthenticated err: ${err}`)
-  }
+// helper functions
+const isTokenFound = (token) => {
+  if (!token) throw Error('not authenticated')
 }
 
+// middlewares
 const checkUser = async (req, res, next) => {
   const token = req.cookies.jwt
   if (!token) {
@@ -28,7 +18,9 @@ const checkUser = async (req, res, next) => {
   try {
     const { id } = jwt.verify(token, process.env.SECRET_KEY)
 
-    const user = await User.findById(id)
+    let user = await User.findById(id)
+
+    delete user._doc.password
     res.locals.user = user
   } catch (err) {
     console.log(err.message)
@@ -37,25 +29,49 @@ const checkUser = async (req, res, next) => {
   next()
 }
 
+const isAuthenticated = (req, res, next) => {
+  const token = req.cookies.jwt
+  try {
+    // check json web token exists & is verified
+    isTokenFound(token)
+    //recreate the signuture based on the header, payload and compare signetures
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY)
+    console.log('decdecodedToken', decodedToken)
+    next()
+  } catch (err) {
+    if (err.message === 'not authenticated') {
+      console.log(err.message)
+      return res.status(401).json({ error: 'not authenticated' })
+    }
+
+    console.log('is Authenticated err ::', err)
+
+    // console.log(`isAuthenticated err: ${err}`)
+    // return res.status(401).json(err)
+  }
+}
+
 const isAdmin = async (req, res, next) => {
   const token = req.cookies.jwt
-  if (!token) {
-    console.log('you are not authenticated.')
-    return res.status(301).redirect('/login')
-  }
 
   try {
+    isTokenFound(token)
     const { isAdmin } = jwt.verify(token, process.env.SECRET_KEY)
     if (isAdmin) {
       next()
     } else {
-      return res
-        .status(403)
-        .json({ message: 'You are not authorized to access this resource.' })
+      throw Error('not authorized')
     }
   } catch (err) {
     console.log(`isAdmin middleware error: ${err.message}`)
-    return res.status(500).json({ message: 'An error occurred.' })
+    if (err.message === 'not authenticated') {
+      console.log(err.message)
+      return res.status(401).json({ error: 'not authenticated' })
+    }
+    if (err.message === 'not authorized') {
+      console.log(err.message)
+      return res.status(401).json({ error: 'not authorized' })
+    }
   }
   next()
 }
