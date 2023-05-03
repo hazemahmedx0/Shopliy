@@ -5,16 +5,35 @@ import {
   Group,
   Box,
   PasswordInput,
+  Loader,
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { notifications } from '@mantine/notifications'
 
-import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import authAPI from '../../api/AuthAPI'
 const SignUp = () => {
   const navigate = useNavigate()
+  const location = useLocation()
+
   const [loading, setloading] = useState(false)
+  const [loginLoading, setLoginLoading] = useState(true)
+  const fromUrl = location.state?.from || '/'
+
+  useEffect(() => {
+    const checkUser = async () => {
+      try {
+        const res = await authAPI.verifyUser()
+
+        navigate(fromUrl)
+      } catch (err) {
+        setLoginLoading(false)
+      }
+    }
+    checkUser()
+  }, [navigate])
+
   const form = useForm({
     initialValues: {
       fname: '',
@@ -72,65 +91,72 @@ const SignUp = () => {
     }
     setloading(false)
   }
-
   return (
-    <Box className=" mt-20 mb-20" maw={400} mx="auto">
-      <h1 className=" text-3xl font-medium text-gray-600 mb-8">SignUp</h1>
+    <>
+      {loginLoading ? (
+        <div className="w-full h-[calc(100vh-405px)] justify-center  flex flex-col items-center">
+          <Loader variant="dots" />
+        </div>
+      ) : (
+        <Box className=" mt-20 mb-20" maw={400} mx="auto">
+          <h1 className=" text-3xl font-medium text-gray-600 mb-8">SignUp</h1>
 
-      <form
-        className="mb-6"
-        onSubmit={form.onSubmit((values) => submitHandler(values))}
-      >
-        <span className="flex flex-row gap-4 mb-4">
-          <TextInput
-            className="flex flex-col w-full items-start"
-            withAsterisk
-            label="First Name"
-            placeholder="John"
-            {...form.getInputProps('fname')}
-          />
-          <TextInput
-            className="flex flex-col w-full items-start"
-            label="Last Name"
-            placeholder="Smith"
-            {...form.getInputProps('lname')}
-          />
-        </span>
-        <TextInput
-          className="flex flex-col w-full items-start mb-4"
-          withAsterisk
-          label="Email"
-          placeholder="your@email.com"
-          {...form.getInputProps('email')}
-        />
-        <PasswordInput
-          className="flex flex-col w-full items-start"
-          withAsterisk
-          label="Password"
-          placeholder="Choose a strong password"
-          {...form.getInputProps('password')}
-        />
+          <form
+            className="mb-6"
+            onSubmit={form.onSubmit((values) => submitHandler(values))}
+          >
+            <span className="flex flex-row gap-4 mb-4">
+              <TextInput
+                className="flex flex-col w-full items-start"
+                withAsterisk
+                label="First Name"
+                placeholder="John"
+                {...form.getInputProps('fname')}
+              />
+              <TextInput
+                className="flex flex-col w-full items-start"
+                label="Last Name"
+                placeholder="Smith"
+                {...form.getInputProps('lname')}
+              />
+            </span>
+            <TextInput
+              className="flex flex-col w-full items-start mb-4"
+              withAsterisk
+              label="Email"
+              placeholder="your@email.com"
+              {...form.getInputProps('email')}
+            />
+            <PasswordInput
+              className="flex flex-col w-full items-start"
+              withAsterisk
+              label="Password"
+              placeholder="Choose a strong password"
+              {...form.getInputProps('password')}
+            />
 
-        <Checkbox
-          className="pb-4"
-          mt="md"
-          label="I agree to the Terms & Privacy"
-          {...form.getInputProps('termsOfService', { type: 'checkbox' })}
-        />
+            <Checkbox
+              className="pb-4"
+              mt="md"
+              label="I agree to the Terms & Privacy"
+              {...form.getInputProps('termsOfService', { type: 'checkbox' })}
+            />
 
-        <Group position="right" mt="md">
-          <Button className="w-full" type="submit" loading={loading}>
-            Submit
-          </Button>
-        </Group>
-      </form>
-      <span className=" text-gray-400 pt-3">
-        Have an account?{' '}
-        <Link to="/login" className="text-primary font-medium">
-          Login
-        </Link>
-      </span>
-    </Box>
+            <Group position="right" mt="md">
+              <Button className="w-full" type="submit" loading={loading}>
+                Submit
+              </Button>
+            </Group>
+          </form>
+          <span className=" text-gray-400 pt-3">
+            Have an account?{' '}
+            <Link to="/login" className="text-primary font-medium">
+              Login
+            </Link>
+          </span>
+        </Box>
+      )}
+    </>
   )
 }
 

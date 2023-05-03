@@ -12,6 +12,8 @@ import AdminLogin from './pages/Admin/Login'
 
 import PageNotFound from './pages/PageNotFound'
 import ImageUpladtext from './pages/imageUpladtext'
+import Private from './components/routes/Private'
+import Cart from './pages/Cart'
 
 function App() {
   return (
@@ -24,6 +26,11 @@ function App() {
           <Route path="/login" element={<Login />} />
 
           <Route path="/*" element={<PageNotFound />} />
+
+          <Route path="" element={<Private />}>
+            <Route path="/Cart" element={<Cart />} />
+            <Route path="/*" element={<PageNotFound />} />
+          </Route>
         </Route>
 
         {/* Admin section */}

@@ -178,12 +178,14 @@ function MainHeader() {
             }
           />
           <Heart color="#98A2B3" strokeWidth={2} />
-          <ShoppingBag color="#98A2B3" strokeWidth={2} />
+          <Link to="/cart">
+            <ShoppingBag color="#98A2B3" strokeWidth={2} />
+          </Link>
           <div className="w-[2px] rounded-full h-3 bg-gray-300 mx-2"> </div>
           <div>
             {
               <div className=" flex flex-row items-center gap-2">
-                {isUser ? (
+                {!isUser ? (
                   <>
                     <ProfileCircle color="#98A2B3" strokeWidth={2} />
                     <Link
@@ -197,7 +199,7 @@ function MainHeader() {
                   <>
                     <Avatar
                       className=" rounded-full"
-                      src={isUser.photo}
+                      src={isUser?.photo}
                       alt="it's me"
                     />
                     <Link

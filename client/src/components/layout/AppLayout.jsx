@@ -11,25 +11,16 @@ function AppLayout({ title, description }) {
   const navigate = useNavigate()
 
   useEffect(() => {
-    console.log('authds')
-    const abc = async () => {
+    const checkUser = async () => {
       try {
         const res = await authAPI.verifyUser() // this is user -> GET me
-        console.log('this is res', res)
-        if (res === 'login form') {
-          throw new Error('Error message')
-        }
         setAuth({
           ...auth,
           user: res,
         })
-        // console.log('res', auth)
-      } catch (err) {
-        console.log('this is error', err)
-        // console.log('err', err)
-      }
+      } catch (err) {}
     }
-    abc()
+    checkUser()
   }, [navigate])
 
   return (
