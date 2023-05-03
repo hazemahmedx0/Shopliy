@@ -76,8 +76,8 @@ const ProductCard = (props) => {
           variant="light"
           onClick={() =>
             notifications.show({
-              title: 'Default notification',
-              message: 'Hey there, your code is awesome! 🤥',
+              title: `${props.title} added to cart`,
+              message: 'You can review it in the cart section',
             })
           }
         >

@@ -183,7 +183,7 @@ function MainHeader() {
           <div>
             {
               <div className=" flex flex-row items-center gap-2">
-                {!isUser ? (
+                {isUser ? (
                   <>
                     <ProfileCircle color="#98A2B3" strokeWidth={2} />
                     <Link
