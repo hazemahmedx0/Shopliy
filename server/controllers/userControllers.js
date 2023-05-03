@@ -1,9 +1,11 @@
 const { User } = require('./../models/User')
 const jwt = require('jsonwebtoken')
+const defaultPhoto =
+  'https://riatarealty.com/wp-content/uploads/2020/03/generic-person-silhouette-32.png'
 
 module.exports.me_get = (req, res) => {
-  const { photo, firstName, lastName, shippingAddress } = res.locals.user
-  res.json({ photo, firstName, lastName, shippingAddress })
+  const user = res.locals.user
+  res.json(user)
 }
 
 module.exports.me_put = async (req, res, next) => {
@@ -17,30 +19,30 @@ module.exports.me_put = async (req, res, next) => {
     const user = await User.findById(id)
     console.log(req.body)
     // Update the user object with the new data
-    let { photo, firstName, lastName, shippingAddress } = req.body
-    photo = photo || user.photo
+    let { firstName, lastName, photo, shippingAddress } = req.body
+
+    photo = photo || defaultPhoto
     firstName = firstName || user.firstName
     lastName = lastName || user.lastName
-    shippingAddress = shippingAddress || user.shippingAddress
 
     // Save the updated user object to the database
     const aknowlege = await User.updateOne(
       { _id: user._id },
-      { $set: { firstName, lastName, shippingAddress, photo } },
-      { upsert: true }
+      { $set: { firstName, lastName, shippingAddress, photo } }
     )
     const updatedUser = await User.findById(id)
+
     console.log(updatedUser)
     console.log('updated', aknowlege)
 
+    delete updatedUser._doc.password
     // to be sure
     res.json({
-      firstName: updatedUser.firstName,
-      lastName: updatedUser.lastName,
-      shippingAddress: updatedUser.shippingAddress,
-      photo: updatedUser.photo,
+      message: 'updated successfully',
+      user: updatedUser,
     })
   } catch (err) {
+    console.log('err put me', err)
     next(err)
   }
 }
