@@ -4,6 +4,7 @@ const authRoutes = require('./routes/authRoutes')
 const cookieParser = require('cookie-parser')
 const userRoutes = require('./routes/userRoutes')
 const productRoutes = require('./routes/productRoutes')
+const cartRoutes = require('./routes/cartRoutes.js')
 const { isAuthenticated, checkUser, isAdmin } = require('./middleware/auth')
 const cors = require('cors')
 require('dotenv').config()
@@ -38,7 +39,7 @@ mongoose
     console.error(`Error connecting to MongoDB: ${err}`)
   })
 
-app.get('*', checkUser) // to get access user info in all views
+app.all('*', checkUser) // to get access user info in all views
 
 // Routes
 
@@ -56,3 +57,4 @@ app.get('/dashboard', isAdmin, (req, res) => {
 app.use(authRoutes)
 app.use(userRoutes)
 app.use(productRoutes)
+app.use(cartRoutes)
