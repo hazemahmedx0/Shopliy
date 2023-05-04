@@ -9,14 +9,14 @@ const ImageUpladtext = () => {
     const file = event.target.files[0]
     const formData = new FormData()
     formData.append('file', file)
-    formData.append('upload_preset', 'h23uih0s')
+    formData.append('upload_preset', 'cpebvpjq')
 
     try {
       const response = await axios.post(
-        'https://api.cloudinary.com/v1_1/dyapzbgmr/image/upload',
-        formData
+        'https://api.cloudinary.com/v1_1/dki8wnuwj/image/upload',
+        formData,
+        { withCredentials: false }
       )
-      console.log(response.data.secure_url)
       setImage(response.data.secure_url)
     } catch (error) {
       console.error(error)

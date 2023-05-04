@@ -197,17 +197,18 @@ function MainHeader() {
                   </>
                 ) : (
                   <>
-                    <Avatar
-                      className=" rounded-full"
-                      src={isUser?.photo}
-                      alt="it's me"
-                    />
-                    <Link
-                      className=" font-medium text-sm text-gray-500"
-                      to="/my-account"
-                    >
-                      {' '}
-                      {isUser.firstName}
+                    <Link to="/myaccount">
+                      <div className=" flex flex-row items-center gap-2">
+                        <Avatar
+                          className=" rounded-full"
+                          src={isUser?.photo}
+                          alt="it's me"
+                        />
+
+                        <p className=" font-medium text-sm text-gray-500">
+                          {isUser.firstName}
+                        </p>
+                      </div>
                     </Link>
                   </>
                 )}

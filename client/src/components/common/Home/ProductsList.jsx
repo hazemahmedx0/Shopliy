@@ -3,9 +3,13 @@ import { Container } from '@mantine/core'
 
 import { FilterList } from 'iconoir-react'
 import ProductCard from '../../ProductCard'
+import { useEffect, useState } from 'react'
+import productApi from '../../../api/productApi'
 const ProductsList = () => {
+  const [products, setProducts] = useState([])
+
   const x = {
-    id: '12121',
+    _id: '12121',
     name: 'The phoeThe phoeThe phoeThe phoeThe phoeThe phoeThephoeThe phoeThephoeThe phoeThe phoe',
     category: 'The phoe',
     price: 1250,
@@ -13,6 +17,17 @@ const ProductsList = () => {
       'https://www.dubaiphone.net/web/image/product.product/1349/image_1024/Apple%20iPhone%2013%20With%20FaceTime%20-%20128GB%2C%204GB%20RAM%20%28Red%29?unique=8223a40',
   }
   const items = Array.from({ length: 9 }, (_, i) => x) // create an array of 9 `x` objects
+
+  const allProducts = async () => {
+    try {
+      const res = await productApi.getAllProducts()
+      setProducts(res.products)
+    } catch (error) {}
+  }
+
+  useEffect(() => {
+    allProducts()
+  }, [])
 
   return (
     <Container className=" mb-28">
@@ -25,13 +40,15 @@ const ProductsList = () => {
         />
       </div>
       <div className="grid grid-cols-3 gap-6 max-md:grid-cols-2 max-md:gap-3">
-        {items.map((item) => (
+        {products.map((item) => (
           <ProductCard
-            key={item.id}
+            key={item._id}
             title={item.name}
             image={item.image}
             price={item.price}
-            category={item.category}
+            brand={item.brand}
+            availability={item.availability}
+            // category={item.category}
           />
         ))}
       </div>
