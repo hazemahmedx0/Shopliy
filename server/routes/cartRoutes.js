@@ -4,7 +4,7 @@ const { isAuthenticated } = require('../middleware/auth')
 
 const router = Router()
 
-router.put(
+router.post(
   '/cart/add/:productId',
   isAuthenticated,
   cartControllers.add_item_to_cart
