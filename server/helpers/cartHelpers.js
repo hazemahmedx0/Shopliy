@@ -1,4 +1,4 @@
-const Cart = require('./../models/Cart')
+const Cart = require('../models/Cart')
 
 const getCart = async (userId) => {
   try {
@@ -12,8 +12,10 @@ const getCart = async (userId) => {
     return Error('internal Server Error')
   }
 }
-const getPopulatedCart = async () => {
-  const cartWithProductInfo = await Cart.find().populate('items.productId')
+const getPopulatedCart = async (cartId) => {
+  const cartWithProductInfo = await Cart.find({ _id: cartId }).populate(
+    'items.productId'
+  )
   return cartWithProductInfo
 }
 
@@ -52,6 +54,9 @@ const updateProductQuantity = (cart, existingItemIndex, item) => {
 }
 
 //////////////////////////////////////////////////////////////////////////////////
+//              Cart main Helper Functions                                    //
+//////////////////////////////////////////////////////////////////////////////////
+
 // if product is added to cart => inc it, else add it
 const updateCartItems = async (cart, item) => {
   // push new item | update quantity of exisiting item
@@ -73,7 +78,7 @@ const updateCartItems = async (cart, item) => {
     return err
   }
 }
-const decrement_product_quantity = async (cart, item) => {
+const decrementProductQuantity = async (cart, item) => {
   // err if no product item | delete this item | dec quantity of exisiting item
 
   try {
@@ -81,9 +86,7 @@ const decrement_product_quantity = async (cart, item) => {
 
     if (existingItemIndex === -1) {
       console.log('product number can not be negative in cart.')
-      throw Error(
-        'This product is already NOT in the cart to decrease its quantity.'
-      )
+      throw Error('This product is already removed.')
     } else if (cart.items[existingItemIndex].quantity === 1) {
       cart.items = cart.items.filter(
         (curr_item) =>
@@ -106,7 +109,7 @@ const decrement_product_quantity = async (cart, item) => {
 }
 
 // wrapper for readability - if product is added to cart => inc it, else add it
-const increment_product_quantity = async (cart, userId, item) => {
+const incrementProductQuantity = async (cart, userId, item) => {
   return await updateCartItems(cart, userId, item)
 }
 
@@ -116,7 +119,7 @@ const deleteProductFromCart = async (cart, item) => {
 
     if (existingItemIndex === -1) {
       console.log('product number can not be negative in cart.')
-      throw Error('This product is already NOT in the cart.')
+      throw Error('This product is already removed.')
     } else {
       //   delete cart.items[existingItemIndex]
       cart.items = cart.items.filter(
@@ -138,8 +141,8 @@ const deleteProductFromCart = async (cart, item) => {
 module.exports = {
   getCart,
   updateCartItems,
-  increment_product_quantity,
-  decrement_product_quantity,
+  incrementProductQuantity,
+  decrementProductQuantity,
   deleteProductFromCart,
   getPopulatedCart,
 }
