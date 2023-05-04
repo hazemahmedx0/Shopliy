@@ -71,7 +71,7 @@ const ProductCard = (props) => {
 
       <Card.Section className="px-4" mt="md">
         <Group className="flex flex-col items-start gap-0" position="apart">
-          <Text className="text-sm text-gray-400">{props.category}</Text>
+          <Text className="text-sm text-gray-400">{props.brand}</Text>
           <Text className=" trimTextCard text-lg font-semibold text-left text-[#344054]">
             {props.title}
           </Text>

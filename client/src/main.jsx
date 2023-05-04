@@ -7,11 +7,11 @@ import { BrowserRouter } from 'react-router-dom'
 import { Notifications } from '@mantine/notifications'
 
 import { AuthProvider } from './context/auth'
-
+import { CartProvider } from './context/cartctx'
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <BrowserRouter>
-    <React.StrictMode>
-      <AuthProvider>
+  <AuthProvider>
+    <BrowserRouter>
+      <React.StrictMode>
         <MantineProvider
           withGlobalStyles
           withNormalizeCSS
@@ -42,10 +42,11 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           }}
         >
           <Notifications />
-
-          <App />
+          <CartProvider>
+            <App />
+          </CartProvider>
         </MantineProvider>
-      </AuthProvider>
-    </React.StrictMode>
-  </BrowserRouter>
+      </React.StrictMode>
+    </BrowserRouter>
+  </AuthProvider>
 )

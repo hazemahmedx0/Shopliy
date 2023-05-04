@@ -14,6 +14,7 @@ import PageNotFound from './pages/PageNotFound'
 import ImageUpladtext from './pages/imageUpladtext'
 import Private from './components/routes/Private'
 import Cart from './pages/Cart'
+import MyAccount from './pages/MyAccount'
 
 function App() {
   return (
@@ -29,6 +30,8 @@ function App() {
 
           <Route path="" element={<Private />}>
             <Route path="/Cart" element={<Cart />} />
+            <Route path="/myaccount" element={<MyAccount />} />
+
             <Route path="/*" element={<PageNotFound />} />
           </Route>
         </Route>
