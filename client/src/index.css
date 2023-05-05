@@ -55,8 +55,8 @@ button:active {
   position: absolute;
   display: none;
   z-index: 1000;
-  right: 10px;
-  top: 9px;
+  right: 16px;
+  top: 12px;
 }
 
 .mantine-Card-root:hover .addToWishListbtn {
