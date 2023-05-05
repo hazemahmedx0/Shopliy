@@ -6,7 +6,7 @@ import { notifications } from '@mantine/notifications'
 import { useAuth } from '../../../context/auth'
 import { useNavigate } from 'react-router-dom'
 import UserApi from '../../../api/userApi'
-
+import { Cancel } from 'iconoir-react'
 import handleImageUpload from '../../../utils/imageUpload'
 
 const MyInfo = () => {
@@ -128,9 +128,18 @@ const MyInfo = () => {
           </>
         ) : (
           <Box className=" w-full" mx="auto">
-            <p className="text-left text-xl text-gray-600 mb-4 font-semibold">
-              Update your information
-            </p>
+            <div className="flex flex-row justify-between">
+              <p className="text-left text-xl text-gray-600 mb-4 font-semibold">
+                Update your information
+              </p>
+              <Cancel
+                width={32}
+                height={32}
+                color="#F34141"
+                className=" bg-red-50 p-1 rounded-lg cursor-pointer"
+                onClick={() => setEditing(false)}
+              />
+            </div>
             <form
               className="mb-6 flex flex-row w-full gap-10 "
               onSubmit={form.onSubmit((values) => submitHandler(values))}

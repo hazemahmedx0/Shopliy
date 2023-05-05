@@ -6,6 +6,7 @@ import { notifications } from '@mantine/notifications'
 import { useAuth } from '../../../context/auth'
 import { useNavigate } from 'react-router-dom'
 import UserApi from '../../../api/userApi'
+import { Cancel } from 'iconoir-react'
 
 import handleImageUpload from '../../../utils/imageUpload'
 const MyInfoAddress = () => {
@@ -40,33 +41,42 @@ const MyInfoAddress = () => {
 
   const form = useForm({
     initialValues: {
-      firstName: `${auth.user.firstName}`,
-      lastName: `${auth.user.lastName}`,
-      email: `${auth.user.email}`,
+      street: `${
+        auth.user.shippingAddress?.street
+          ? auth.user.shippingAddress.street
+          : ''
+      }`,
+      city: `${
+        auth.user.shippingAddress?.city ? auth.user.shippingAddress.city : ''
+      }`,
+      state: `${
+        auth.user.shippingAddress?.state ? auth.user.shippingAddress.state : ''
+      }`,
+      zip: `${
+        auth.user.shippingAddress?.zip ? auth.user.shippingAddress.zip : ''
+      }`,
+      country: `${
+        auth.user.shippingAddress?.country
+          ? auth.user.shippingAddress.country
+          : ''
+      }`,
     },
 
-    validate: {
-      firstName: (value) =>
-        value.length < 2 ? 'Name must have at least 2 letters' : null,
-      email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
-    },
+    validate: {},
   })
 
   const submitHandler = async (values) => {
-    let newimage
-    if (photo !== auth.user.photo) {
-      newimage = await handleImageUpload(file)
-    }
-    // e.preventDefault()
     setloading(true)
     try {
       setloading(true)
-      UserApi
       const res = await UserApi.UpdateMe({
-        firstName: values.firstName,
-        lastName: values.lastName,
-        email: values.email,
-        photo: newimage ? newimage : photo,
+        shippingAddress: {
+          street: values.street,
+          city: values.city,
+          state: values.state,
+          zip: values.zip,
+          country: values.country,
+        },
       })
 
       notifications.show({
@@ -79,10 +89,13 @@ const MyInfoAddress = () => {
         ...auth,
         user: {
           ...auth.user,
-          firstName: values.firstName,
-          lastName: values.lastName,
-          email: values.email,
-          photo: newimage ? newimage : photo,
+          shippingAddress: {
+            street: values.street,
+            city: values.city,
+            state: values.state,
+            zip: values.zip,
+            country: values.country,
+          },
         },
       })
       setEditing(false)
@@ -94,11 +107,6 @@ const MyInfoAddress = () => {
         title: 'An error occured',
         message: `Please fill the form correctly`,
       })
-      form.setErrors({
-        firstName: `${err.data?.firstName}`,
-        lastName: `${err.data?.lastName}`,
-        email: `${err.data?.email}`,
-      })
     }
     setloading(false)
   }
@@ -106,61 +114,6 @@ const MyInfoAddress = () => {
   return (
     <>
       <div className=" pl-8 mt-14 pb-4 w-full flex flex-col items-start ">
-        {/* {!shippingAddress && !addAddress ? (
-          <div className=" w-full text-sm text-neutral-600 font-medium mb-12">
-            <h1 className="text-left">Add your address</h1>
-            <Button radius="md" size="md" onClick={() => setaddAddress(true)}>
-              Add
-            </Button>
-          </div>
-        ) : (
-          <Box className=" w-full" mx="auto">
-            <p className="text-left text-xl text-gray-600 mb-4 font-semibold">
-              Update your information
-            </p>
-            <form
-              className="mb-6 flex flex-row w-full gap-10 "
-              onSubmit={form.onSubmit((values) => submitHandler(values))}
-            >
-              <div className="w-full">
-                <div className="flex flex-row gap-4 w-full">
-                  <TextInput
-                    className="flex flex-col w-full items-start mb-4"
-                    withAsterisk
-                    label="First Name"
-                    placeholder="xzxz@email.com"
-                    {...form.getInputProps('firstName')}
-                  />
-
-                  <TextInput
-                    className="flex flex-col w-full items-start mb-4"
-                    withAsterisk
-                    label="Last Name"
-                    placeholder="your@email.com"
-                    {...form.getInputProps('lastName')}
-                  />
-                </div>
-                <TextInput
-                  className="flex flex-col w-full items-start mb-4"
-                  withAsterisk
-                  label="Email"
-                  placeholder="your@email.com"
-                  {...form.getInputProps('email')}
-                />
-                <Group position="right" mt="md">
-                  <Button
-                    className="w-full mt-4"
-                    type="submit"
-                    loading={loading}
-                  >
-                    Submit
-                  </Button>
-                </Group>
-              </div>
-            </form>
-          </Box>
-        )} */}
-
         {!editing || !shippingAddress ? (
           <>
             <div className=" w-full text-sm text-neutral-600 font-medium mb-12">
@@ -174,7 +127,9 @@ const MyInfoAddress = () => {
                   </div>
                 ) : (
                   <div className="flex flex-col text-gray-700">
-                    <p className="text-left">{shippingAddress.street}</p>
+                    <p className="text-left">
+                      {shippingAddress.street ? shippingAddress.street : ''}
+                    </p>
                     <p className="text-left">{shippingAddress.city}</p>
                     <p className="text-left">{shippingAddress.zip}</p>
                     <p className="text-left">{shippingAddress.country}</p>
@@ -188,38 +143,66 @@ const MyInfoAddress = () => {
           </>
         ) : (
           <Box className=" w-full" mx="auto">
-            <p className="text-left text-xl text-gray-600 mb-4 font-semibold">
-              Update your information
-            </p>
+            <div className="flex flex-row justify-between">
+              <p className="text-left text-xl text-gray-600 mb-4 font-semibold">
+                Update your information
+              </p>
+              <Cancel
+                width={32}
+                height={32}
+                color="#F34141"
+                className=" bg-red-50 p-1 rounded-lg cursor-pointer"
+                onClick={() => setEditing(false)}
+              />
+            </div>
             <form
               className="mb-6 flex flex-row w-full gap-10 "
               onSubmit={form.onSubmit((values) => submitHandler(values))}
             >
               <div className="w-full">
+                <TextInput
+                  className="flex flex-col w-full items-start mb-4"
+                  withAsterisk
+                  label="Street"
+                  placeholder=""
+                  {...form.getInputProps('street')}
+                />
                 <div className="flex flex-row gap-4 w-full">
                   <TextInput
                     className="flex flex-col w-full items-start mb-4"
                     withAsterisk
-                    label="First Name"
-                    placeholder="xzxz@email.com"
-                    {...form.getInputProps('firstName')}
+                    label="City"
+                    placeholder=""
+                    {...form.getInputProps('city')}
                   />
 
                   <TextInput
                     className="flex flex-col w-full items-start mb-4"
                     withAsterisk
-                    label="Last Name"
-                    placeholder="your@email.com"
-                    {...form.getInputProps('lastName')}
+                    label="state"
+                    placeholder=""
+                    {...form.getInputProps('state')}
                   />
                 </div>
-                <TextInput
-                  className="flex flex-col w-full items-start mb-4"
-                  withAsterisk
-                  label="Email"
-                  placeholder="your@email.com"
-                  {...form.getInputProps('email')}
-                />
+
+                <div className="flex flex-row gap-4 w-full">
+                  <TextInput
+                    className="flex flex-col w-full items-start mb-4"
+                    withAsterisk
+                    label="Postal code"
+                    placeholder=""
+                    {...form.getInputProps('zip')}
+                  />
+
+                  <TextInput
+                    className="flex flex-col w-full items-start mb-4"
+                    withAsterisk
+                    label="Country"
+                    placeholder=""
+                    {...form.getInputProps('country')}
+                  />
+                </div>
+
                 <Group position="right" mt="md">
                   <Button
                     className="w-full mt-4"
