@@ -9,6 +9,7 @@ import SignUp from './pages/Auth/Signup'
 import Login from './pages/Auth/Login'
 
 import AdminLogin from './pages/Admin/Login'
+import AdminAccount from './pages/Admin/AdminAccount'
 
 import PageNotFound from './pages/PageNotFound'
 import ImageUpladtext from './pages/imageUpladtext'
@@ -38,6 +39,7 @@ function App() {
 
         {/* Admin section */}
         <Route path="/adminlogin" element={<AdminLogin />} />
+        <Route path="/adminacc" element={<AdminAccount />} />
       </Routes>
     </>
   )
