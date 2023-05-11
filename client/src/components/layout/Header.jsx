@@ -17,12 +17,19 @@ import {
 import { useDisclosure } from '@mantine/hooks'
 
 // Icons
-import { Search, Heart, ShoppingBag, ProfileCircle } from 'iconoir-react'
+import {
+  Search,
+  Heart,
+  ShoppingBag,
+  ProfileCircle,
+  LogOut,
+} from 'iconoir-react'
 
 import { logo } from './../../assets'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, redirect, useNavigate, useParams } from 'react-router-dom'
 import BagContext from '../../context/BagContext'
 import { useContext } from 'react'
+import authAPI from '../../api/AuthAPI'
 // Static values
 
 const links = [
@@ -160,6 +167,16 @@ function MainHeader() {
     </a>
   ))
 
+  const handleLogout = async () => {
+    try {
+      const res = await authAPI.logout()
+      setAuth({ user: null, token: null })
+      navigate('/')
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <Header height={HEADER_HEIGHT} mb={20} className={classes.root}>
       <Container className={classes.header}>
@@ -223,6 +240,11 @@ function MainHeader() {
                         <p className=" font-medium text-sm text-gray-500">
                           {isUser.firstName}
                         </p>
+                        <LogOut
+                          color="#98A2B3"
+                          strokeWidth={2}
+                          onClick={handleLogout}
+                        />
                       </div>
                     </Link>
                   </>

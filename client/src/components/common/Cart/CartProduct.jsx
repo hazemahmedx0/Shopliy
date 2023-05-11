@@ -50,7 +50,7 @@ const CartProduct = (props) => {
   const incProduct = async () => {
     const updatedCart = {
       ...CartProducts,
-      subTotal: +CartProducts.subTotal + +item.productId.price,
+      subTotal: +CartProducts.subTotal - +item.productId.price,
     }
     setCartProducts(updatedCart)
     handlers.current.increment()
@@ -61,6 +61,14 @@ const CartProduct = (props) => {
     }
   }
   const productDelete = async () => {
+    setCartProducts((prevCartProducts) => ({
+      ...prevCartProducts,
+      items: prevCartProducts.items.filter(
+        (z) => z.productId._id !== item.productId._id
+      ),
+      subTotal: +CartProducts.subTotal - +total,
+    }))
+
     try {
       const res = await cartApi.deleteProduct(item.productId._id)
     } catch (err) {

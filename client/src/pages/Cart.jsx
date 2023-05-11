@@ -14,6 +14,7 @@ import {
   NumberInput,
   // NumberInputHandlers,
   rem,
+  Button,
 } from '@mantine/core'
 
 import { useCart } from '../context/cartctx'
@@ -75,6 +76,8 @@ const jobColors = {
 }
 
 const Cart = () => {
+  const [loading, setloading] = useState(false)
+
   const [CartProducts, setCartProducts] = useCart()
   console.log('CartProducts', CartProducts.items)
   const handlers = useRef()
@@ -116,7 +119,7 @@ const Cart = () => {
             </Table>
           </div>
 
-          <div className="flex w-full ">
+          <div className="flex w-full flex-col">
             <div className="bg-[#F9FAFB] w-full rounded-sm flex flex-col justify-start items-start p-5">
               <p className=" text-gray-800 font-semibold text-xl mb-4">
                 Order Summary
@@ -126,6 +129,10 @@ const Cart = () => {
                 <p>{CartProducts?.subTotal}</p>
               </div>
             </div>
+
+            <Button className="w-full mt-4" type="submit" loading={loading}>
+              Checkout
+            </Button>
           </div>
         </div>
       </Container>
