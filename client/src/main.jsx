@@ -8,6 +8,7 @@ import { Notifications } from '@mantine/notifications'
 
 import { AuthProvider } from './context/auth'
 import { CartProvider } from './context/cartctx'
+import { BagProvider } from './context/BagContext.jsx'
 ReactDOM.createRoot(document.getElementById('root')).render(
   <AuthProvider>
     <BrowserRouter>
@@ -43,7 +44,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         >
           <Notifications />
           <CartProvider>
-            <App />
+            <BagProvider>
+              <App />
+            </BagProvider>
           </CartProvider>
         </MantineProvider>
       </React.StrictMode>
