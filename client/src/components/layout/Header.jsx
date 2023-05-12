@@ -209,7 +209,7 @@ function MainHeader() {
               className="!p-1 !px-[6px] absolute top-[-8px]"
               variant="filled"
             >
-              {bag}
+              {bag ? bag : 0}
             </Badge>
             <ShoppingBag color="#98A2B3" strokeWidth={2} />
           </Link>
