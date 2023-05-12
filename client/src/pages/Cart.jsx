@@ -14,8 +14,10 @@ import {
   NumberInput,
   // NumberInputHandlers,
   rem,
+  Button,
 } from '@mantine/core'
 
+import { useCart } from '../context/cartctx'
 import { Trash } from 'iconoir-react'
 import CartProduct from '../components/common/Cart/CartProduct'
 
@@ -74,7 +76,10 @@ const jobColors = {
 }
 
 const Cart = () => {
-  const [value, setValue] = useState(0)
+  const [loading, setloading] = useState(false)
+
+  const [CartProducts, setCartProducts] = useCart()
+  console.log('CartProducts', CartProducts.items)
   const handlers = useRef()
 
   const items = [
@@ -86,7 +91,9 @@ const Cart = () => {
     </Anchor>
   ))
 
-  const rows = data.map((item) => <CartProduct item={item} key={item.name} />)
+  const rows = CartProducts?.items?.map((item) => (
+    <CartProduct item={item} key={item._id} />
+  ))
 
   return (
     <>
@@ -97,8 +104,8 @@ const Cart = () => {
         <h1 className="text-left font-bold text-zinc-800 mt-6">
           Shopping Cart
         </h1>
-        <div className="flex flex-row justify-between items-center mt-20">
-          <ScrollArea>
+        <div className="flex flex-row justify-between mt-20 gap-7 items-start">
+          <div className="gorw">
             <Table sx={{ minWidth: 800 }} verticalSpacing="sm">
               <thead>
                 <tr>
@@ -110,9 +117,23 @@ const Cart = () => {
               </thead>
               <tbody>{rows}</tbody>
             </Table>
-          </ScrollArea>
+          </div>
 
-          <p>dsd</p>
+          <div className="flex w-full flex-col">
+            <div className="bg-[#F9FAFB] w-full rounded-sm flex flex-col justify-start items-start p-5">
+              <p className=" text-gray-800 font-semibold text-xl mb-4">
+                Order Summary
+              </p>
+              <div className="text-left flex flex-row justify-between w-full">
+                <p className="text-[#475467]">item(s) Total</p>
+                <p>{CartProducts?.subTotal}</p>
+              </div>
+            </div>
+
+            <Button className="w-full mt-4" type="submit" loading={loading}>
+              Checkout
+            </Button>
+          </div>
         </div>
       </Container>
     </>

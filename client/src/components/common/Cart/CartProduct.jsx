@@ -17,37 +17,84 @@ import {
 } from '@mantine/core'
 
 import { Trash } from 'iconoir-react'
-
+import cartApi from '../../../api/cartApi'
+import { useCart } from '../../../context/cartctx'
 const CartProduct = (props) => {
+  const [CartProducts, setCartProducts] = useCart()
+  console.log('cartaaa', CartProducts.subTotal)
   const item = props.item
+  console.log('this', item)
   const handlers = useRef()
-  const [value, setValue] = useState(0)
+  const [value, setValue] = useState(+item.quantity)
   const [total, setTotal] = useState(`${(+item.price * +value).toFixed(2)}`)
 
   useEffect(() => {
     setTotal(`${(+item.price * +value).toFixed(2)}`)
   }, [value])
 
+  const decProduct = async () => {
+    const updatedCart = {
+      ...CartProducts,
+      subTotal: +CartProducts.subTotal - +item.productId.price,
+    }
+    setCartProducts(updatedCart)
+
+    handlers.current.decrement()
+    try {
+      const res = await cartApi.decPrdocutQuantity(item.productId._id)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const incProduct = async () => {
+    const updatedCart = {
+      ...CartProducts,
+      subTotal: +CartProducts.subTotal - +item.productId.price,
+    }
+    setCartProducts(updatedCart)
+    handlers.current.increment()
+    try {
+      const res = await cartApi.incPrdocutQuantity(item.productId._id)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+  const productDelete = async () => {
+    setCartProducts((prevCartProducts) => ({
+      ...prevCartProducts,
+      items: prevCartProducts.items.filter(
+        (z) => z.productId._id !== item.productId._id
+      ),
+      subTotal: +CartProducts.subTotal - +total,
+    }))
+
+    try {
+      const res = await cartApi.deleteProduct(item.productId._id)
+    } catch (err) {
+      console.log(err)
+    }
+  }
   return (
     <>
-      <tr key={item.name}>
+      <tr key={item._id}>
         <td>
           <Group
             spacing="sm"
             className="flex  flex-row content-start items-start"
           >
-            <Avatar size={100} src={item.avatar} radius={10} />
+            <Avatar size={100} src={item.productId.image} radius={10} />
             <Group className="flex flex-col gap-0 items-start justify-between ">
               <div>
                 <Text className="text-left" fz="sm" fw={400} color="#98A2B3">
-                  {item.name}
+                  {item.productId.brand}
                 </Text>
                 <Text fz="md" fw={500}>
-                  {item.name}
+                  {item.productId.name}
                 </Text>
               </div>
               <Text fz="md" fw={500}>
-                ${item.price}
+                ${item.productId.price}
               </Text>
             </Group>
           </Group>
@@ -60,7 +107,7 @@ const CartProduct = (props) => {
               radius={0}
               className="  rounded-tl-lg rounded-bl-lg"
               variant="default"
-              onClick={() => handlers.current.decrement()}
+              onClick={decProduct}
               //   onClick={(e) => handleDecrement(e)}
             >
               –
@@ -71,7 +118,7 @@ const CartProduct = (props) => {
               value={value}
               onChange={(val) => setValue(val)}
               handlersRef={handlers}
-              max={5}
+              max={10}
               min={0}
               step={1}
               radius="0"
@@ -83,7 +130,7 @@ const CartProduct = (props) => {
               radius={0}
               className="  rounded-tr-lg rounded-br-lg"
               variant="default"
-              onClick={() => handlers.current.increment()}
+              onClick={incProduct}
               //   onClick={(e) => handleIncrement(e)}
             >
               +
@@ -99,8 +146,11 @@ const CartProduct = (props) => {
 
         <td>
           <Group spacing={0} position="right">
-            <ActionIcon>
-              <Trash />
+            <ActionIcon
+              onClick={productDelete}
+              className=" transition-all text-gray-400 p-1 hover:bg-red-100 hover:text-red-500"
+            >
+              <Trash width={18} />
             </ActionIcon>
           </Group>
         </td>

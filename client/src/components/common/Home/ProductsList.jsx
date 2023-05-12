@@ -8,16 +8,6 @@ import productApi from '../../../api/productApi'
 const ProductsList = () => {
   const [products, setProducts] = useState([])
 
-  const x = {
-    _id: '12121',
-    name: 'The phoeThe phoeThe phoeThe phoeThe phoeThe phoeThephoeThe phoeThephoeThe phoeThe phoe',
-    category: 'The phoe',
-    price: 1250,
-    image:
-      'https://www.dubaiphone.net/web/image/product.product/1349/image_1024/Apple%20iPhone%2013%20With%20FaceTime%20-%20128GB%2C%204GB%20RAM%20%28Red%29?unique=8223a40',
-  }
-  const items = Array.from({ length: 9 }, (_, i) => x) // create an array of 9 `x` objects
-
   const allProducts = async () => {
     try {
       const res = await productApi.getAllProducts()
@@ -42,7 +32,9 @@ const ProductsList = () => {
       <div className="grid grid-cols-3 gap-6 max-md:grid-cols-2 max-md:gap-3">
         {products.map((item) => (
           <ProductCard
+            item={item}
             key={item._id}
+            id={item._id}
             title={item.name}
             image={item.image}
             price={item.price}

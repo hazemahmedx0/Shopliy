@@ -13,6 +13,11 @@ import {
 
 import { notifications } from '@mantine/notifications'
 
+import BagContext from '../context/BagContext'
+import { useContext, useEffect, useState } from 'react'
+import cartApi from '../api/cartApi'
+import { useCart } from '../context/cartctx'
+import { useAuth } from '../context/auth'
 const useStyles = createStyles((theme) => ({
   card: {
     backgroundColor:
@@ -40,7 +45,102 @@ const useStyles = createStyles((theme) => ({
 }))
 
 const ProductCard = (props) => {
+  const [auth, setAuth] = useAuth()
+  const [Loading, setLoading] = useState(false)
+  const { bag, incBag } = useContext(BagContext)
   const { classes, theme } = useStyles()
+  const [CartProducts, setCartProducts] = useCart()
+
+  const addTocartApi = async () => {
+    try {
+      const res = await cartApi.addProduct(props.id)
+      setLoading(false)
+    } catch (err) {
+      console.log(err)
+      setLoading(false)
+    }
+  }
+
+  const addProductTocard = () => {
+    setLoading(true)
+    auth.user ? addProductToCart(props.item) : null
+    auth.user ? incBag(props.id) : null
+    auth.user ? addTocartApi() : null
+
+    !auth.user ? addProductToCartLocal(props.item) : null
+    notifications.show({
+      title: `📦 ${props.title} added to cart`,
+      message: 'You can review it in the cart section',
+    })
+  }
+
+  const addProductToCartLocal = (product) => {
+    // check if user is registered or not
+    const user = localStorage.getItem('user')
+    let cart
+
+    if (!auth.user) {
+      // if user is not registered, get cart items from local storage
+      const cartItems = localStorage.getItem('cartItems')
+      cart = cartItems ? JSON.parse(cartItems) : { items: [] }
+    } else {
+      // if user is registered, get cart items from database
+      cart = { ...CartProducts }
+    }
+
+    const existingProductIndex = cart.items.findIndex(
+      (item) => item.productId._id === product._id
+    )
+
+    if (existingProductIndex !== -1) {
+      // product already exists in cart, update quantity
+      cart.items[existingProductIndex].quantity += 1
+    } else {
+      // product not in cart, add it
+      const newCartItem = {
+        productId: product,
+        quantity: 1,
+        price: product.price,
+        totalPrice: product.price,
+        _id: Math.random().toString(),
+      }
+      cart.items.push(newCartItem)
+    }
+
+    if (!auth.user) {
+      // if user is not registered, save cart items to local storage
+      localStorage.setItem('cartItems', JSON.stringify(cart))
+    } else {
+      // if user is registered, update cart items in database
+      setCartProducts(cart)
+    }
+    setLoading(false)
+  }
+
+  const addProductToCart = (product) => {
+    const existingProductIndex = CartProducts.items.findIndex(
+      (item) => item.productId._id === product._id
+    )
+
+    if (existingProductIndex !== -1) {
+      // product already exists in cart, update quantity
+      const updatedCart = { ...CartProducts }
+      updatedCart.items[existingProductIndex].quantity += 1
+      setCartProducts(updatedCart)
+    } else {
+      // product not in cart, add it
+      const newCartItem = {
+        productId: product,
+        quantity: 1,
+        price: product.price,
+        totalPrice: product.price,
+        _id: Math.random().toString(),
+      }
+      const updatedCart = { ...CartProducts }
+      updatedCart.items.push(newCartItem)
+      setCartProducts(updatedCart)
+    }
+  }
 
   return (
     <Card
@@ -86,12 +186,8 @@ const ProductCard = (props) => {
         <ActionIcon
           className=" transition-all w-9 h-9 bg-green-100  hover:bg-green-50"
           variant="light"
-          onClick={() =>
-            notifications.show({
-              title: `${props.title} added to cart`,
-              message: 'You can review it in the cart section',
-            })
-          }
+          onClick={addProductTocard}
+          loading={Loading}
         >
           <SimpleCart color="#15BE53" strokeWidth={2} height={20} width={20} />
         </ActionIcon>

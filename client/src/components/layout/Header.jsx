@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAuth } from '../../context/auth'
-
+import { useCart } from '../../context/cartctx'
 import {
   createStyles,
   Header,
@@ -12,15 +12,24 @@ import {
   rem,
   Input,
   Avatar,
+  Badge,
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 
 // Icons
-import { Search, Heart, ShoppingBag, ProfileCircle } from 'iconoir-react'
+import {
+  Search,
+  Heart,
+  ShoppingBag,
+  ProfileCircle,
+  LogOut,
+} from 'iconoir-react'
 
 import { logo } from './../../assets'
-import { Link, useNavigate, useParams } from 'react-router-dom'
-
+import { Link, redirect, useNavigate, useParams } from 'react-router-dom'
+import BagContext from '../../context/BagContext'
+import { useContext } from 'react'
+import authAPI from '../../api/AuthAPI'
 // Static values
 
 const links = [
@@ -127,6 +136,13 @@ const useStyles = createStyles((theme) => ({
 function MainHeader() {
   const navigate = useNavigate()
   const [auth, setAuth] = useAuth()
+  const [CartProducts, setCartProducts] = useCart()
+
+  const { bag, setthebag } = useContext(BagContext)
+  useEffect(() => {
+    setthebag(CartProducts?.items?.length)
+  }, [CartProducts])
+
   const isUser = auth.user
   const curLink = useParams()
   const [opened, { toggle, close }] = useDisclosure(false)
@@ -150,6 +166,16 @@ function MainHeader() {
       {link.label}
     </a>
   ))
+
+  const handleLogout = async () => {
+    try {
+      const res = await authAPI.logout()
+      setAuth({ user: null, token: null })
+      navigate('/')
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <Header height={HEADER_HEIGHT} mb={20} className={classes.root}>
@@ -178,7 +204,13 @@ function MainHeader() {
             }
           />
           <Heart color="#98A2B3" strokeWidth={2} />
-          <Link to="/cart">
+          <Link to="/cart" className="relative">
+            <Badge
+              className="!p-1 !px-[6px] absolute top-[-8px]"
+              variant="filled"
+            >
+              {bag ? bag : 0}
+            </Badge>
             <ShoppingBag color="#98A2B3" strokeWidth={2} />
           </Link>
           <div className="w-[2px] rounded-full h-3 bg-gray-300 mx-2"> </div>
@@ -208,6 +240,11 @@ function MainHeader() {
                         <p className=" font-medium text-sm text-gray-500">
                           {isUser.firstName}
                         </p>
+                        <LogOut
+                          color="#98A2B3"
+                          strokeWidth={2}
+                          onClick={handleLogout}
+                        />
                       </div>
                     </Link>
                   </>
