@@ -172,6 +172,7 @@ function MainHeader() {
       const res = await authAPI.logout()
       setAuth({ user: null, token: null })
       navigate('/')
+      window.location.reload()
     } catch (error) {
       console.log(error)
     }
