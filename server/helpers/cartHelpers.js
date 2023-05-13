@@ -4,7 +4,7 @@ const getCart = async (userId) => {
   try {
     console.log(userId)
     let cart = await Cart.findOne({ userId })
-    if (!cart) cart = await Cart.create()
+    if (!cart) cart = await Cart.create({ userId })
     console.log('got a cart.')
     return cart
   } catch (err) {
