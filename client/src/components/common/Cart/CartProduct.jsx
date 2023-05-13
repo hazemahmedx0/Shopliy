@@ -50,7 +50,7 @@ const CartProduct = (props) => {
   const incProduct = async () => {
     const updatedCart = {
       ...CartProducts,
-      subTotal: +CartProducts.subTotal - +item.productId.price,
+      subTotal: +CartProducts.subTotal + +item.productId.price,
     }
     setCartProducts(updatedCart)
     handlers.current.increment()
