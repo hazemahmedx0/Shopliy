@@ -4,8 +4,9 @@ const authRoutes = require('./routes/authRoutes')
 const cookieParser = require('cookie-parser')
 const userRoutes = require('./routes/userRoutes')
 const productRoutes = require('./routes/productRoutes')
-const cartRoutes = require('./routes/cartRoutes.js')
-const orderRoutes = require('./routes/orderRoutes.js')
+const cartRoutes = require('./routes/cartRoutes')
+const orderRoutes = require('./routes/orderRoutes')
+const categoryRoutes = require('./routes/categoryRoutes')
 const { isAuthenticated, checkUser, isAdmin } = require('./middleware/auth')
 const cors = require('cors')
 require('dotenv').config()
@@ -44,6 +45,7 @@ app.all('*', checkUser) // to get access user info in all views
 
 // Routes
 
+app.use(categoryRoutes)
 app.get('/test-user', isAuthenticated, (req, res) => {
   console.log(res.locals.user)
   const user = res.locals.user

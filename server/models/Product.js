@@ -27,11 +27,11 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  //   category_id: {
-  //     type: mongoose.Schema.Types.ObjectId,
-  //     ref: 'Category',
-  //     required: true,
-  //   },
+  categoryId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Category',
+    required: true,
+  },
   label: {
     type: String,
     enum: ['New Arrival', 'On Sale', 'Bestseller'],
