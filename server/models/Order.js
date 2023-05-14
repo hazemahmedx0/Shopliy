@@ -49,7 +49,21 @@ const orderSchema = new mongoose.Schema({
     min: [0, 'Total cost must be a positive number.'],
   },
   shippingAddress: {
-    type: Object,
+    street: {
+      type: String,
+    },
+    city: {
+      type: String,
+    },
+    state: {
+      type: String,
+    },
+    zip: {
+      type: String,
+    },
+    country: {
+      type: String,
+    },
   },
   createdAt: {
     type: Date,
@@ -61,7 +75,6 @@ orderSchema.pre('save', async function (next) {
   this.totalCost = this.shippingCost + this.subTotal
   next()
 })
-
 
 const Order = mongoose.model('order', orderSchema)
 
