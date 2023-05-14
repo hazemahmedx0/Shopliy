@@ -57,6 +57,12 @@ const orderSchema = new mongoose.Schema({
   },
 })
 
+orderSchema.pre('save', async function (next) {
+  this.totalCost = this.shippingCost + this.subTotal
+  next()
+})
+
+
 const Order = mongoose.model('order', orderSchema)
 
 module.exports = Order
