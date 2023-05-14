@@ -1,11 +1,17 @@
 const { Router } = require('express')
-const userControllers = require('./../controllers/userControllers')
-const { isAuthenticated } = require('./../middleware/auth')
+const {
+  getMe,
+  updateMe,
+  removeUser,
+  getAllUsers,
+} = require('./../controllers/userControllers')
+const { isAuthenticated, isAdmin } = require('./../middleware/auth')
+
 const router = Router()
 
-router.get('/me', isAuthenticated, userControllers.me_get)
-router.put('/updateMe', isAuthenticated, userControllers.me_put)
-router.delete('/users/remove/:id', isAuthenticated, userControllers.remove_user)
-router.get('/users', isAuthenticated, userControllers.get_all_users)
+router.get('/me', isAuthenticated, getMe)
+router.put('/updateMe', isAuthenticated, updateMe)
+router.delete('/users/remove/:id', isAuthenticated, removeUser)
+router.get('/users', isAuthenticated, getAllUsers)
 
 module.exports = router

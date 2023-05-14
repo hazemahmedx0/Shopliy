@@ -8,7 +8,7 @@ const {
   decrementProductQuantity,
   deleteProductFromCart,
   getPopulatedCart,
-} = require('../helpers/cartHelpers')
+} = require('../utils/cartUtils')
 
 const createItem = async (productId) => {
   try {

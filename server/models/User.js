@@ -56,17 +56,16 @@ const userSchema = new mongoose.Schema({
   },
 })
 
-// Hash password before saving it in db
 userSchema.pre('save', async function (next) {
   const salt = await bcrypt.genSalt()
   this.password = await bcrypt.hash(this.password, salt)
   next()
 })
 
-// static method to login user
-// a user defined method defined on the schema that can be called on the model itself, rather than on an instance of the model
+// static method : a user defined method defined on the schema that can be called on the model itself,
+// rather than on an instance of the model
 userSchema.statics.login = async function (email, password) {
-  const user = await this.findOne({ email }) //this = User model
+  const user = await this.findOne({ email }) // this = User model
 
   if (user) {
     const auth = await bcrypt.compare(password, user.password)
@@ -82,4 +81,5 @@ userSchema.statics.login = async function (email, password) {
 }
 
 const User = mongoose.model('user', userSchema)
+
 module.exports = { User }

@@ -45,7 +45,6 @@ app.all('*', checkUser) // to get access user info in all views
 
 // Routes
 
-app.use(categoryRoutes)
 app.get('/test-user', isAuthenticated, (req, res) => {
   console.log(res.locals.user)
   const user = res.locals.user
@@ -57,8 +56,9 @@ app.get('/dashboard', isAdmin, (req, res) => {
   res.status(200).json(user)
 })
 
+app.use(productRoutes)
+app.use(categoryRoutes)
 app.use(authRoutes)
 app.use(userRoutes)
-app.use(productRoutes)
 app.use(cartRoutes)
 app.use(orderRoutes)

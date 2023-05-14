@@ -1,6 +1,6 @@
 const Order = require('../models/Order')
 const Cart = require('../models/Cart')
-const { getPopulatedCart } = require('../helpers/cartHelpers')
+const { getPopulatedCart } = require('../utils/cartUtils')
 
 module.exports.get_user_orders = async (req, res) => {
   const userId = req.params.userId
