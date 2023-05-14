@@ -46,3 +46,40 @@ module.exports.me_put = async (req, res, next) => {
     next(err)
   }
 }
+
+module.exports.remove_user=async(req,res)=>{
+
+  const user_id= await User.findOne({_id:req.params.id})
+  
+  if(user_id){
+  
+    try{
+     await User.deleteOne({_id:req.params.id})
+     res.status(400).json({message:"user deleted successfully."})
+
+    }
+    catch(err){
+      console.log(err)
+      return res.status(500).json({ message: 'Internal server error' })
+    }
+  
+  }
+  else{
+    res.status(404).send("User is not found");
+  }
+}
+
+module.exports.get_all_users = async (req, res) => {
+  try {
+    const users = await User.find()
+    for(let i=0; i<users.length; i++) {
+      delete users[i]._doc.password;
+    }
+    
+    return res.json(users)
+
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({ message: 'Internal server error' })
+  }
+}
