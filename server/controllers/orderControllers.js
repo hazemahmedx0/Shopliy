@@ -1,7 +1,7 @@
 const Order = require('../models/Order')
 const Cart = require('../models/Cart')
 const { getPopulatedCart } = require('../helpers/cartHelpers')
-const { model } = require('mongoose')
+
 module.exports.get_user_orders = async (req, res) => {
   const userId = req.params.userId
   try {
@@ -15,23 +15,28 @@ module.exports.get_user_orders = async (req, res) => {
 module.exports.create_order = async (req, res) => {
   console.log('req', req.body)
   const userId = res.locals.user._id
-  const cart = await Cart.findOne({ userId })
-  const populatedCart = await getPopulatedCart(cart._id)
-  //   res.json(populatedCart)
-
-  const { items, subTotal } = cart
-  console.log(items)
+  const { shippingAddress } = req.body
+  //   console.log(shippingAddress)
   try {
+    const cart = await Cart.findOne({ userId })
+    if (!cart) throw Error('Your cart is empty.')
+    const populatedCart = await getPopulatedCart(cart._id)
+    //   res.json(populatedCart)
+
+    const { items, subTotal } = cart
     const order = await Order.create({
       userId,
       items,
+      shippingAddress,
       subTotal,
     })
+    console.log(order)
     //delete cart
     const ackDeletedCart = await Cart.deleteOne({ userId })
     console.log(ackDeletedCart)
     res.status(201).json(order)
   } catch (err) {
+    if (err.message === 'Your cart is empty.') return res.json(err.message)
     console.log(err)
   }
 }
