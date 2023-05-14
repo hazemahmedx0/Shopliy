@@ -63,11 +63,14 @@ const ProductCard = (props) => {
 
   const addProductTocard = () => {
     setLoading(true)
-    auth.user ? addProductToCart(props.item) : null
-    auth.user ? incBag(props.id) : null
-    auth.user ? addTocartApi() : null
 
-    !auth.user ? addProductToCartLocal(props.item) : null
+    if (auth.user) {
+      addProductToCart(props.item)
+      incBag(props.id)
+      addTocartApi()
+    } else {
+      addProductToCartLocal(props.item)
+    }
     notifications.show({
       title: `📦 ${props.title} added to cart`,
       message: 'You can review it in the cart section',
@@ -75,8 +78,8 @@ const ProductCard = (props) => {
   }
 
   const addProductToCartLocal = (product) => {
+    console.log('sdsds', product)
     // check if user is registered or not
-    const user = localStorage.getItem('user')
     let cart
 
     if (!auth.user) {
@@ -102,7 +105,7 @@ const ProductCard = (props) => {
         quantity: 1,
         price: product.price,
         totalPrice: product.price,
-        _id: Math.random().toString(),
+        _id: product._id,
       }
       cart.items.push(newCartItem)
     }
@@ -118,11 +121,13 @@ const ProductCard = (props) => {
   }
 
   const addProductToCart = (product) => {
-    const existingProductIndex = CartProducts.items.findIndex(
-      (item) => item.productId._id === product._id
-    )
-
-    if (existingProductIndex !== -1) {
+    const existingProductIndex = CartProducts?.items
+      ? CartProducts?.items?.findIndex(
+          (item) => item.productId._id === product._id
+        )
+      : -1
+    console.log('existingProductIndex', existingProductIndex)
+    if (CartProducts?.items || existingProductIndex !== -1) {
       // product already exists in cart, update quantity
       const updatedCart = { ...CartProducts }
       updatedCart.items[existingProductIndex].quantity += 1
@@ -136,7 +141,10 @@ const ProductCard = (props) => {
         totalPrice: product.price,
         _id: Math.random().toString(),
       }
+      console.log('newCartItem', newCartItem)
+      console.log('CartProducts', CartProducts)
       const updatedCart = { ...CartProducts }
+      updatedCart.items = updatedCart.items || [] // add items array if it doesn't exist
       updatedCart.items.push(newCartItem)
       setCartProducts(updatedCart)
     }

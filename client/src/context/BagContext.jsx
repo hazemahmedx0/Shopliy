@@ -14,7 +14,7 @@ export function BagProvider({ children }) {
   const incBag = (id) => {
     console.log('iddee', id)
     console.log(CartProducts)
-    if (!CartProducts.items.some((item) => item.productId._id === id)) {
+    if (!CartProducts?.items?.some((item) => item.productId._id === id)) {
       setBag(bag + 1)
     }
   }
