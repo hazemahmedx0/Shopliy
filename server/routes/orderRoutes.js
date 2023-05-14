@@ -12,7 +12,7 @@ router.delete('/orders/delete/:id', orderControllers.delete_order)
 router.delete('/orders/delete/:id', orderControllers.delete_order)
 router.get('/myorders', orderControllers.get_my_orders)
 router.get('/myorders/:id', orderControllers.get_myorder_by_id)
-router.delete('/myorders/deleteAll', async (req, res) => {
+router.delete('/orders/deleteAll', async (req, res) => {
   const orders = await Order.deleteMany()
   res.json(orders)
 })

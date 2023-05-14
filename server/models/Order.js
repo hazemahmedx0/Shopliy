@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const { User } = require('./User')
 
 const orderSchema = new mongoose.Schema({
   userId: {
@@ -50,21 +49,7 @@ const orderSchema = new mongoose.Schema({
     min: [0, 'Total cost must be a positive number.'],
   },
   shippingAddress: {
-    street: {
-      type: String,
-    },
-    city: {
-      type: String,
-    },
-    state: {
-      type: String,
-    },
-    zip: {
-      type: String,
-    },
-    country: {
-      type: String,
-    },
+    type: Object,
   },
   createdAt: {
     type: Date,
@@ -72,25 +57,6 @@ const orderSchema = new mongoose.Schema({
   },
 })
 
-orderSchema.pre('save', async function (next) {
-  let isEmpty = Object.values(this.shippingAddress).every(
-    (value) => value == null || value == undefined
-  )
-
-  if (isEmpty) {
-    try {
-      const user = await User.findById({ _id: this.userId })
-      if (user) {
-        this.shippingAddress = user.shippingAddress
-        this.totalCost = this.subTotal + this.shippingCost
-      }
-    } catch (err) {
-      console.log(err)
-      return next(err)
-    }
-  }
-  next()
-})
 const Order = mongoose.model('order', orderSchema)
 
 module.exports = Order
