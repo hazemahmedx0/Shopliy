@@ -11,7 +11,7 @@ const router = Router()
 
 router.get('/me', isAuthenticated, getMe)
 router.put('/updateMe', isAuthenticated, updateMe)
-router.delete('/users/remove/:id', isAuthenticated, removeUser)
-router.get('/users', isAuthenticated, getAllUsers)
+router.delete('/users/remove/:id', isAdmin, removeUser)
+router.get('/users', isAdmin, getAllUsers)
 
 module.exports = router
