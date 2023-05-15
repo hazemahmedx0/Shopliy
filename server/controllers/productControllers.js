@@ -1,5 +1,5 @@
 const { validateProductInput } = require('../validators/productValidators')
-const Product = require('./../models/Product')
+const { Product } = require('./../models/Product')
 
 const getAllProducts = async (req, res) => {
   try {
@@ -114,7 +114,7 @@ const deleteProduct = async (req, res) => {
   if (product) {
     try {
       await Product.deleteOne({ _id: id })
-      res.status(204)
+      res.status(204).json({ message: 'Product deleted successfully.' })
     } catch (err) {
       console.log(err)
       return res.status(500).json({ message: 'Internal server error' })
