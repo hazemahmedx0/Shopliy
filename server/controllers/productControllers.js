@@ -85,7 +85,7 @@ const updateProduct = async (req, res) => {
         updatedProductFields[key] === '' ||
         updatedProductFields[key] === undefined
       ) {
-        delete updatedProductFields[key]
+        updatedProductFields[key] = product[key]
       }
     })
     try {
