@@ -37,12 +37,7 @@ const cartSchema = new mongoose.Schema({
   },
 })
 
-// cartSchema.virtual('totalPrice').get(function () {
-//   return this.items.reduce(
-//     (total, item) => total + item.price * item.quantity,
-//     0
-//   )
-// })
+cartSchema.set('populate', { path: 'items.productId' })
 
 const Cart = mongoose.model('cart', cartSchema)
 

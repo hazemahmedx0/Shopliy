@@ -1,3 +1,4 @@
+const { validateProductInput } = require('../validators/productValidators')
 const Product = require('./../models/Product')
 
 const getAllProducts = async (req, res) => {
@@ -85,15 +86,19 @@ const updateProduct = async (req, res) => {
         updatedProductFields[key] === '' ||
         updatedProductFields[key] === undefined
       ) {
-        updatedProductFields[key] = product[key]
+        delete updatedProductFields[key]
       }
     })
     try {
-      const updatedProduct = await Product.updateOne(
-        { _id: id },
-        updatedProductFields
-      )
-      res.status(200).json(updatedProduct)
+      const result = await Product.updateOne({ _id: id }, updatedProductFields)
+      if (!result.acknowledged) {
+        return res.status(500).json({ message: 'Internal server error.' })
+      }
+
+      const updatedProduct = await Product.findById(id)
+      res
+        .status(200)
+        .json({ message: 'Product updated successfully.', updatedProduct })
     } catch (err) {
       console.log(err)
       return res.status(500).json({ message: 'Internal server error' })

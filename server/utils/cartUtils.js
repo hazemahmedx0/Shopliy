@@ -1,4 +1,20 @@
 const Cart = require('../models/Cart')
+const Product = require('../models/Product')
+
+const createItem = async (productId) => {
+  try {
+    const product = await Product.findOne({ _id: productId })
+    const item = {
+      productId,
+      quantity: 1,
+      price: product.price,
+    }
+    console.log('created item successfully.')
+    return item
+  } catch (err) {
+    console.log('create item error', err)
+  }
+}
 
 const getCart = async (userId) => {
   try {
@@ -12,7 +28,8 @@ const getCart = async (userId) => {
     return Error('internal Server Error')
   }
 }
-const getPopulatedCart = async (cartId) => {
+
+const getCartWithProductDetails = async (cartId) => {
   const cartWithProductInfo = await Cart.find({ _id: cartId }).populate(
     'items.productId'
   )
@@ -22,7 +39,6 @@ const getPopulatedCart = async (cartId) => {
 const updateSubTotal = (cart) => {
   console.log('total price updated.')
   cart.subTotal = cart.items.reduce((total, cartItem) => {
-    // console.log(cartItem.totalPrice)
     return total + cartItem.totalPrice
   }, 0)
 }
@@ -32,6 +48,7 @@ const updateItemsPrice = (cart) => {
     item.totalPrice = item.price * item.quantity
   })
 }
+
 const saveUpdatedCart = async (cart) => {
   try {
     const savedCart = await cart.save()
@@ -39,25 +56,27 @@ const saveUpdatedCart = async (cart) => {
     console.log('Product saved:', savedCart)
   }
 }
+
 const getItemIndexInCart = (cart, productId) => {
   return cart.items.findIndex(
     (cartItem) => cartItem.productId.toString() === productId.toString()
   )
 }
+
 const addNewItem = (cart, item) => {
   cart.items.push(item)
   console.log('item pushed in cart.')
 }
+
 const updateProductQuantity = (cart, existingItemIndex, item) => {
   cart.items[existingItemIndex].quantity += item.quantity
   console.log('item quantity updated.')
 }
 
 //////////////////////////////////////////////////////////////////////////////////
-//              Cart main Helper Functions                                    //
+//              Cart main Utility Functions                                    //
 //////////////////////////////////////////////////////////////////////////////////
 
-// if product is added to cart => inc it, else add it
 const updateCartItems = async (cart, item) => {
   // push new item | update quantity of exisiting item
 
@@ -78,26 +97,27 @@ const updateCartItems = async (cart, item) => {
     return err
   }
 }
-const decrementProductQuantity = async (cart, item) => {
+const decrementQuantity = async (cart, item) => {
   // err if no product item | delete this item | dec quantity of exisiting item
 
   try {
     const existingItemIndex = getItemIndexInCart(cart, item.productId)
 
     if (existingItemIndex === -1) {
-      console.log('product number can not be negative in cart.')
+      console.log('product number can not be negative.')
       throw Error('This product is already removed.')
     } else if (cart.items[existingItemIndex].quantity === 1) {
       cart.items = cart.items.filter(
         (curr_item) =>
           curr_item.productId.toString() !== item.productId.toString()
       )
-      console.log('deleted product successfully.')
+      console.log('Product deleted successfully.')
     } else {
       item.quantity = -1
       updateProductQuantity(cart, existingItemIndex, item)
       console.log('item quantity decremented successfully.')
     }
+
     updateItemsPrice(cart)
     updateSubTotal(cart)
 
@@ -108,27 +128,25 @@ const decrementProductQuantity = async (cart, item) => {
   }
 }
 
-// wrapper for readability - if product is added to cart => inc it, else add it
-const incrementProductQuantity = async (cart, userId, item) => {
+const incrementQuantity = async (cart, userId, item) => {
   return await updateCartItems(cart, userId, item)
 }
 
-const deleteProductFromCart = async (cart, item) => {
+const deleteProduct = async (cart, item) => {
   try {
     const existingItemIndex = getItemIndexInCart(cart, item.productId)
 
     if (existingItemIndex === -1) {
-      console.log('product number can not be negative in cart.')
+      console.log('Product number can not be negative.')
       throw Error('This product is already removed.')
     } else {
-      //   delete cart.items[existingItemIndex]
       cart.items = cart.items.filter(
         (curr_item) =>
           curr_item.productId.toString() !== item.productId.toString()
       )
-
-      console.log('item deleted successfully.')
+      console.log('Product deleted successfully.')
     }
+
     updateItemsPrice(cart)
     updateSubTotal(cart)
 
@@ -139,10 +157,11 @@ const deleteProductFromCart = async (cart, item) => {
   }
 }
 module.exports = {
+  createItem,
   getCart,
   updateCartItems,
-  incrementProductQuantity,
-  decrementProductQuantity,
-  deleteProductFromCart,
-  getPopulatedCart,
+  incrementQuantity,
+  decrementQuantity,
+  deleteProduct,
+  getCartWithProductDetails,
 }
