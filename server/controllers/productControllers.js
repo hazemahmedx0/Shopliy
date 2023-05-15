@@ -1,24 +1,37 @@
 const Product = require('./../models/Product')
 
-module.exports.get_avaialable_products = async (req, res) => {
+const getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find({ availability: true })
+    const products = await Product.find()
     const productsNo = products.length
 
-    console.log('Available products:', products)
     return res.json({
       productsNo,
       products,
     })
-  } catch (error) {
-    console.log(error)
+  } catch (err) {
+    console.log(err)
     return res.status(500).json({ message: 'Internal server error' })
   }
 }
 
-module.exports.get_product = async (req, res) => {
+const getAvaialableProducts = async (req, res) => {
+  try {
+    const products = await Product.find({ availability: true })
+    const productsNo = products.length
+
+    return res.json({
+      productsNo,
+      products,
+    })
+  } catch (err) {
+    console.log(err)
+    return res.status(500).json({ message: 'Internal server error' })
+  }
+}
+
+const getProductById = async (req, res) => {
   const id = req.params.id
-  console.log(id)
   try {
     const product = await Product.findOne({ _id: id })
     if (product) {
@@ -26,14 +39,13 @@ module.exports.get_product = async (req, res) => {
     } else {
       return res.status(404).json({ message: 'Product not found' })
     }
-  } catch (error) {
-    console.log(error)
+  } catch (err) {
+    console.log(err)
     return res.status(500).json({ message: 'Internal server error' })
   }
 }
 
-module.exports.add_product = async (req, res) => {
-  console.log(req.body)
+const addProduct = async (req, res) => {
   const {
     name,
     description,
@@ -62,46 +74,56 @@ module.exports.add_product = async (req, res) => {
   }
 }
 
-module.exports.update_product = async (req, res) => {
-  const product_id = await Product.findOne({ _id: req.params.id })
+const updateProduct = async (req, res) => {
+  const id = req.params.id
+  const product = await Product.findOne({ _id: id })
 
-  if (product_id) {
-    const product = {
-      name: req.body.name,
-      description: req.body.description,
-      price: req.body.price,
-      image: req.body.image,
-      availability: req.body.availability,
-      categoryId: req.body.categoryId,
-      brand: req.body.brand,
-      label: req.body.lable,
-    }
+  if (product) {
+    let updatedProductFields = req.body
+    Object.keys(updatedProductFields).forEach((key) => {
+      if (
+        updatedProductFields[key] === '' ||
+        updatedProductFields[key] === undefined
+      ) {
+        delete updatedProductFields[key]
+      }
+    })
     try {
-      const updateproduct = await Product.updateOne(
-        { _id: req.params.id },
-        product
+      const updatedProduct = await Product.updateOne(
+        { _id: id },
+        updatedProductFields
       )
-      res.status(200).json(updateproduct)
+      res.status(200).json(updatedProduct)
     } catch (err) {
       console.log(err)
       return res.status(500).json({ message: 'Internal server error' })
     }
   } else {
-    res.status(404).send('The product is not found')
+    res.status(404).send({ message: 'Product not found' })
   }
 }
 
-module.exports.delete_product = async (req, res) => {
-  const product_id = await Product.findOne({ _id: req.params.id })
-  if (product_id) {
+const deleteProduct = async (req, res) => {
+  const id = req.params.id
+  const product = await Product.findOne({ _id: id })
+  if (product) {
     try {
-      await Product.deleteOne({ _id: req.params.id })
+      await Product.deleteOne({ _id: id })
       res.status(204)
     } catch (err) {
       console.log(err)
       return res.status(500).json({ message: 'Internal server error' })
     }
   } else {
-    res.status(404).send('The product is not found')
+    res.status(404).send({ message: 'Product not found' })
   }
+}
+
+module.exports = {
+  getAllProducts,
+  getAvaialableProducts,
+  getProductById,
+  addProduct,
+  updateProduct,
+  deleteProduct,
 }

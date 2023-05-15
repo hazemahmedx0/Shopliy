@@ -1,5 +1,5 @@
-const { handleLoginError } = require('../middleware/validate/loginValidators')
-const { checkUniqueness } = require('../middleware/validate/signupValidators')
+const { handleLoginError } = require('../validators/loginValidators')
+const { checkUniqueness } = require('../validators/signupValidators')
 const { User } = require('./../models/User')
 const jwt = require('jsonwebtoken')
 

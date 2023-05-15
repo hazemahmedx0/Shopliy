@@ -49,7 +49,7 @@ const removeUser = async (req, res) => {
   if (userId) {
     try {
       await User.deleteOne({ _id: id })
-      res.status(400).json({ message: 'User deleted successfully.' })
+      res.status(204)
     } catch (err) {
       console.log(err)
       return res.status(500).json({ message: 'Internal server error.' })

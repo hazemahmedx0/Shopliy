@@ -3,21 +3,25 @@ const mongoose = require('mongoose')
 const productSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, 'Product name is required.'],
+    required: true,
   },
   description: {
     type: String,
-    required: [true, 'product description is required.'],
+    required: true,
   },
   price: {
     type: Number,
-    required: [true, 'Price is required.'],
-    min: [0, 'Price must be a positive number.'],
+    required: true,
+    min: 0,
   },
   image: {
-    type: String,
-    required: [true, 'product image is required.'],
-    max: [4, 'Maximum number of product images reached.'],
+    type: [String],
+    required: true,
+    validate: {
+      validator: function (v) {
+        return v.length <= 4
+      },
+    },
   },
   availability: {
     type: Boolean,
@@ -36,10 +40,6 @@ const productSchema = new mongoose.Schema({
     type: String,
     enum: ['New Arrival', 'On Sale', 'Bestseller'],
   },
-  //   purchased: {
-  //     type: Number,
-  //     default: 0,
-  //   },
 })
 
 const Product = mongoose.model('product', productSchema)
