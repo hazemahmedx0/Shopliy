@@ -10,12 +10,10 @@ const { isAuthenticated } = require('../middleware/auth')
 
 const router = Router()
 
-router.use(isAuthenticated)
-
-router.get('/cart', getMyCart)
-router.post('/cart/add/:productId', addProductToCart)
-router.put('/cart/inc/:productId', incProductQuantity)
-router.put('/cart/dec/:productId', decProductQuantity)
-router.delete('/cart/delete/:productId', deleteProductFromCart)
+router.get('/cart', isAuthenticated, getMyCart)
+router.post('/cart/add/:productId', isAuthenticated, addProductToCart)
+router.put('/cart/inc/:productId', isAuthenticated, incProductQuantity)
+router.put('/cart/dec/:productId', isAuthenticated, decProductQuantity)
+router.delete('/cart/delete/:productId', isAuthenticated, deleteProductFromCart)
 
 module.exports = router

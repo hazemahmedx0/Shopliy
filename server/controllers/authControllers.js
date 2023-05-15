@@ -13,14 +13,6 @@ const signup = async (req, res) => {
     const user = await User.create({ firstName, lastName, email, password })
     console.log(user._id)
 
-    // create token
-    const payload = { id: user._id, isAdmin: user.isAdmin }
-    const token = jwt.sign(payload, process.env.SECRET_KEY, {
-      expiresIn: maxAge,
-    })
-
-    res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 })
-
     delete user._doc.password
 
     res.status(200).json(user)

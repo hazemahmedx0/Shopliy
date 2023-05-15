@@ -7,19 +7,19 @@ const {
   getMyorderById,
   getUserOrderById,
 } = require('./../controllers/orderControllers')
-const { isAuthenticated } = require('../middleware/auth')
+const { isAuthenticated, isAdmin } = require('../middleware/auth')
 const Order = require('./../models/Order')
 
 const router = Router()
 
-router.use(isAuthenticated)
+// user routes
+router.get('/myorders', isAuthenticated, getMyOrders)
+router.get('/myorders/:id', isAuthenticated, getMyorderById)
+router.post('/orders/add', isAuthenticated, createOrder)
 
-router.get('/myorders', getMyOrders)
-router.get('/myorders/:id', getMyorderById)
-router.post('/orders/add', createOrder)
-
-router.get('/orders/:id', getUserOrderById)
-router.get('/orders/user/:userId', getUserOrders)
-router.delete('/orders/delete/:id', deleteOrder)
+// admin routes
+router.get('/orders/:id', isAdmin, getUserOrderById)
+router.get('/orders/user/:userId', isAdmin, getUserOrders)
+router.delete('/orders/delete/:id', isAdmin, deleteOrder)
 
 module.exports = router

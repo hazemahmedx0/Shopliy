@@ -105,7 +105,7 @@ const decrementQuantity = async (cart, item) => {
 
     if (existingItemIndex === -1) {
       console.log('product number can not be negative.')
-      throw Error('This product is already removed.')
+      throw new Error('This product is already removed.')
     } else if (cart.items[existingItemIndex].quantity === 1) {
       cart.items = cart.items.filter(
         (curr_item) =>
@@ -138,7 +138,7 @@ const deleteProduct = async (cart, item) => {
 
     if (existingItemIndex === -1) {
       console.log('Product number can not be negative.')
-      throw Error('This product is already removed.')
+      throw new Error('This product is already removed.')
     } else {
       cart.items = cart.items.filter(
         (curr_item) =>

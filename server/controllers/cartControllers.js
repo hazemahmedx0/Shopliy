@@ -1,6 +1,3 @@
-const { Cart } = require('./../models/Cart')
-const { Product } = require('./../models/Product')
-
 const {
   createItem,
   getCart,
@@ -68,6 +65,8 @@ const decProductQuantity = async (req, res) => {
     cart = await getCartWithProductDetails(cart._id)
     res.json({ message: 'item decremented successfully', cart })
   } catch (err) {
+    if (err.message === 'This product is already removed.')
+      return res.status(404).json({ message: err.message })
     console.log(err)
     return res.status(500).json({ message: 'Internal server error' })
   }
@@ -85,7 +84,9 @@ const deleteProductFromCart = async (req, res) => {
 
     res.json({ message: 'item deleted successfully', cart })
   } catch (err) {
-    console.log(err.message)
+    if (err.message === 'This product is already removed.')
+      return res.status(404).json({ message: err.message })
+    console.log(err)
     return res.status(500).json({ message: 'Internal server error' })
   }
 }

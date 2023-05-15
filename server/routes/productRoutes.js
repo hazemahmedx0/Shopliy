@@ -12,13 +12,21 @@ const {
   validateExistingProductInput,
 } = require('../validators/productValidators')
 
+const { isAdmin } = require('../middleware/auth')
 const router = Router()
 
-router.get('/allProducts', getAllProducts)
+// guest routes
 router.get('/availableProducts', getAvaialableProducts)
 router.get('/products/:id', getProductById)
-router.post('/products/add', validateNewProductInput, addProduct)
-router.put('/products/update/:id', validateExistingProductInput, updateProduct)
-router.delete('/products/delete/:id', deleteProduct)
+
+// admin routes
+router.get('/allProducts', isAdmin, getAllProducts)
+router.post('/products/add', [isAdmin, validateNewProductInput], addProduct)
+router.put(
+  '/products/update/:id',
+  [isAdmin, validateExistingProductInput],
+  updateProduct
+)
+router.delete('/products/delete/:id', isAdmin, deleteProduct)
 
 module.exports = router
