@@ -1,5 +1,5 @@
-const { handleLoginError } = require('../middleware/validate/loginValidators')
-const { checkUniqueness } = require('../middleware/validate/signupValidators')
+const { handleLoginError } = require('../validators/loginValidators')
+const { checkUniqueness } = require('../validators/signupValidators')
 const { User } = require('./../models/User')
 const jwt = require('jsonwebtoken')
 
@@ -12,14 +12,6 @@ const signup = async (req, res) => {
     // create user
     const user = await User.create({ firstName, lastName, email, password })
     console.log(user._id)
-
-    // create token
-    const payload = { id: user._id, isAdmin: user.isAdmin }
-    const token = jwt.sign(payload, process.env.SECRET_KEY, {
-      expiresIn: maxAge,
-    })
-
-    res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 })
 
     delete user._doc.password
 

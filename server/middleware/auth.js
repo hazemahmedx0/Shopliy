@@ -49,7 +49,7 @@ const isAdmin = async (req, res, next) => {
     isTokenFound(token)
     const { isAdmin } = jwt.verify(token, process.env.SECRET_KEY)
     if (isAdmin) {
-      next()
+      return next()
     } else {
       throw Error('not authorized')
     }

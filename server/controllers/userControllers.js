@@ -13,29 +13,33 @@ const updateMe = async (req, res, next) => {
 
     const user = await User.findById(id)
 
-    const defaultPhoto =
-      'https://riatarealty.com/wp-content/uploads/2020/03/generic-person-silhouette-32.png'
+    if (user) {
+      let updatedUserFields = req.body
 
-    let { firstName, lastName, photo, shippingAddress } = req.body
+      Object.keys(updatedUserFields).forEach((key) => {
+        if (
+          updatedUserFields[key] === '' ||
+          updatedUserFields[key] === undefined
+        ) {
+          delete updatedUserFields[key]
+        }
+      })
 
-    photo = photo || defaultPhoto
-    firstName = firstName || user.firstName
-    lastName = lastName || user.lastName
+      const result = await User.updateOne({ _id: user._id }, updatedUserFields)
+      if (!result.acknowledged) {
+        return res.status(500).json({ message: 'Internal server error.' })
+      }
 
-    const result = await User.updateOne(
-      { _id: user._id },
-      { $set: { firstName, lastName, shippingAddress, photo } }
-    )
-    if (!result.acknowledged)
-      return res.status(500).json({ message: 'Internal server error.' })
+      const updatedUser = await User.findById(id)
+      delete updatedUser._doc.password
 
-    const updatedUser = await User.findById(id)
-    delete updatedUser._doc.password
-
-    res.json({
-      message: 'Profile updated successfully.',
-      user: updatedUser,
-    })
+      res.json({
+        message: 'Profile updated successfully.',
+        user: updatedUser,
+      })
+    } else {
+      res.status(404).send({ message: 'Product not found' })
+    }
   } catch (err) {
     console.log('err updateMe', err)
     return res.status(500).json({ message: 'Internal server error.' })
@@ -44,12 +48,15 @@ const updateMe = async (req, res, next) => {
 
 const removeUser = async (req, res) => {
   const id = req.params.id
-  const userId = await User.findOne({ _id: id })
+  const user = await User.findOne({ _id: id })
 
-  if (userId) {
+  if (user) {
     try {
-      await User.deleteOne({ _id: id })
-      res.status(400).json({ message: 'User deleted successfully.' })
+      const result = await User.deleteOne({ _id: id })
+      if (!result.acknowledged) {
+        return res.status(500).json({ message: 'Failed to delete User' })
+      }
+      res.status(204).json({ message: 'Order deleted successfully.' })
     } catch (err) {
       console.log(err)
       return res.status(500).json({ message: 'Internal server error.' })

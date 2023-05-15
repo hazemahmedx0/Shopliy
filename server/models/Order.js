@@ -78,4 +78,4 @@ orderSchema.pre('save', async function (next) {
 
 const Order = mongoose.model('order', orderSchema)
 
-module.exports = Order
+module.exports = { Order }

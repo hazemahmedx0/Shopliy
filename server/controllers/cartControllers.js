@@ -1,30 +1,27 @@
-const Cart = require('./../models/Cart')
-const Product = require('./../models/Product')
-
 const {
+  createItem,
   getCart,
   updateCartItems,
-  incrementProductQuantity,
-  decrementProductQuantity,
-  deleteProductFromCart,
-  getPopulatedCart,
+  incrementQuantity,
+  decrementQuantity,
+  deleteProduct,
+  getCartWithProductDetails,
 } = require('../utils/cartUtils')
 
-const createItem = async (productId) => {
+const getMyCart = async (req, res) => {
+  const userId = res.locals.user._id
   try {
-    const product = await Product.findOne({ _id: productId })
-    const item = {
-      productId,
-      quantity: 1,
-      price: product.price,
-    }
-    console.log('created item successfully.')
-    return item
+    let cart = await getCart(userId)
+    cart = await getCartWithProductDetails(cart._id)
+
+    res.json(cart)
   } catch (err) {
-    console.log('create item error', err)
+    console.log(err)
+    return res.status(500).json({ message: 'Internal server error' })
   }
 }
-module.exports.add_item_to_cart = async (req, res) => {
+
+const addProductToCart = async (req, res) => {
   const productId = req.params.productId
   const userId = res.locals.user._id
   console.log(productId, userId)
@@ -32,70 +29,72 @@ module.exports.add_item_to_cart = async (req, res) => {
     const item = await createItem(productId)
     let cart = await getCart(userId)
     cart = await updateCartItems(cart, item)
-    cart = await getPopulatedCart(cart._id)
+    cart = await getCartWithProductDetails(cart._id)
 
     res.json({ message: 'added Item successfully', cart })
   } catch (err) {
-    return err
+    console.log(err)
+    return res.status(500).json({ message: 'Internal server error' })
   }
 }
 
-module.exports.inc_product_quantity = async (req, res) => {
+const incProductQuantity = async (req, res) => {
   const productId = req.params.productId
   const userId = res.locals.user._id
   console.log(productId, userId)
   try {
     const item = await createItem(productId)
     let cart = await getCart(userId)
-    cart = await incrementProductQuantity(cart, item)
-    cart = await getPopulatedCart(cart._id)
+    cart = await incrementQuantity(cart, item)
+    cart = await getCartWithProductDetails(cart._id)
 
     res.json({ message: 'item incremented successfully', cart })
   } catch (err) {
-    return err
+    console.log(err)
+    return res.status(500).json({ message: 'Internal server error' })
   }
 }
-module.exports.dec_product_quantity = async (req, res) => {
+const decProductQuantity = async (req, res) => {
   const productId = req.params.productId
   const userId = res.locals.user._id
   console.log(productId, userId)
   try {
     const item = await createItem(productId)
     let cart = await getCart(userId)
-    cart = await decrementProductQuantity(cart, item)
-    cart = await getPopulatedCart(cart._id)
+    cart = await decrementQuantity(cart, item)
+    cart = await getCartWithProductDetails(cart._id)
     res.json({ message: 'item decremented successfully', cart })
   } catch (err) {
-    res.json({ message: err.message })
-  }
-}
-
-module.exports.get_cart = async (req, res) => {
-  const userId = res.locals.user._id
-  try {
-    let cart = await getCart(userId)
-    cart = await getPopulatedCart(cart._id)
-
-    res.json(cart)
-  } catch (err) {
+    if (err.message === 'This product is already removed.')
+      return res.status(404).json({ message: err.message })
     console.log(err)
-    res.json({ message: err.message })
+    return res.status(500).json({ message: 'Internal server error' })
   }
 }
 
-module.exports.delete_product_from_cart = async (req, res) => {
+const deleteProductFromCart = async (req, res) => {
   const productId = req.params.productId
   const userId = res.locals.user._id
   console.log(productId, userId)
   try {
     const item = await createItem(productId)
     let cart = await getCart(userId)
-    cart = await deleteProductFromCart(cart, item)
-    cart = await getPopulatedCart(cart._id)
+    cart = await deleteProduct(cart, item)
+    cart = await getCartWithProductDetails(cart._id)
 
     res.json({ message: 'item deleted successfully', cart })
   } catch (err) {
-    console.log(err.message)
-    res.json({ message: err.message })
+    if (err.message === 'This product is already removed.')
+      return res.status(404).json({ message: err.message })
+    console.log(err)
+    return res.status(500).json({ message: 'Internal server error' })
   }
+}
+
+module.exports = {
+  getMyCart,
+  addProductToCart,
+  incProductQuantity,
+  decProductQuantity,
+  deleteProductFromCart,
 }

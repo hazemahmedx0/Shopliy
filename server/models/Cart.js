@@ -37,13 +37,5 @@ const cartSchema = new mongoose.Schema({
   },
 })
 
-// cartSchema.virtual('totalPrice').get(function () {
-//   return this.items.reduce(
-//     (total, item) => total + item.price * item.quantity,
-//     0
-//   )
-// })
-
 const Cart = mongoose.model('cart', cartSchema)
-
-module.exports = Cart
+module.exports = { Cart }

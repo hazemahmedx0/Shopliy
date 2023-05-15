@@ -1,12 +1,32 @@
 const { Router } = require('express')
-const productControllers = require('./../controllers/productControllers')
+const {
+  getAllProducts,
+  getAvaialableProducts,
+  getProductById,
+  addProduct,
+  updateProduct,
+  deleteProduct,
+} = require('./../controllers/productControllers')
+const {
+  validateNewProductInput,
+  validateExistingProductInput,
+} = require('../validators/productValidators')
 
+const { isAdmin } = require('../middleware/auth')
 const router = Router()
 
-router.get('/products', productControllers.get_avaialable_products)
-router.get('/products/:id', productControllers.get_product)
-router.post('/products/add', productControllers.add_product)
-router.put('/products/update/:id', productControllers.update_product)
-router.delete('/products/delete/:id', productControllers.delete_product)
+// guest routes
+router.get('/availableProducts', getAvaialableProducts)
+router.get('/products/:id', getProductById)
+
+// admin routes
+router.get('/allProducts', isAdmin, getAllProducts)
+router.post('/products/add', [isAdmin, validateNewProductInput], addProduct)
+router.put(
+  '/products/update/:id',
+  [isAdmin, validateExistingProductInput],
+  updateProduct
+)
+router.delete('/products/delete/:id', isAdmin, deleteProduct)
 
 module.exports = router

@@ -1,9 +1,7 @@
 const { Router } = require('express')
 const { signup, login, logout } = require('./../controllers/authControllers')
-const {
-  validateSignupInput,
-} = require('../middleware/validate/signupValidators')
-const { validateLoginInput } = require('../middleware/validate/loginValidators')
+const { validateSignupInput } = require('./../validators/signupValidators')
+const { validateLoginInput } = require('./../validators/loginValidators')
 
 const router = Router()
 

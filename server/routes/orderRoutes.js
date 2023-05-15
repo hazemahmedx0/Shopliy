@@ -1,21 +1,25 @@
 const { Router } = require('express')
-const orderControllers = require('./../controllers/orderControllers')
-const { isAuthenticated } = require('../middleware/auth')
+const {
+  getUserOrders,
+  createOrder,
+  deleteOrder,
+  getMyOrders,
+  getMyorderById,
+  getUserOrderById,
+} = require('./../controllers/orderControllers')
+const { isAuthenticated, isAdmin } = require('../middleware/auth')
 const Order = require('./../models/Order')
 
 const router = Router()
 
-router.use(isAuthenticated)
+// user routes
+router.get('/myorders', isAuthenticated, getMyOrders)
+router.get('/myorders/:id', isAuthenticated, getMyorderById)
+router.post('/orders/add', isAuthenticated, createOrder)
 
-router.get('/orders/:userId', orderControllers.get_user_orders)
-router.post('/orders/add', orderControllers.create_order)
-router.delete('/orders/delete/:id', orderControllers.delete_order)
-router.delete('/orders/delete/:id', orderControllers.delete_order)
-router.get('/myorders', orderControllers.get_my_orders)
-router.get('/myorders/:id', orderControllers.get_myorder_by_id)
-router.delete('/orders/deleteAll', async (req, res) => {
-  const orders = await Order.deleteMany()
-  res.json(orders)
-})
+// admin routes
+router.get('/orders/:id', isAdmin, getUserOrderById)
+router.get('/orders/user/:userId', isAdmin, getUserOrders)
+router.delete('/orders/delete/:id', isAdmin, deleteOrder)
 
 module.exports = router

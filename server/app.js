@@ -43,22 +43,14 @@ mongoose
 
 app.all('*', checkUser) // to get access user info in all views
 
-// Routes
+// app.get('/dashboard', isAdmin, (req, res) => {
+//   const user = res.locals.user
+//   res.status(200).json(user)
+// })
 
-app.get('/test-user', isAuthenticated, (req, res) => {
-  console.log(res.locals.user)
-  const user = res.locals.user
-  res.status(200).json(user)
-})
-
-app.get('/dashboard', isAdmin, (req, res) => {
-  const user = res.locals.user
-  res.status(200).json(user)
-})
-
-app.use(productRoutes)
-app.use(categoryRoutes)
 app.use(authRoutes)
 app.use(userRoutes)
+app.use(categoryRoutes)
+app.use(productRoutes)
 app.use(cartRoutes)
 app.use(orderRoutes)
