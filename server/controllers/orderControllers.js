@@ -78,10 +78,24 @@ const getMyOrders = async (req, res) => {
 }
 const getMyorderById = async (req, res) => {
   const id = req.params.id
+  const userId = res.locals.user.id
+  try {
+    const order = await Order.findOne({ _id: id, userId })
+    if (!order) return res.status(404).json('Order not found.')
+    res.json(order)
+  } catch (err) {
+    console.log(err)
+    return res.status(500).json({ message: 'Internal server error.' })
+  }
+}
+const getUserOrderById = async (req, res) => {
+  const id = req.params.id
   try {
     const order = await Order.findById(id)
     if (!order) return res.status(404).json('Order not found.')
-    res.json(order)
+    const user = await User.findById(order.userId)
+    delete user._doc.password
+    res.status(200).json({ user, order })
   } catch (err) {
     console.log(err)
     return res.status(500).json({ message: 'Internal server error.' })
@@ -94,4 +108,5 @@ module.exports = {
   deleteOrder,
   getMyOrders,
   getMyorderById,
+  getUserOrderById,
 }
