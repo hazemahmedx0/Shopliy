@@ -45,9 +45,9 @@ const deleteCategory = async (req, res) => {
     if (category) {
       const result = await Category.deleteOne({ _id: id })
       if (!result.acknowledged) {
-        return res.status(500).json({ message: 'Internal server error' })
+        return res.status(500).json({ message: 'Failed to delete Category' })
       }
-      res.status(204)
+      res.status(204).json({ message: 'Category deleted successfully.' })
     } else {
       res.status(404).send({ message: 'Category not found' })
     }

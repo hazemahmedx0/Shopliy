@@ -55,7 +55,7 @@ const deleteOrder = async (req, res) => {
 
     const result = await Order.deleteOne({ _id: id })
     if (!result.acknowledged) {
-      return res.status(500).json({ message: 'Internal server error.' })
+      return res.status(500).json({ message: 'Failed to delete Order.' })
     }
     console.log(result)
     res.status(204).json({ message: 'Order deleted successfully.' })

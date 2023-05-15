@@ -113,7 +113,10 @@ const deleteProduct = async (req, res) => {
   const product = await Product.findOne({ _id: id })
   if (product) {
     try {
-      await Product.deleteOne({ _id: id })
+      const result = await Product.deleteOne({ _id: id })
+      if (!result.acknowledged) {
+        return res.status(500).json({ message: 'Failed to delete Product' })
+      }
       res.status(204).json({ message: 'Product deleted successfully.' })
     } catch (err) {
       console.log(err)
