@@ -20,6 +20,9 @@ import ProductPage from './pages/ProductPage'
 import ConfimOrder from './components/common/Cart/ConfimOrder'
 import AdminLayout from './components/layout/AdminLayout'
 import AdminDashboard from './pages/Admin/AdminDashboard'
+import AdminProducts from './pages/Admin/AdminProducts'
+import AdminCustomers from './pages/Admin/AdminCustomers'
+import AdminOrders from './pages/Admin/AdminOrders'
 
 function App() {
   return (
@@ -44,7 +47,9 @@ function App() {
         </Route>
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<AdminDashboard />} />
-          <Route path="a" element={<AdminDashboard />} />
+          <Route path="products" element={<AdminProducts />} />
+          <Route path="cutomers" element={<AdminCustomers />} />
+          <Route path="orders" element={<AdminOrders />} />
         </Route>
         {/* Admin section */}
         <Route path="/adminlogin" element={<AdminLogin />} />

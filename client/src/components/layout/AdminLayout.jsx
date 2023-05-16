@@ -88,10 +88,10 @@ const useStyles = createStyles((theme) => ({
 }))
 
 const data = [
-  { link: '/admin/a', label: 'Overview', icon: ViewGrid },
-  { link: '/admin/a', label: 'Products', icon: Svg3DSelectFace },
-  { link: '', label: 'Customers', icon: FaceId },
-  { link: '', label: 'Orders', icon: SimpleCart },
+  { link: '/admin', label: 'Overview', icon: ViewGrid },
+  { link: '/admin/products', label: 'Products', icon: Svg3DSelectFace },
+  { link: '/admin/cutomers', label: 'Customers', icon: FaceId },
+  { link: '/admin/orders', label: 'Orders', icon: SimpleCart },
 ]
 
 const AdminLayout = () => {
