@@ -139,7 +139,7 @@ const AdminLayout = () => {
   ))
 
   return (
-    <div className="flex flex-row h-screen">
+    <div className="flex flex-row h-screen overflow-hidden">
       <Navbar className="h-full" width={{ sm: 300 }} p="md">
         <Navbar.Section grow>
           <Group className={classes.header} position="apart">

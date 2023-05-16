@@ -51,6 +51,7 @@ function App() {
           <Route path="cutomers" element={<AdminCustomers />} />
           <Route path="orders" element={<AdminOrders />} />
         </Route>
+
         {/* Admin section */}
         <Route path="/adminlogin" element={<AdminLogin />} />
         <Route path="/adminacc" element={<AdminAccount />} />
