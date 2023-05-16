@@ -18,6 +18,8 @@ import Cart from './pages/Cart'
 import MyAccount from './pages/MyAccount'
 import ProductPage from './pages/ProductPage'
 import ConfimOrder from './components/common/Cart/ConfimOrder'
+import AdminLayout from './components/layout/AdminLayout'
+import AdminDashboard from './pages/Admin/AdminDashboard'
 
 function App() {
   return (
@@ -40,7 +42,10 @@ function App() {
             <Route path="/*" element={<PageNotFound />} />
           </Route>
         </Route>
-
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<AdminDashboard />} />
+          <Route path="a" element={<AdminDashboard />} />
+        </Route>
         {/* Admin section */}
         <Route path="/adminlogin" element={<AdminLogin />} />
         <Route path="/adminacc" element={<AdminAccount />} />

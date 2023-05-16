@@ -71,3 +71,32 @@ form .mantine-PasswordInput-description {
   text-overflow: ellipsis;
   width: 200px; /* Adjust the width as needed */
 }
+
+.card-grad {
+  background: radial-gradient(
+        circle at 100% 100%,
+        #ffffff 0,
+        #ffffff 7px,
+        transparent 7px
+      )
+      0% 0%/9px 9px no-repeat,
+    radial-gradient(circle at 0 100%, #ffffff 0, #ffffff 7px, transparent 7px)
+      100% 0%/9px 9px no-repeat,
+    radial-gradient(circle at 100% 0, #ffffff 0, #ffffff 7px, transparent 7px)
+      0% 100%/9px 9px no-repeat,
+    radial-gradient(circle at 0 0, #ffffff 0, #ffffff 7px, transparent 7px) 100%
+      100%/9px 9px no-repeat,
+    linear-gradient(#ffffff, #ffffff) 50% 50% / calc(100% - 4px)
+      calc(100% - 18px) no-repeat,
+    linear-gradient(#ffffff, #ffffff) 50% 50% / calc(100% - 18px)
+      calc(100% - 4px) no-repeat,
+    linear-gradient(
+      51deg,
+      rgba(0, 255, 102, 0.44) 0%,
+      rgba(0, 255, 102, 0.1) 45%,
+      rgba(0, 255, 102, 0.61) 100%
+    );
+  border-radius: 12px;
+  padding: 12px;
+  box-sizing: border-box;
+}
