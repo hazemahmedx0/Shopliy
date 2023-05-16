@@ -15,11 +15,17 @@ import {
   // NumberInputHandlers,
   rem,
   Button,
+  Modal,
 } from '@mantine/core'
+import { useDisclosure } from '@mantine/hooks'
 
 import { useCart } from '../context/cartctx'
 import { Trash } from 'iconoir-react'
 import CartProduct from '../components/common/Cart/CartProduct'
+import { useAuth } from '../context/auth'
+import NewAddress from '../components/common/Cart/NewAddress'
+import orderApi from '../api/orderApi'
+import { useNavigate } from 'react-router-dom'
 
 const data = [
   {
@@ -76,8 +82,10 @@ const jobColors = {
 }
 
 const Cart = () => {
+  const navigate = useNavigate()
   const [loading, setloading] = useState(false)
-
+  const [auth, setAuth] = useAuth()
+  console.log('auth', auth)
   const [CartProducts, setCartProducts] = useCart()
   console.log('CartProducts', CartProducts.items)
   const handlers = useRef()
@@ -94,9 +102,57 @@ const Cart = () => {
   const rows = CartProducts?.items?.map((item) => (
     <CartProduct item={item} key={item._id} />
   ))
+  const [opened, { open, close }] = useDisclosure(false)
+
+  const confimOrderHandler = (address) => {
+    console.log('address', address)
+    const addTheOrder = async () => {
+      try {
+        const res = await orderApi.addOrder({
+          shippingAddress: {
+            street: address.street,
+            city: address.city,
+            state: address.state,
+            zip: address.zip,
+            country: address.country,
+          },
+        })
+        navigate(`order/confirm/${res._id}`, {
+          state: { id: 1, orderId: res._id },
+        })
+
+        console.log('res', res)
+        close()
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    addTheOrder()
+  }
 
   return (
     <>
+      <Modal size="md" opened={opened} onClose={close} title="Confim order">
+        <div className="flex flex-col gap-3 w-full justify-between mb-4">
+          <span className=" w-full flex flex-row justify-between">
+            <p>subtotal</p>
+            <p>${CartProducts?.subTotal?.toFixed(2)}</p>
+          </span>
+          <span className=" w-full flex flex-row justify-between">
+            <p>Shipping cost</p>
+            {/* <p>${((CartProducts?.subTotal / 100) * 20)?.toFixed(2)}</p> */}
+            <p>$21</p>
+          </span>
+          <span className=" w-full flex flex-row justify-between">
+            <p>Total</p>
+            <p>${(CartProducts?.subTotal + 21)?.toFixed(2)}</p>
+          </span>
+        </div>
+        <div className="flex flex-col w-full">
+          <p>Adress</p>
+          <NewAddress confimOrderHandler={confimOrderHandler} />
+        </div>
+      </Modal>
       <Container className=" mt-8 mb-28">
         <Breadcrumbs separator="→" mt="xs">
           {items}
@@ -126,11 +182,16 @@ const Cart = () => {
               </p>
               <div className="text-left flex flex-row justify-between w-full">
                 <p className="text-[#475467]">item(s) Total</p>
-                <p>{CartProducts?.subTotal}</p>
+                <p>${CartProducts?.subTotal?.toFixed(2)}</p>
               </div>
             </div>
 
-            <Button className="w-full mt-4" type="submit" loading={loading}>
+            <Button
+              onClick={open}
+              className="w-full mt-4"
+              type="submit"
+              loading={loading}
+            >
               Checkout
             </Button>
           </div>

@@ -49,18 +49,3 @@ const ProductsList = () => {
 }
 
 export default ProductsList
-
-// <div key={item.id} className="bg-gray-100 p-1">
-//             <div className=" h-60 w-full overflow-hidden">
-//               {' '}
-//               <img
-//                 src={item.image}
-//                 alt={item.name}
-//                 className="object-cover w-full mb-2"
-//               />
-//             </div>
-//             <div className="flex flex-col justify-start">
-//               <h2 className="text-lg font-medium text-left">{item.name}</h2>
-//               <p className="text-gray-500 text-left">${item.price}</p>
-//             </div>
-//           </div>

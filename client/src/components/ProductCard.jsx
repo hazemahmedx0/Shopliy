@@ -18,6 +18,7 @@ import { useContext, useEffect, useState } from 'react'
 import cartApi from '../api/cartApi'
 import { useCart } from '../context/cartctx'
 import { useAuth } from '../context/auth'
+import { Link } from 'react-router-dom'
 const useStyles = createStyles((theme) => ({
   card: {
     backgroundColor:
@@ -127,7 +128,7 @@ const ProductCard = (props) => {
         )
       : -1
     console.log('existingProductIndex', existingProductIndex)
-    if (CartProducts?.items || existingProductIndex !== -1) {
+    if (CartProducts?.items && existingProductIndex !== -1) {
       // product already exists in cart, update quantity
       const updatedCart = { ...CartProducts }
       updatedCart.items[existingProductIndex].quantity += 1
@@ -174,17 +175,21 @@ const ProductCard = (props) => {
         >
           <Heart color="#F34141" strokeWidth={2} height={20} width={20} />
         </ActionIcon>
-        <Image src={props.image[0]} alt={props.title} height={380} />
+        <Link to={`/products/${props.id}`}>
+          <Image src={props.image[0]} alt={props.title} height={380} />
+        </Link>
       </Card.Section>
 
       <Card.Section className="px-4 mb-auto" mt="md">
-        <Group className="flex flex-col items-start gap-0" position="apart">
-          <Text className="text-sm text-gray-400">{props.brand}</Text>
-          <Text className=" trimTextCard text-lg font-semibold text-left text-[#344054]">
-            {props.title}
-          </Text>
-          {/* <Badge size="sm">{props.title}</Badge> */}
-        </Group>
+        <Link to={`/products/${props.id}`}>
+          <Group className="flex flex-col items-start gap-0" position="apart">
+            <Text className="text-sm text-gray-400">{props.brand}</Text>
+            <Text className=" trimTextCard text-lg font-semibold text-left text-[#344054]">
+              {props.title}
+            </Text>
+            {/* <Badge size="sm">{props.title}</Badge> */}
+          </Group>
+        </Link>
       </Card.Section>
 
       <Card.Section className="px-4 flex flex-row items-center justify-between mt-6 pb-3">

@@ -22,10 +22,10 @@ const MyInfo = () => {
   // const [photo, setphoto] = useState([])
   const [file, setFile] = useState([])
   useEffect(() => {
-    setFirstName(auth.user.firstName)
-    setlastName(auth.user.lastName)
-    setemail(auth.user.email)
-    setphoto(auth.user.photo)
+    setFirstName(auth.user?.firstName)
+    setlastName(auth.user?.lastName)
+    setemail(auth.user?.email)
+    setphoto(auth.user?.photo)
   }, [editing])
 
   const onImageChange = async (e) => {
@@ -35,9 +35,9 @@ const MyInfo = () => {
 
   const form = useForm({
     initialValues: {
-      firstName: `${auth.user.firstName}`,
-      lastName: `${auth.user.lastName}`,
-      email: `${auth.user.email}`,
+      firstName: `${auth.user?.firstName}`,
+      lastName: `${auth.user?.lastName}`,
+      email: `${auth.user?.email}`,
     },
 
     validate: {
@@ -121,7 +121,12 @@ const MyInfo = () => {
                   <p className="text-left">{email}</p>
                 </div>
               </div>
-              <Button radius="md" size="md" onClick={() => setEditing(true)}>
+              <Button
+                variant="default"
+                radius="md"
+                size="md"
+                onClick={() => setEditing(true)}
+              >
                 Edit
               </Button>
             </div>

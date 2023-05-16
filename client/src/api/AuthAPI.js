@@ -5,7 +5,7 @@ const authAPI = {
   login: (params) => axiosClient.post('login', params),
   loginget: () => axiosClient.get('login'),
   verifyUser: () => axiosClient.get('me'),
-  logout: () => axiosClient.get('logout'),
+  logout: () => axiosClient.post('logout'),
 }
 
 export default authAPI

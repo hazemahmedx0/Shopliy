@@ -25,6 +25,7 @@ const CartProduct = (props) => {
   const item = props.item
   console.log('this', item)
   const handlers = useRef()
+  console.log('handlers', handlers)
   const [value, setValue] = useState(+item.quantity)
   const [total, setTotal] = useState(`${(+item.price * +value).toFixed(2)}`)
 
@@ -37,13 +38,14 @@ const CartProduct = (props) => {
       ...CartProducts,
       subTotal: +CartProducts.subTotal - +item.productId.price,
     }
-    setCartProducts(updatedCart)
-
-    handlers.current.decrement()
-    try {
-      const res = await cartApi.decPrdocutQuantity(item.productId._id)
-    } catch (err) {
-      console.log(err)
+    if (value >= 2) {
+      setCartProducts(updatedCart)
+      handlers.current.decrement()
+      try {
+        const res = await cartApi.decPrdocutQuantity(item.productId._id)
+      } catch (err) {
+        console.log(err)
+      }
     }
   }
 
@@ -83,18 +85,18 @@ const CartProduct = (props) => {
             spacing="sm"
             className="flex  flex-row content-start items-start"
           >
-            <Avatar size={100} src={item.productId.image} radius={10} />
+            <Avatar size={100} src={item?.productId?.image[0]} radius={10} />
             <Group className="flex flex-col gap-0 items-start justify-between ">
               <div>
                 <Text className="text-left" fz="sm" fw={400} color="#98A2B3">
-                  {item.productId.brand}
+                  {item?.productId?.brand}
                 </Text>
-                <Text fz="md" fw={500}>
-                  {item.productId.name}
+                <Text className="trimTextCart text-left" fz="md" fw={500}>
+                  {item?.productId?.name}
                 </Text>
               </div>
               <Text fz="md" fw={500}>
-                ${item.productId.price}
+                ${item?.productId?.price}
               </Text>
             </Group>
           </Group>
@@ -118,7 +120,6 @@ const CartProduct = (props) => {
               value={value}
               onChange={(val) => setValue(val)}
               handlersRef={handlers}
-              max={10}
               min={0}
               step={1}
               radius="0"
@@ -131,7 +132,6 @@ const CartProduct = (props) => {
               className="  rounded-tr-lg rounded-br-lg"
               variant="default"
               onClick={incProduct}
-              //   onClick={(e) => handleIncrement(e)}
             >
               +
             </ActionIcon>

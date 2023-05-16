@@ -31,18 +31,18 @@ body {
   transition: all 0.2s;
   border-radius: 12px;
 }
-
-.mantine-oqpohy,
 .mantine-Button-root {
+  height: 44px !important;
+}
+.mantine-oqpohy,
+.mantine-Button-root.mantine-1by6hr2 {
   background-color: #15be53 !important;
   transition: all 0.2s !important;
-  height: 44px !important;
   border-radius: 12px !important;
 }
-.mantine-Button-root:hover {
+.mantine-Button-root:hover.mantine-1by6hr2 {
   background-color: #16a34a !important;
   transition: all 0.2s !important;
-  height: 44px !important;
   border-radius: 12px !important;
 }
 

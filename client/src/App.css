@@ -56,3 +56,18 @@ form .mantine-PasswordInput-description {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.trimTextCart {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  max-width: 250px;
+}
+
+.text-truncate {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 200px; /* Adjust the width as needed */
+}

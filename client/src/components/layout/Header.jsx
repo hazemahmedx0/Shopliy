@@ -141,7 +141,7 @@ function MainHeader() {
   const { bag, setthebag } = useContext(BagContext)
   useEffect(() => {
     setthebag(CartProducts?.items?.length)
-  }, [CartProducts])
+  }, [CartProducts, navigate])
 
   const isUser = auth.user
   const curLink = useParams()

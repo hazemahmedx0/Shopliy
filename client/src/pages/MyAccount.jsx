@@ -15,6 +15,7 @@ import MyInfoAddress from '../components/common/UserAcoount/MyInfoAddress'
 import MyOrders from '../components/common/UserAcoount/MyOrders'
 
 import { Headset, ProfileCircle, PinAlt, Svg3DSelectFace } from 'iconoir-react'
+import { useLocation } from 'react-router-dom'
 
 const useStyles = createStyles((theme) => ({
   link: {
@@ -84,7 +85,15 @@ const Current = ({ active }) => {
 }
 
 export default function MyAccount() {
-  const [active, setActive] = useState(2)
+  const [active, setActive] = useState(0)
+  const location = useLocation()
+
+  useEffect(() => {
+    if (location?.state?.activated) {
+      setActive(location.state.activated)
+    }
+  }, [location])
+
   const links = mockdata.map((link, index) => (
     <NavbarLink
       {...link}
@@ -95,7 +104,7 @@ export default function MyAccount() {
   ))
 
   return (
-    <Container>
+    <Container className="mb-40">
       <div className=" border-b font-medium mt-14 pb-4">
         <h1 className="text-left">My Account</h1>
       </div>

@@ -136,7 +136,12 @@ const MyInfoAddress = () => {
                   </div>
                 )}
               </div>
-              <Button radius="md" size="md" onClick={() => setEditing(true)}>
+              <Button
+                variant="default"
+                radius="md"
+                size="md"
+                onClick={() => setEditing(true)}
+              >
                 {!auth.user.shippingAddress ? 'Add' : 'Edit'}
               </Button>
             </div>

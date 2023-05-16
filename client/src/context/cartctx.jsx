@@ -11,16 +11,22 @@ const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([])
   useEffect(() => {
     const getProducts = async () => {
-      const res = await cartApi.getMyCart()
-      console.log(res)
-      setCart(res[0])
+      console.log('cart')
+      try {
+        const res = await cartApi.getMyCart()
+        console.log('cart', res)
+        console.log(res)
+        setCart(res[0])
+      } catch (error) {
+        console.log(error)
+      }
     }
     if (!auth.user) {
       null
     } else {
       getProducts()
     }
-  }, [navigate])
+  }, [navigate, auth.user])
   return (
     <CartContext.Provider value={[cart, setCart]}>
       {children}

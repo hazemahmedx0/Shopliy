@@ -17,6 +17,7 @@ import Private from './components/routes/Private'
 import Cart from './pages/Cart'
 import MyAccount from './pages/MyAccount'
 import ProductPage from './pages/ProductPage'
+import ConfimOrder from './components/common/Cart/ConfimOrder'
 
 function App() {
   return (
@@ -30,6 +31,8 @@ function App() {
           <Route path="/*" element={<PageNotFound />} />
 
           <Route path="products/:productId" element={<ProductPage />} />
+          <Route path="cart/order/confirm/:orderid" element={<ConfimOrder />} />
+
           <Route path="" element={<Private />}>
             <Route path="/Cart" element={<Cart />} />
             <Route path="/myaccount" element={<MyAccount />} />
