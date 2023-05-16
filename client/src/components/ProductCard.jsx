@@ -158,7 +158,7 @@ const ProductCard = (props) => {
       p="md"
       className={
         classes.card +
-        ` transition-all  !border !rounded-[20px] hover:shadow-sm  border-[#F2F4F7] hover:border-green-200`
+        ` transition-all flex flex-col !border !rounded-[20px] hover:shadow-sm  border-[#F2F4F7] hover:border-green-200`
       }
     >
       <Card.Section>
@@ -174,10 +174,10 @@ const ProductCard = (props) => {
         >
           <Heart color="#F34141" strokeWidth={2} height={20} width={20} />
         </ActionIcon>
-        <Image src={props.image} alt={props.title} height={240} />
+        <Image src={props.image[0]} alt={props.title} height={380} />
       </Card.Section>
 
-      <Card.Section className="px-4" mt="md">
+      <Card.Section className="px-4 mb-auto" mt="md">
         <Group className="flex flex-col items-start gap-0" position="apart">
           <Text className="text-sm text-gray-400">{props.brand}</Text>
           <Text className=" trimTextCard text-lg font-semibold text-left text-[#344054]">

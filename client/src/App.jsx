@@ -16,6 +16,7 @@ import ImageUpladtext from './pages/imageUpladtext'
 import Private from './components/routes/Private'
 import Cart from './pages/Cart'
 import MyAccount from './pages/MyAccount'
+import ProductPage from './pages/ProductPage'
 
 function App() {
   return (
@@ -24,11 +25,11 @@ function App() {
         <Route path="/" element={<AppLayout />}>
           <Route index element={<Home />} />
           <Route path="/signup" element={<SignUp />} />
-          {/* <Route path="/upldaz" element={<ImageUpladtext />} /> */}
           <Route path="/login" element={<Login />} />
 
           <Route path="/*" element={<PageNotFound />} />
 
+          <Route path="products/:productId" element={<ProductPage />} />
           <Route path="" element={<Private />}>
             <Route path="/Cart" element={<Cart />} />
             <Route path="/myaccount" element={<MyAccount />} />
