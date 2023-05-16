@@ -9,16 +9,18 @@ const NavbarLink = ({ icon: Icon, label, active, onClick }) => {
   const linkStyle = {
     width: 'auto',
     height: 'auto',
-    padding: '10px',
+    padding: '5px',
+    marginLeft: '20px',
+    marginRight: '20px',
     marginBottom: '10px',
-    borderRadius: '6px',
+    borderRadius: '10px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'start',
     gap: '10px',
     cursor: 'pointer',
-    backgroundColor: active ? '#f0f0f0' : '',
-    color: active ? '#000' : '',
+    backgroundColor: active ? '#D1FADF' : '',
+    color: active ? '#039855' : '#667085',
   }
 
   return (
@@ -31,13 +33,13 @@ const NavbarLink = ({ icon: Icon, label, active, onClick }) => {
 
 const Current = ({ active }) => {
   if (active === 0) {
-    return <AdminTable />
+    return <div>Section 1</div>
   } else if (active === 1) {
-    return <RecentUsersList />
+    return <div>Section 2</div>
   } else if (active === 2) {
-    return <div>Section 3</div>
+    return <RecentUsersList />
   } else if (active === 3) {
-    return <div>Section 4</div>
+    return <AdminTable />
   }
 }
 
@@ -66,15 +68,24 @@ const AdminAccount = () => {
   ))
 
   return (
-    <Container style={{ display: 'flex' }}>
-      <div style={{ position: 'fixed', left: 0 }}>
+    <Container style={{ display: 'flex', alignItems: 'flex-start' }}>
+      <div style={{ flex: '0 0 400px', position: 'fixed', left: 0 }}>
         <Navbar>
-          <img
-            src={FullLogo}
-            alt="Logo"
-            height={40}
-            style={{ marginRight: '20px' }}
-          />
+          <Navbar.Section>
+            <Stack direction="horizontal" gap="sm" align="center">
+              <img
+                src={FullLogo}
+                alt="Logo"
+                height={35}
+                style={{
+                  marginLeft: '20px',
+                  marginRight: '100px',
+                  marginTop: '30px',
+                  marginBottom: '30px',
+                }}
+              />
+            </Stack>
+          </Navbar.Section>
           <Navbar.Section grow>
             <Stack justify="center" spacing="sm">
               {links}
@@ -82,7 +93,7 @@ const AdminAccount = () => {
           </Navbar.Section>
         </Navbar>
       </div>
-      <div style={{ marginLeft: '200px' }}>
+      <div style={{ flex: 1, marginLeft: '160px' }}>
         <Current active={active} />
       </div>
     </Container>
