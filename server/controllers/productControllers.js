@@ -1,9 +1,8 @@
 const { validateProductInput } = require('../validators/productValidators')
 const { Product } = require('./../models/Product')
-
 const getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find()
+    const products = await Product.find().populate('categoryId', 'name')
     const productsNo = products.length
 
     return res.json({
@@ -18,7 +17,10 @@ const getAllProducts = async (req, res) => {
 
 const getAvaialableProducts = async (req, res) => {
   try {
-    const products = await Product.find({ availability: true })
+    const products = await Product.find({ availability: true }).populate(
+      'categoryId',
+      'name'
+    )
     const productsNo = products.length
 
     return res.json({
@@ -34,7 +36,10 @@ const getAvaialableProducts = async (req, res) => {
 const getProductById = async (req, res) => {
   const id = req.params.id
   try {
-    const product = await Product.findOne({ _id: id })
+    const product = await Product.findOne({ _id: id }).populate(
+      'categoryId',
+      'name'
+    )
     if (product) {
       return res.json(product)
     } else {
@@ -95,7 +100,10 @@ const updateProduct = async (req, res) => {
         return res.status(500).json({ message: 'Internal server error.' })
       }
 
-      const updatedProduct = await Product.findById(id)
+      const updatedProduct = await Product.findById(id).populate(
+        'categoryId',
+        'name'
+      )
       res
         .status(200)
         .json({ message: 'Product updated successfully.', updatedProduct })
