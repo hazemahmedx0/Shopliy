@@ -76,7 +76,7 @@ const updateCategory = async (req, res) => {
         updatedCategoryFields
       )
       if (!result.acknowledged) {
-        return res.status(500).json({ message: 'Internal server error' })
+        return res.status(500).json({ message: 'Failed to update Category' })
       }
       const updatedCategory = await Category.findById(id)
 

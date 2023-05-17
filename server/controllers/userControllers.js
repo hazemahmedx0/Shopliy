@@ -27,7 +27,9 @@ const updateMe = async (req, res, next) => {
 
       const result = await User.updateOne({ _id: user._id }, updatedUserFields)
       if (!result.acknowledged) {
-        return res.status(500).json({ message: 'Internal server error.' })
+        return res
+          .status(500)
+          .json({ message: 'Failed to update profile info' })
       }
 
       const updatedUser = await User.findById(id)
