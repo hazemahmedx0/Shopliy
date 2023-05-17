@@ -2,6 +2,17 @@ const { Order } = require('../models/Order')
 const { Cart } = require('../models/Cart')
 const { User } = require('../models/User')
 
+const getAllOrders = async (req, res) => {
+  try {
+    const orders = await Order.find().populate('userId')
+
+    res.status(200).json({ ordersNo: orders.length, orders })
+  } catch (err) {
+    console.log(err)
+    return res.status(500).json({ message: 'Internal server error.' })
+  }
+}
+
 const getUserOrders = async (req, res) => {
   const userId = req.params.userId
   try {
@@ -103,6 +114,7 @@ const getUserOrderById = async (req, res) => {
 }
 
 module.exports = {
+  getAllOrders,
   getUserOrders,
   createOrder,
   deleteOrder,

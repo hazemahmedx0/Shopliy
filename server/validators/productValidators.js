@@ -1,30 +1,17 @@
 const Joi = require('joi')
 
-const newProductSchema = Joi.object({
-  name: Joi.string().required(),
-  description: Joi.string().required(),
-  price: Joi.number().required().min(0),
-  image: Joi.array().items(Joi.string()).min(1).max(4).required(),
-  availability: Joi.boolean().default(true),
-  brand: Joi.string().required(),
-  categoryId: Joi.string().required(),
-  label: Joi.string().valid('New Arrival', 'On Sale', 'Bestseller'),
-})
-
-const existingProductSchema = Joi.object({
-  name: Joi.string(),
-  description: Joi.string(),
-  price: Joi.number().min(0),
-  image: Joi.array().items(Joi.string()).min(1).max(4),
-  availability: Joi.boolean(),
-  brand: Joi.string(),
-  categoryId: Joi.string(),
-  label: Joi.string().valid('New Arrival', 'On Sale', 'Bestseller'),
-})
-
 const validateNewProductInput = (req, res, next) => {
   const user = req.body
-  const schema = newProductSchema
+  const schema = Joi.object({
+    name: Joi.string().required(),
+    description: Joi.string().required(),
+    price: Joi.number().required().min(0),
+    image: Joi.array().items(Joi.string()).min(1).max(4).required(),
+    availability: Joi.boolean().default(true),
+    brand: Joi.string().required(),
+    categoryId: Joi.string().required(),
+    label: Joi.string().valid('New Arrival', 'On Sale', 'Bestseller'),
+  })
 
   const errors = {}
   const validationErrors = schema.validate(user, { abortEarly: false })
@@ -46,7 +33,16 @@ const validateNewProductInput = (req, res, next) => {
 
 const validateExistingProductInput = (req, res, next) => {
   const user = req.body
-  const schema = existingProductSchema
+  const schema = Joi.object({
+    name: Joi.string(),
+    description: Joi.string(),
+    price: Joi.number().min(0),
+    image: Joi.array().items(Joi.string()).min(1).max(4),
+    availability: Joi.boolean(),
+    brand: Joi.string(),
+    categoryId: Joi.string(),
+    label: Joi.string().valid('New Arrival', 'On Sale', 'Bestseller'),
+  })
 
   const errors = {}
   const validationErrors = schema.validate(user, { abortEarly: false })
