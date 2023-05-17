@@ -17,14 +17,27 @@ import {
   Button,
   rem,
 } from '@mantine/core'
-
+import { Link } from 'react-router-dom'
 import { Trash } from 'iconoir-react'
 import cartApi from '../../../api/cartApi'
 import { useCart } from '../../../context/cartctx'
+import productApi from '../../../api/productApi'
 
 const ProductCardAdmin = (props) => {
   const { item } = props
   const [inStock, setinStock] = useState(item.availability)
+
+  const ChangeAvailability = async () => {
+    try {
+      const res = await productApi.availabilityChange(item._id, {
+        availability: !inStock,
+      })
+      console.log(res)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   console.log(inStock)
   return (
     <>
@@ -56,6 +69,7 @@ const ProductCardAdmin = (props) => {
             <Switch
               checked={inStock}
               onChange={(event) => setinStock(event.currentTarget.checked)}
+              onClick={ChangeAvailability}
             />
           </Group>
         </td>
@@ -74,9 +88,11 @@ const ProductCardAdmin = (props) => {
 
         <td>
           <Group spacing={0} position="left">
-            <Button variant="default" radius="md" size="sm" className="mr-4">
-              Edit
-            </Button>
+            <Link to={`/admin/products/${item._id}`}>
+              <Button variant="default" radius="md" size="sm" className="mr-4">
+                Edit
+              </Button>
+            </Link>
             <Trash
               strokeWidth={2}
               width={42}
