@@ -4,7 +4,10 @@ const { User } = require('../models/User')
 
 const getAllOrders = async (req, res) => {
   try {
-    const orders = await Order.find().populate('userId')
+    let orders = await Order.find().populate(
+      'userId',
+      '_id firstName lastName email photo'
+    )
 
     res.status(200).json({ ordersNo: orders.length, orders })
   } catch (err) {

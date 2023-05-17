@@ -97,7 +97,7 @@ const updateProduct = async (req, res) => {
     try {
       const result = await Product.updateOne({ _id: id }, updatedProductFields)
       if (!result.acknowledged) {
-        return res.status(500).json({ message: 'Internal server error.' })
+        return res.status(500).json({ message: 'Failed to update Product' })
       }
 
       const updatedProduct = await Product.findById(id).populate(
