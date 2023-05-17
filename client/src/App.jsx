@@ -23,7 +23,7 @@ import AdminDashboard from './pages/Admin/AdminDashboard'
 import AdminProducts from './pages/Admin/AdminProducts'
 import AdminCustomers from './pages/Admin/AdminCustomers'
 import AdminOrders from './pages/Admin/AdminOrders'
-import AdminProductPage from './components/common/Admin/AdminProductPage'
+import AdminProductPage from './components/common/AdminPanal/AdminProductPage'
 
 function App() {
   return (

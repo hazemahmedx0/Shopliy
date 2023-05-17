@@ -19,7 +19,7 @@ import {
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import productApi from '../../api/productApi'
-import ProductCardAdmin from '../../components/common/Admin/ProductCardAdmin'
+import ProductCardAdmin from '../../components/common/AdminPanal/ProductCardAdmin'
 
 const AdminProducts = () => {
   const [products, setproducts] = useState([])
