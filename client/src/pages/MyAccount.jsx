@@ -1,12 +1,9 @@
 import { useEffect, useState } from 'react'
 import {
   Navbar,
-  Center,
-  Tooltip,
   UnstyledButton,
   createStyles,
   Stack,
-  rem,
   Container,
 } from '@mantine/core'
 
@@ -14,7 +11,7 @@ import MyInfo from '../components/common/UserAcoount/MyInfo'
 import MyInfoAddress from '../components/common/UserAcoount/MyInfoAddress'
 import MyOrders from '../components/common/UserAcoount/MyOrders'
 
-import { Headset, ProfileCircle, PinAlt, Svg3DSelectFace } from 'iconoir-react'
+import { ProfileCircle, PinAlt, Svg3DSelectFace } from 'iconoir-react'
 import { useLocation } from 'react-router-dom'
 
 const useStyles = createStyles((theme) => ({

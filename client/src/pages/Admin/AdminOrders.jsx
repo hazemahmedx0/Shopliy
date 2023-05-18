@@ -1,35 +1,11 @@
-import React, { useEffect, useState } from 'react'
-import {
-  Breadcrumbs,
-  Anchor,
-  Container,
-  Avatar,
-  Badge,
-  Table,
-  Group,
-  Text,
-  ActionIcon,
-  ScrollArea,
-  useMantineTheme,
-  NumberInput,
-  // NumberInputHandlers,
-  rem,
-  Button,
-  Modal,
-} from '@mantine/core'
-import { useDisclosure } from '@mantine/hooks'
-import productApi from '../../api/productApi'
-import ProductCardAdmin from '../../components/common/AdminPanal/ProductCardAdmin'
-import { Link } from 'react-router-dom'
-import authAPI from '../../api/AuthAPI'
-import UsersAdminCard from '../../components/common/AdminPanal/UsersAdminCard'
+import { useEffect, useState } from 'react'
+
 import OrderCardAdmin from '../../components/common/AdminPanal/OrderCardAdmin'
 import orderApi from '../../api/orderApi'
 
 const AdminOrders = () => {
   const [orders, setOrders] = useState([])
   const [ordersNo, setOrdersNo] = useState([])
-  // const [productsNo, setproductsNo] = useState([])
   useEffect(() => {
     const getAdminOders = async () => {
       try {

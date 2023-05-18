@@ -4,10 +4,8 @@ import productApi from '../../../api/productApi'
 import { notifications } from '@mantine/notifications'
 
 import {
-  Avatar,
   Button,
   TextInput,
-  Checkbox,
   Group,
   Box,
   Textarea,
@@ -16,13 +14,11 @@ import {
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { useCat } from '../../../context/catCtx'
-import { Cancel } from 'iconoir-react'
 
-const AdminProductPage = (props) => {
+const AdminProductPage = () => {
   const { productId } = useParams()
   const navigate = useNavigate()
   const [product, setproduct] = useState({})
-  const [isLoading, setIsLoading] = useState(true)
   const [loading, setloading] = useState(false)
   const [cat, setCat] = useCat()
   const [catMenu, setcatMenu] = useState([])

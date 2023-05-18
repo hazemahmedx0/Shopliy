@@ -1,15 +1,9 @@
-import { Helmet } from 'react-helmet'
-
-import MainHeader from './Header'
-import Footer from './Footer'
 import { Link, Outlet, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { useAuth } from '../../context/auth'
 import authAPI from '../../api/AuthAPI'
 import {
   Navbar,
-  SegmentedControl,
-  Text,
   createStyles,
   getStylesRef,
   rem,
@@ -108,18 +102,6 @@ const AdminLayout = () => {
   const navigate = useNavigate()
   console.log(auth)
   useEffect(() => {
-    const checkUser = async () => {
-      try {
-        const res = await authAPI.verifyUser() // this is user -> GET me
-        setAuth({
-          ...auth,
-          user: res,
-        })
-      } catch (err) {
-        console.log(err)
-      }
-    }
-    // checkUser()
     if (auth.isAdmin) {
       navigate('/')
     }

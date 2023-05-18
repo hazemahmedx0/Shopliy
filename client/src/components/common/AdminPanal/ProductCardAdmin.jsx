@@ -1,26 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react'
-import {
-  Breadcrumbs,
-  Anchor,
-  Container,
-  Avatar,
-  Badge,
-  Table,
-  Group,
-  Text,
-  ActionIcon,
-  ScrollArea,
-  useMantineTheme,
-  NumberInput,
-  // NumberInputHandlers,
-  Switch,
-  Button,
-  rem,
-} from '@mantine/core'
+import { useState } from 'react'
+import { Avatar, Group, Text, Switch, Button } from '@mantine/core'
 import { Link, useNavigate } from 'react-router-dom'
 import { Trash } from 'iconoir-react'
-import cartApi from '../../../api/cartApi'
-import { useCart } from '../../../context/cartctx'
 import productApi from '../../../api/productApi'
 
 const ProductCardAdmin = (props) => {

@@ -4,7 +4,6 @@ import { TickConfirm } from '../../../assets'
 import { Button } from '@mantine/core'
 
 const ConfimOrder = (props) => {
-  // const { orderId } = props
   const location = useLocation()
   const navigate = useNavigate()
   useEffect(() => {

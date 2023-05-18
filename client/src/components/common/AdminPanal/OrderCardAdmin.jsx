@@ -1,18 +1,7 @@
-import React from 'react'
-import {
-  Card,
-  Image,
-  Text,
-  Group,
-  Badge,
-  Button,
-  ActionIcon,
-  createStyles,
-  rem,
-} from '@mantine/core'
+import { Text, ActionIcon } from '@mantine/core'
 import { modals } from '@mantine/modals'
 
-import { SimpleCart, Heart, Trash } from 'iconoir-react'
+import { Trash } from 'iconoir-react'
 import orderApi from '../../../api/orderApi'
 
 const OrderCardAdmin = (props) => {

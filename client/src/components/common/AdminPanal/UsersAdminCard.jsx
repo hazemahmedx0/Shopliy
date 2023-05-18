@@ -1,11 +1,10 @@
-import { SimpleCart, Heart, Trash } from 'iconoir-react'
+import { Trash } from 'iconoir-react'
 import {
   Card,
   Image,
   Text,
   Group,
   Badge,
-  Button,
   ActionIcon,
   createStyles,
   rem,
@@ -14,8 +13,7 @@ import { modals } from '@mantine/modals'
 
 import { notifications } from '@mantine/notifications'
 
-import { useContext, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 import authAPI from '../../../api/AuthAPI'
 const useStyles = createStyles((theme) => ({
   card: {
@@ -90,8 +88,6 @@ const UsersAdminCard = (props) => {
 
   return (
     <Card
-      //   withBorder
-      //   className=" bg-black !border !border-yellow-400"
       radius="md"
       p="md"
       className={

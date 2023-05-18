@@ -1,18 +1,10 @@
-import React, { useEffect, useRef, useState, useContext } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import {
   Breadcrumbs,
   Anchor,
   Container,
-  Avatar,
-  Table,
-  Group,
   Text,
-  ActionIcon,
-  ScrollArea,
-  useMantineTheme,
-  NumberInput,
   createStyles,
-  // NumberInputHandlers,
   getStylesRef,
   Image,
   Card,
@@ -29,7 +21,6 @@ import BagContext from '../context/BagContext'
 import { Carousel } from '@mantine/carousel'
 
 import { Heart } from 'iconoir-react'
-import CartProduct from '../components/common/Cart/CartProduct'
 import productApi from '../api/productApi'
 import { useParams, useNavigate } from 'react-router'
 import cartApi from '../api/cartApi'

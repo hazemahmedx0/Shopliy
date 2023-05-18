@@ -12,7 +12,7 @@ import AdminLogin from './pages/Admin/Login'
 import AdminAccount from './pages/Admin/AdminAccount'
 
 import PageNotFound from './pages/PageNotFound'
-import ImageUpladtext from './pages/imageUpladtext'
+// import ImageUpladtext from './pages/imageUpladtext'
 import Private from './components/routes/Private'
 import Cart from './pages/Cart'
 import MyAccount from './pages/MyAccount'

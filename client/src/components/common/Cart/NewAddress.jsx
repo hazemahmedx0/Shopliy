@@ -1,5 +1,5 @@
 import React from 'react'
-import { TextInput, Checkbox, Button, Group, Box } from '@mantine/core'
+import { TextInput, Button, Group } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { useAuth } from '../../../context/auth'
 

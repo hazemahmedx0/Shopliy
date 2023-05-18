@@ -4,8 +4,6 @@ import {
   Image,
   Text,
   Group,
-  Badge,
-  Button,
   ActionIcon,
   createStyles,
   rem,

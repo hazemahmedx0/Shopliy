@@ -1,18 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
-  Breadcrumbs,
-  Anchor,
-  Container,
   Avatar,
-  Badge,
-  Table,
   Group,
   Text,
   ActionIcon,
-  ScrollArea,
-  useMantineTheme,
   NumberInput,
-  // NumberInputHandlers,
   rem,
 } from '@mantine/core'
 

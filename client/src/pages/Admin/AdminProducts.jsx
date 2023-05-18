@@ -1,23 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import {
-  Breadcrumbs,
-  Anchor,
-  Container,
-  Avatar,
-  Badge,
-  Table,
-  Group,
-  Text,
-  ActionIcon,
-  ScrollArea,
-  useMantineTheme,
-  NumberInput,
-  // NumberInputHandlers,
-  rem,
-  Button,
-  Modal,
-} from '@mantine/core'
-import { useDisclosure } from '@mantine/hooks'
+import { useEffect, useState } from 'react'
+import { Table, Button } from '@mantine/core'
 import productApi from '../../api/productApi'
 import ProductCardAdmin from '../../components/common/AdminPanal/ProductCardAdmin'
 import { Link } from 'react-router-dom'

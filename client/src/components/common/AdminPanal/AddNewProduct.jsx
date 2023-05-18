@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import productApi from '../../../api/productApi'
 import { notifications } from '@mantine/notifications'
 
 import {
-  Avatar,
   Button,
   TextInput,
-  Checkbox,
   Group,
   Box,
   Textarea,
@@ -16,10 +14,8 @@ import {
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { useCat } from '../../../context/catCtx'
-import { Cancel } from 'iconoir-react'
 
 const AddNewProduct = (props) => {
-  const { productId } = useParams()
   const navigate = useNavigate()
   const [loading, setloading] = useState(false)
   const [cat, setCat] = useCat()

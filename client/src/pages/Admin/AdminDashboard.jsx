@@ -1,8 +1,5 @@
-import React from 'react'
 import {
-  Headset,
   ProfileCircle,
-  PinAlt,
   Svg3DSelectFace,
   Dollar,
   SimpleCart,
