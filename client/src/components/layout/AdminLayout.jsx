@@ -16,7 +16,13 @@ import {
   Group,
   Code,
 } from '@mantine/core'
-import { ViewGrid, Svg3DSelectFace, FaceId, SimpleCart } from 'iconoir-react'
+import {
+  ViewGrid,
+  Svg3DSelectFace,
+  FaceId,
+  SimpleCart,
+  LogOut,
+} from 'iconoir-react'
 import { fullLogo } from '../../assets'
 const useStyles = createStyles((theme) => ({
   header: {
@@ -138,6 +144,17 @@ const AdminLayout = () => {
     </Link>
   ))
 
+  const handleLogout = async () => {
+    try {
+      const res = await authAPI.logout()
+      setAuth({ user: null, token: null })
+      navigate('/')
+      window.location.reload()
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <div className="flex flex-row h-screen overflow-hidden">
       <Navbar className="h-full" width={{ sm: 300 }} p="md">
@@ -151,21 +168,8 @@ const AdminLayout = () => {
         </Navbar.Section>
 
         <Navbar.Section className={classes.footer}>
-          <a
-            href="#"
-            className={classes.link}
-            onClick={(event) => event.preventDefault()}
-          >
-            <ViewGrid />
-            <span>Change account</span>
-          </a>
-
-          <a
-            href="#"
-            className={classes.link}
-            onClick={(event) => event.preventDefault()}
-          >
-            <ViewGrid />
+          <a href="#" className={classes.link} onClick={handleLogout}>
+            <LogOut className="mr-2" />
             <span>Logout</span>
           </a>
         </Navbar.Section>

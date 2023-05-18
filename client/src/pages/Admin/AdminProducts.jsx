@@ -20,6 +20,7 @@ import {
 import { useDisclosure } from '@mantine/hooks'
 import productApi from '../../api/productApi'
 import ProductCardAdmin from '../../components/common/AdminPanal/ProductCardAdmin'
+import { Link } from 'react-router-dom'
 
 const AdminProducts = () => {
   const [products, setproducts] = useState([])
@@ -63,7 +64,7 @@ const AdminProducts = () => {
           {productsNo}
         </span>
         <Button className=" ml-auto" variant="filled">
-          Add Product
+          <Link to="addnewproduct">Add Product</Link>
         </Button>
       </div>
       <div className="grow w-full mb-28">

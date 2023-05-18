@@ -27,15 +27,18 @@ const Login = () => {
   useEffect(() => {
     const checkUser = async () => {
       try {
-        const res = await authAPI.verifyUser()
+        console.log('checking user')
+        // setLoginLoading(false)
 
+        const res = await authAPI.verifyUser()
         navigate(fromUrl)
       } catch (err) {
+        console.log(err)
         setLoginLoading(false)
       }
     }
     checkUser()
-  }, [auth, navigate])
+  }, [auth, navigate, fromUrl])
 
   const form = useForm({
     initialValues: {

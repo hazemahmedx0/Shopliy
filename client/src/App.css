@@ -100,3 +100,7 @@ form .mantine-PasswordInput-description {
   padding: 12px;
   box-sizing: border-box;
 }
+
+.mantine-10ydsyu {
+  background-color: rgb(200, 0, 0) !important;
+}

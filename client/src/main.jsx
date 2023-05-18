@@ -5,6 +5,7 @@ import './index.css'
 import { MantineProvider } from '@mantine/core'
 import { BrowserRouter } from 'react-router-dom'
 import { Notifications } from '@mantine/notifications'
+import { ModalsProvider } from '@mantine/modals'
 
 import { AuthProvider } from './context/auth'
 import { CartProvider } from './context/cartctx'
@@ -44,13 +45,15 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           }}
         >
           <Notifications />
-          <CartProvider>
-            <BagProvider>
-              <CatProvider>
-                <App />
-              </CatProvider>
-            </BagProvider>
-          </CartProvider>
+          <ModalsProvider>
+            <CartProvider>
+              <BagProvider>
+                <CatProvider>
+                  <App />
+                </CatProvider>
+              </BagProvider>
+            </CartProvider>
+          </ModalsProvider>
         </MantineProvider>
       </React.StrictMode>
     </BrowserRouter>

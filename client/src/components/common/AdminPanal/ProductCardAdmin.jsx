@@ -87,7 +87,7 @@ const ProductCardAdmin = (props) => {
         </td>
 
         <td>
-          <Group className="text-lg" spacing={0} position="left">
+          <Group className="text-lg text-left" spacing={0} position="left">
             <p>{item?.categoryId?.name}</p>
           </Group>
         </td>

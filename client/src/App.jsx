@@ -24,6 +24,7 @@ import AdminProducts from './pages/Admin/AdminProducts'
 import AdminCustomers from './pages/Admin/AdminCustomers'
 import AdminOrders from './pages/Admin/AdminOrders'
 import AdminProductPage from './components/common/AdminPanal/AdminProductPage'
+import AddNewProduct from './components/common/AdminPanal/AddNewProduct'
 
 function App() {
   return (
@@ -50,6 +51,8 @@ function App() {
           <Route index element={<AdminDashboard />} />
           <Route path="products" element={<AdminProducts />} />
           <Route path="products/:productId" element={<AdminProductPage />} />
+          <Route path="products/addnewproduct" element={<AddNewProduct />} />
+
           <Route path="cutomers" element={<AdminCustomers />} />
           <Route path="orders" element={<AdminOrders />} />
         </Route>
