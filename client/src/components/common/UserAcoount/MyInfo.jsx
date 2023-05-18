@@ -56,7 +56,7 @@ const MyInfo = () => {
     setloading(true)
     try {
       setloading(true)
-      UserApi
+
       const res = await UserApi.UpdateMe({
         firstName: values.firstName,
         lastName: values.lastName,

@@ -17,13 +17,14 @@ import {
   Button,
   rem,
 } from '@mantine/core'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Trash } from 'iconoir-react'
 import cartApi from '../../../api/cartApi'
 import { useCart } from '../../../context/cartctx'
 import productApi from '../../../api/productApi'
 
 const ProductCardAdmin = (props) => {
+  const navigate = useNavigate()
   const { item } = props
   const [inStock, setinStock] = useState(item.availability)
 
@@ -33,6 +34,17 @@ const ProductCardAdmin = (props) => {
         availability: !inStock,
       })
       console.log(res)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const deleteAProduct = async () => {
+    try {
+      const res = await productApi.deleteProduct(item._id)
+      console.log(res)
+      props.deleteProductById(item._id)
+      navigate('/admin/products')
     } catch (error) {
       console.log(error)
     }
@@ -76,19 +88,19 @@ const ProductCardAdmin = (props) => {
 
         <td>
           <Group className="text-lg" spacing={0} position="left">
-            <p>${item.price}</p>
+            <p>{item?.categoryId?.name}</p>
           </Group>
         </td>
 
         <td>
           <Group className="text-lg" spacing={0} position="left">
-            <p>${item.price}</p>
+            <p>${item?.price}</p>
           </Group>
         </td>
 
         <td>
           <Group spacing={0} position="left">
-            <Link to={`/admin/products/${item._id}`}>
+            <Link to={`/admin/products/${item?._id}`}>
               <Button variant="default" radius="md" size="sm" className="mr-4">
                 Edit
               </Button>
@@ -98,7 +110,8 @@ const ProductCardAdmin = (props) => {
               width={42}
               height={42}
               color="#F87171"
-              className=" rounded-lg bg-red-100 p-2"
+              className=" rounded-lg bg-red-100 p-2 cursor-pointer"
+              onClick={deleteAProduct}
             />
           </Group>
         </td>

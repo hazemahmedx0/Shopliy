@@ -9,6 +9,7 @@ import { Notifications } from '@mantine/notifications'
 import { AuthProvider } from './context/auth'
 import { CartProvider } from './context/cartctx'
 import { BagProvider } from './context/BagContext.jsx'
+import { CatProvider } from './context/catCtx.jsx'
 ReactDOM.createRoot(document.getElementById('root')).render(
   <AuthProvider>
     <BrowserRouter>
@@ -45,7 +46,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Notifications />
           <CartProvider>
             <BagProvider>
-              <App />
+              <CatProvider>
+                <App />
+              </CatProvider>
             </BagProvider>
           </CartProvider>
         </MantineProvider>
