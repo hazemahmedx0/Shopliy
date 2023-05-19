@@ -189,7 +189,7 @@ function MainHeader() {
           </Link>
           <Group spacing={5} className={classes.links}>
             {items}
-            {isUser.isAdmin ? (
+            {isUser?.isAdmin ? (
               <Link
                 className=" bg-slate-200 px-3 py-2 rounded-xl font-medium text-sm text-gray-500"
                 to="/admin"

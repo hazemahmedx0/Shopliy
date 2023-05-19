@@ -25,6 +25,7 @@ import AdminCustomers from './pages/Admin/AdminCustomers'
 import AdminOrders from './pages/Admin/AdminOrders'
 import AdminProductPage from './components/common/AdminPanal/AdminProductPage'
 import AddNewProduct from './components/common/AdminPanal/AddNewProduct'
+import Categories from './pages/Categories'
 
 function App() {
   return (
@@ -32,11 +33,13 @@ function App() {
       <Routes>
         <Route path="/" element={<AppLayout />}>
           <Route index element={<Home />} />
+
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
 
           <Route path="/*" element={<PageNotFound />} />
 
+          <Route path="/categories" element={<Categories />} />
           <Route path="products/:productId" element={<ProductPage />} />
           <Route path="cart/order/confirm/:orderid" element={<ConfimOrder />} />
 

@@ -18,7 +18,9 @@ function AppLayout({ title, description }) {
           ...auth,
           user: res,
         })
-      } catch (err) {}
+      } catch (err) {
+        console.log(err)
+      }
     }
     checkUser()
   }, [navigate])
