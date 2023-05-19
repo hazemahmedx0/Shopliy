@@ -14,7 +14,6 @@ const ProductCardAdmin = (props) => {
       const res = await productApi.availabilityChange(item._id, {
         availability: !inStock,
       })
-      console.log(res)
     } catch (error) {
       console.log(error)
     }
@@ -23,7 +22,6 @@ const ProductCardAdmin = (props) => {
   const deleteAProduct = async () => {
     try {
       const res = await productApi.deleteProduct(item._id)
-      console.log(res)
       props.deleteProductById(item._id)
       navigate('/admin/products')
     } catch (error) {
@@ -31,7 +29,6 @@ const ProductCardAdmin = (props) => {
     }
   }
 
-  console.log(inStock)
   return (
     <>
       <tr key={item._id}>

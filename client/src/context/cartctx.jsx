@@ -11,11 +11,8 @@ const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([])
   useEffect(() => {
     const getProducts = async () => {
-      console.log('cart')
       try {
         const res = await cartApi.getMyCart()
-        console.log('cart', res)
-        console.log(res)
         setCart(res[0])
       } catch (error) {
         console.log(error)

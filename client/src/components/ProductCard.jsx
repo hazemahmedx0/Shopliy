@@ -55,7 +55,6 @@ const ProductCard = (props) => {
       const res = await cartApi.addProduct(props.id)
       setLoading(false)
     } catch (err) {
-      console.log(err)
       setLoading(false)
     }
   }
@@ -77,7 +76,6 @@ const ProductCard = (props) => {
   }
 
   const addProductToCartLocal = (product) => {
-    console.log('sdsds', product)
     // check if user is registered or not
     let cart
 
@@ -125,7 +123,6 @@ const ProductCard = (props) => {
           (item) => item.productId._id === product._id
         )
       : -1
-    console.log('existingProductIndex', existingProductIndex)
     if (CartProducts?.items && existingProductIndex !== -1) {
       // product already exists in cart, update quantity
       const updatedCart = { ...CartProducts }
@@ -140,8 +137,6 @@ const ProductCard = (props) => {
         totalPrice: product.price,
         _id: Math.random().toString(),
       }
-      console.log('newCartItem', newCartItem)
-      console.log('CartProducts', CartProducts)
       const updatedCart = { ...CartProducts }
       updatedCart.items = updatedCart.items || [] // add items array if it doesn't exist
       updatedCart.items.push(newCartItem)

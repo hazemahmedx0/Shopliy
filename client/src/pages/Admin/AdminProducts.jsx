@@ -7,12 +7,10 @@ import { Link } from 'react-router-dom'
 const AdminProducts = () => {
   const [products, setproducts] = useState([])
   const [productsNo, setproductsNo] = useState([])
-  console.log(products)
   useEffect(() => {
     const getAdminProducts = async () => {
       try {
         const res = await productApi.adminProduts()
-        console.log(res)
         setproducts(res.products)
         setproductsNo(res.productsNo)
       } catch (error) {
@@ -26,7 +24,6 @@ const AdminProducts = () => {
     setproducts((prevProducts) =>
       prevProducts.filter((product) => product._id !== id)
     )
-    console.log(productsNo)
     setproductsNo((prevProductsNo) => prevProductsNo - 1)
   }
 

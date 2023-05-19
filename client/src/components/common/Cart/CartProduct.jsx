@@ -13,11 +13,8 @@ import cartApi from '../../../api/cartApi'
 import { useCart } from '../../../context/cartctx'
 const CartProduct = (props) => {
   const [CartProducts, setCartProducts] = useCart()
-  console.log('cartaaa', CartProducts.subTotal)
   const item = props.item
-  console.log('this', item)
   const handlers = useRef()
-  console.log('handlers', handlers)
   const [value, setValue] = useState(+item.quantity)
   const [total, setTotal] = useState(`${(+item.price * +value).toFixed(2)}`)
 

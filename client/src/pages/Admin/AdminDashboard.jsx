@@ -4,8 +4,69 @@ import {
   Dollar,
   SimpleCart,
 } from 'iconoir-react'
+import { useEffect, useState } from 'react'
+import orderApi from '../../api/orderApi'
+import authAPI from '../../api/AuthAPI'
+import productApi from '../../api/productApi'
 
 const AdminDashboard = () => {
+  const [orders, setorders] = useState([])
+  const [ordersNo, setordersNo] = useState(0)
+  const [totSales, settotSales] = useState(0)
+
+  const [customers, setcustomers] = useState(0)
+  const [products, setproducts] = useState(0)
+  console.log(ordersNo)
+  console.log(totSales)
+
+  const getOrders = async () => {
+    try {
+      const res = await orderApi.getAllOrders()
+      setorders(res.orders)
+
+      setordersNo(res.ordersNo)
+
+      // Calculate total sales
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const getCustomers = async () => {
+    try {
+      const res = await authAPI.allUsers()
+      setcustomers(res.length)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const getProducts = async () => {
+    try {
+      const res = await productApi.getAllProducts()
+      setproducts(res.productsNo)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    getOrders()
+    getCustomers()
+    getProducts()
+  }, [])
+
+  useEffect(() => {
+    let totalSales = 0
+
+    for (let i = 0; i < orders.length; i++) {
+      totalSales += orders[i].totalCost
+    }
+
+    // Update state
+    settotSales(totalSales)
+  }, [orders])
+
   return (
     <div className=" flex flex-col items-start w-full bg-[#FCFCFD] p-8 pt-8">
       <div className=" w-full text-slg text-neutral-600 font-medium mb-12">
@@ -27,7 +88,7 @@ const AdminDashboard = () => {
             </p>
           </span>
           <p className="text-left font-semibold text-4xl text-[#054F31]">
-            $5,453
+            ${totSales ? totSales : 0}
           </p>
         </div>
 
@@ -47,7 +108,7 @@ const AdminDashboard = () => {
             </p>
           </span>
           <p className="text-left font-semibold text-4xl text-[#054F31]">
-            $5,453
+            {ordersNo ? ordersNo : 0}
           </p>
         </div>
 
@@ -67,7 +128,7 @@ const AdminDashboard = () => {
             </p>
           </span>
           <p className="text-left font-semibold text-4xl text-[#054F31]">
-            $5,453
+            {customers ? customers : 0}
           </p>
         </div>
 
@@ -87,7 +148,7 @@ const AdminDashboard = () => {
             </p>
           </span>
           <p className="text-left font-semibold text-4xl text-[#054F31]">
-            $5,453
+            {products ? products : 0}
           </p>
         </div>
       </div>

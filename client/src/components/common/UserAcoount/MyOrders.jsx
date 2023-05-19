@@ -10,7 +10,6 @@ const MyOrders = () => {
         const res = await orderApi.getMyOrders()
         setordersNumbers(res.ordersNo)
         setOrders(res.orders)
-        console.log(res)
       } catch (err) {
         console.log(err)
       }

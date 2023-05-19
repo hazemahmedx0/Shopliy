@@ -106,7 +106,6 @@ const AdminProductPage = () => {
 
         categoryId: values.cat,
       })
-      console.log(res)
       notifications.show({
         color: 'primary',
         title: 'Success',

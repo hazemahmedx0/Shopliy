@@ -26,6 +26,8 @@ import AdminOrders from './pages/Admin/AdminOrders'
 import AdminProductPage from './components/common/AdminPanal/AdminProductPage'
 import AddNewProduct from './components/common/AdminPanal/AddNewProduct'
 import Categories from './pages/Categories'
+import CategoryPage from './pages/CategoryPage'
+import AdminCategories from './pages/Admin/AdminCategories'
 
 function App() {
   return (
@@ -40,6 +42,8 @@ function App() {
           <Route path="/*" element={<PageNotFound />} />
 
           <Route path="/categories" element={<Categories />} />
+          <Route path="/categories/:categoryId" element={<CategoryPage />} />
+
           <Route path="products/:productId" element={<ProductPage />} />
           <Route path="cart/order/confirm/:orderid" element={<ConfimOrder />} />
 
@@ -53,6 +57,8 @@ function App() {
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<AdminDashboard />} />
           <Route path="products" element={<AdminProducts />} />
+          <Route path="categories" element={<AdminCategories />} />
+
           <Route path="products/:productId" element={<AdminProductPage />} />
           <Route path="products/addnewproduct" element={<AddNewProduct />} />
 

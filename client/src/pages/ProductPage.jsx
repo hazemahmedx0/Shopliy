@@ -78,13 +78,16 @@ const ProductPage = () => {
 
   const items = [
     { title: 'Home', href: '/' },
-    { title: 'Cart', href: '/cart' },
+    {
+      title: `${currentProduct?.categoryId?.name}`,
+      href: `/categories/${currentProduct?.categoryId?._id}`,
+    },
+    { title: `${currentProduct?.name}`, href: '#' },
   ].map((item, index) => (
     <Anchor href={item.href} key={index}>
       {item.title}
     </Anchor>
   ))
-  console.log(currentProduct)
 
   const slides = currentProduct?.image?.map((image) => (
     <Carousel.Slide key={image} className=" flex flex-row">
@@ -124,7 +127,6 @@ const ProductPage = () => {
   }
 
   const addProductToCartLocal = (product) => {
-    console.log('sdsds', product)
     let cart
 
     if (!auth.user) {
@@ -139,7 +141,6 @@ const ProductPage = () => {
     const existingProductIndex = cart.items.findIndex(
       (item) => item.productId._id === currentProduct._id
     )
-    console.log('existingProductIndex', existingProductIndex)
     if (existingProductIndex !== -1) {
       // product already exists in cart, update quantity
       cart.items[existingProductIndex].quantity += 1
@@ -166,13 +167,11 @@ const ProductPage = () => {
   }
 
   const addProductToCart = (product) => {
-    console.log('sdsds', product)
     const existingProductIndex = CartProducts?.items
       ? CartProducts?.items?.findIndex(
           (item) => item.productId._id === product._id
         )
       : -1
-    console.log('existingProductIndex', existingProductIndex)
     if (CartProducts?.items && existingProductIndex !== -1) {
       // product already exists in cart, update quantity
       const updatedCart = { ...CartProducts }
@@ -187,8 +186,6 @@ const ProductPage = () => {
         totalPrice: product.price,
         _id: Math.random().toString(),
       }
-      console.log('newCartItem', newCartItem)
-      console.log('CartProducts', CartProducts)
       const updatedCart = { ...CartProducts }
       updatedCart.items = updatedCart.items || [] // add items array if it doesn't exist
       updatedCart.items.push(newCartItem)

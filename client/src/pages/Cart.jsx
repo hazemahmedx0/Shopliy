@@ -20,9 +20,7 @@ const Cart = () => {
   const navigate = useNavigate()
   const [loading, setloading] = useState(false)
   const [auth, setAuth] = useAuth()
-  console.log('auth', auth)
   const [CartProducts, setCartProducts] = useCart()
-  console.log('CartProducts', CartProducts.items)
   const handlers = useRef()
 
   const items = [
@@ -40,7 +38,6 @@ const Cart = () => {
   const [opened, { open, close }] = useDisclosure(false)
 
   const confimOrderHandler = (address) => {
-    console.log('address', address)
     const addTheOrder = async () => {
       try {
         const res = await orderApi.addOrder({
@@ -56,7 +53,6 @@ const Cart = () => {
           state: { id: 1, orderId: res._id },
         })
 
-        console.log('res', res)
         close()
       } catch (err) {
         console.log(err)

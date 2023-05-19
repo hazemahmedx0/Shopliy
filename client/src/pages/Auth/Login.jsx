@@ -27,7 +27,6 @@ const Login = () => {
   useEffect(() => {
     const checkUser = async () => {
       try {
-        console.log('checking user')
         // setLoginLoading(false)
 
         const res = await authAPI.verifyUser()

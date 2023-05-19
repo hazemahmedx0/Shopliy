@@ -20,7 +20,6 @@ const MyInfoAddress = () => {
   const [email, setemail] = useState('')
   const [photo, setphoto] = useState([])
   const [shippingAddress, setShippingAddress] = useState({})
-  console.log(shippingAddress)
   const [addAddress, setaddAddress] = useState(false)
   // const [photo, setphoto] = useState([])
   const [file, setFile] = useState([])

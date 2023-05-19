@@ -16,6 +16,7 @@ import {
   FaceId,
   SimpleCart,
   LogOut,
+  Folder,
 } from 'iconoir-react'
 import { fullLogo } from '../../assets'
 const useStyles = createStyles((theme) => ({
@@ -90,6 +91,7 @@ const useStyles = createStyles((theme) => ({
 const data = [
   { link: '/admin', label: 'Overview', icon: ViewGrid },
   { link: '/admin/products', label: 'Products', icon: Svg3DSelectFace },
+  { link: '/admin/categories', label: 'Categories', icon: Folder },
   { link: '/admin/cutomers', label: 'Customers', icon: FaceId },
   { link: '/admin/orders', label: 'Orders', icon: SimpleCart },
 ]
@@ -100,7 +102,6 @@ const AdminLayout = () => {
 
   const [auth, setAuth] = useAuth()
   const navigate = useNavigate()
-  console.log(auth)
   useEffect(() => {
     if (auth.isAdmin) {
       navigate('/')
