@@ -38,10 +38,7 @@ const login = async (req, res) => {
       expiresIn: maxAge,
     })
 
-    res.cookie('jwt', token, {
-      httpOnly: true,
-      maxAge: maxAge * 1000,
-    })
+    res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 })
     delete user._doc.password
 
     res.status(200).json(user)
