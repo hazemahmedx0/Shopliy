@@ -12,7 +12,7 @@ const { isAuthenticated, isAdmin } = require('../middleware/auth')
 const Order = require('./../models/Order')
 const {
   validateShippingAddressInput,
-} = require('../validators/OrderValidators')
+} = require('../validators/TheOrderValidator')
 
 const router = Router()
 
