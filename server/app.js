@@ -17,7 +17,7 @@ const app = express()
 
 app.use(
   cors({
-    origin: true,
+    origin: 'https://shopliy-test.vercel.app/',
     credentials: true,
   })
 )
