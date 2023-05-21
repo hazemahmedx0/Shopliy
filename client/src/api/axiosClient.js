@@ -1,28 +1,26 @@
 import axios from 'axios'
 import queryString from 'query-string'
-axios.defaults.withCredentials = true
-
-// todo: Token from Cookies
 
 const baseUrl = 'https://shopliy-production-ee12.up.railway.app/'
 
 const axiosClient = axios.create({
   baseURL: baseUrl,
-  headers: () => ({
+  headers: {
     'content-type': 'application/json',
-    // Authorization: `Bearer ${getToken()}`,
-  }),
+  },
   paramsSerializer: (params) => queryString.stringify(params),
 })
 
 axiosClient.interceptors.request.use(async (config) => {
-  return {
-    ...config,
-    headers: () => ({
-      'content-type': 'application/json',
-      // Authorization: `Bearer ${getToken()}`,
-    }),
+  // Get the token from cookies and include it in the Authorization header
+  const token = document.cookie.replace(
+    /(?:(?:^|.*;\s*)jwt\s*=\s*([^;]*).*$)|^.*$/,
+    '$1'
+  )
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
   }
+  return config
 })
 
 axiosClient.interceptors.response.use(
