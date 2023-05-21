@@ -3,16 +3,21 @@
   "version": "1.0.0",
   "description": "eCommerce website",
   "main": "app.js",
-  "engines": {
-    "node": "18.x"
-  },
   "scripts": {
-    "start": "node app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:dev": "nodemon app.js",
+    "start:prod": "NODE_ENV='production' nodemon app.js"
   },
-  "keywords": [],
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moaazelsayed1/Kanban.git"
+  },
+  "author": "H",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/moaazelsayed1/Kanban/issues"
+  },
+  "homepage": "https://github.com/moaazelsayed1/Kanban#readme",
   "dependencies": {
     "bcrypt": "^5.1.0",
     "cookie-parser": "^1.4.6",
@@ -23,6 +28,9 @@
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.0.5",
     "validator": "^13.9.0",
+    "nodemon": "^2.0.22"
+  },
+  "devDependencies": {
     "nodemon": "^2.0.22"
   }
 }
