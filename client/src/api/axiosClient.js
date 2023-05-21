@@ -4,7 +4,7 @@ axios.defaults.withCredentials = true
 
 // todo: Token from Cookies
 
-const baseUrl = 'https://shopliy.onrender.com/'
+const baseUrl = 'https://shopliy-production-ee12.up.railway.app/'
 
 const axiosClient = axios.create({
   baseURL: baseUrl,
