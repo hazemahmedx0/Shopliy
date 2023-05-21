@@ -38,7 +38,12 @@ const login = async (req, res) => {
       expiresIn: maxAge,
     })
 
-    res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 })
+    res.cookie('jwt', token, {
+      httpOnly: true,
+      maxAge: maxAge * 1000,
+      sameSite: 'None',
+      secure: true,
+    })
     delete user._doc.password
 
     res.status(200).json(user)
@@ -52,8 +57,7 @@ const login = async (req, res) => {
 }
 
 const logout = (req, res) => {
-  token = ''
-  res.cookie('jwt', token, { maxAge: 1 })
+  res.clearCookie('jwt')
   res.status(200).json({ message: 'Logged out successfully' })
 }
 
