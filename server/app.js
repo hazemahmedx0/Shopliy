@@ -26,7 +26,8 @@ app.use(cookieParser())
 
 // environment variables
 const port = process.env.PORT || 3000
-const dbURI = process.env.DB_URI
+const dbURI =
+  'mongodb+srv://test-user:test1234@cluster0.iqkprwq.mongodb.net/shopliy'
 
 // Connecting to db
 mongoose
