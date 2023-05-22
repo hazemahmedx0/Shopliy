@@ -41,8 +41,6 @@ const login = async (req, res) => {
     res.cookie('jwt', token, {
       httpOnly: true,
       maxAge: maxAge * 1000,
-      sameSite: 'none',
-      secure: true,
     })
     delete user._doc.password
 
