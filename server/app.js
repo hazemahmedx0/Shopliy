@@ -17,7 +17,7 @@ const app = express()
 
 app.use(
   cors({
-    origin: true,
+    origin: 'https://www.hazemmahdyd.net',
     credentials: true,
   })
 )
