@@ -5,22 +5,21 @@ const baseUrl = 'https://api.hazemmahdyd.net/'
 
 const axiosClient = axios.create({
   baseURL: baseUrl,
-  headers: {
+  headers: () => ({
     'content-type': 'application/json',
-  },
+    // Authorization: `Bearer ${getToken()}`,
+  }),
   paramsSerializer: (params) => queryString.stringify(params),
 })
 
 axiosClient.interceptors.request.use(async (config) => {
-  // Get the token from cookies and include it in the Authorization header
-  const token = document.cookie.replace(
-    /(?:(?:^|.*;\s*)jwt\s*=\s*([^;]*).*$)|^.*$/,
-    '$1'
-  )
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`
+  return {
+    ...config,
+    headers: () => ({
+      'content-type': 'application/json',
+      // Authorization: `Bearer ${getToken()}`,
+    }),
   }
-  return config
 })
 
 axiosClient.interceptors.response.use(
