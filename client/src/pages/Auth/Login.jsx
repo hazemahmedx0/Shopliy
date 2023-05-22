@@ -60,7 +60,7 @@ const Login = () => {
         email: values.email,
         password: values.password,
       })
-
+      localStorage.setItem('token', res.token)
       setAuth({
         ...auth,
         token: res.user,

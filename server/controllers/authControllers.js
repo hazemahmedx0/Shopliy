@@ -44,7 +44,7 @@ const login = async (req, res) => {
     })
     delete user._doc.password
 
-    res.status(200).json(user)
+    res.status(200).json({ user, token })
   } catch (err) {
     const errors = handleLoginError(err)
     if (Object.keys(errors).length > 0) return res.status(400).json(errors)

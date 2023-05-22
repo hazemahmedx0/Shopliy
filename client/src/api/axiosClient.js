@@ -2,12 +2,14 @@ import axios from 'axios'
 import queryString from 'query-string'
 
 const baseUrl = 'https://api.hazemmahdyd.net/'
-
+const getToken = () => {
+  return localStorage.getItem('token')
+}
 const axiosClient = axios.create({
   baseURL: baseUrl,
   headers: () => ({
     'content-type': 'application/json',
-    // Authorization: `Bearer ${getToken()}`,
+    Authorization: `Bearer ${getToken()}`,
   }),
   paramsSerializer: (params) => queryString.stringify(params),
 })
@@ -17,7 +19,7 @@ axiosClient.interceptors.request.use(async (config) => {
     ...config,
     headers: () => ({
       'content-type': 'application/json',
-      // Authorization: `Bearer ${getToken()}`,
+      Authorization: `Bearer ${getToken()}`,
     }),
   }
 })
