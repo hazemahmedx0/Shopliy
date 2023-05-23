@@ -1,18 +1,10 @@
 import { useRef, useState } from 'react'
-import {
-  Breadcrumbs,
-  Anchor,
-  Container,
-  Table,
-  Button,
-  Modal,
-} from '@mantine/core'
+import { Breadcrumbs, Anchor, Container, Button } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 
 import { useCart } from '../context/cartctx'
 import CartProduct from '../components/common/Cart/CartProduct'
 import { useAuth } from '../context/auth'
-import NewAddress from '../components/common/Cart/NewAddress'
 import orderApi from '../api/orderApi'
 import { useNavigate } from 'react-router-dom'
 import ProductCard from '../components/ProductCard'
