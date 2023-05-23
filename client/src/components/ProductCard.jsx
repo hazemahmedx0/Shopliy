@@ -144,6 +144,36 @@ const ProductCard = (props) => {
     }
   }
 
+  const addTowishList = () => {
+    const x = localStorage.getItem('wishList')
+    let productExists = false
+
+    if (x) {
+      const wishList = JSON.parse(x)
+
+      for (const product of wishList) {
+        if (product._id === props?.item?._id) {
+          productExists = true
+          break
+        }
+      }
+
+      if (!productExists) {
+        localStorage.setItem(
+          'wishList',
+          JSON.stringify([...wishList, props.item])
+        )
+      }
+    } else {
+      localStorage.setItem('wishList', JSON.stringify([props.item]))
+    }
+
+    notifications.show({
+      title: 'Product Added',
+      message: 'The product has been added to your wishlist.🧞‍♂️',
+    })
+  }
+
   return (
     <Card
       //   withBorder
@@ -159,12 +189,7 @@ const ProductCard = (props) => {
         <ActionIcon
           className=" addToWishListbtn transition-all w-9 h-9 bg-red-100  hover:bg-red-50"
           variant="light"
-          onClick={() =>
-            notifications.show({
-              title: 'Default notification',
-              message: 'Hey there, your code is awesome! 🤥',
-            })
-          }
+          onClick={addTowishList}
         >
           <Heart color="#F34141" strokeWidth={2} height={20} width={20} />
         </ActionIcon>
