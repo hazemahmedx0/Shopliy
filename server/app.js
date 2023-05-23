@@ -7,10 +7,11 @@ const productRoutes = require('./routes/productRoutes')
 const cartRoutes = require('./routes/cartRoutes')
 const orderRoutes = require('./routes/orderRoutes')
 const categoryRoutes = require('./routes/categoryRoutes')
-const { isAuthenticated, checkUser, isAdmin } = require('./middleware/auth')
+const wishlistRoutes = require('./routes/wishlistRoutes')
+const { checkUser } = require('./middleware/auth')
 const cors = require('cors')
 require('dotenv').config()
-// TODO : in all catch fields , return internal server error if not predefined err
+
 const app = express()
 
 // middlewares
@@ -42,12 +43,7 @@ mongoose
     console.error(`Error connecting to MongoDB: ${err}`)
   })
 
-app.all('*', checkUser) // to get access user info in all views
-
-// app.get('/dashboard', isAdmin, (req, res) => {
-//   const user = res.locals.user
-//   res.status(200).json(user)
-// })
+app.all('*', checkUser) // to get access to user info in all views
 
 app.use(authRoutes)
 app.use(userRoutes)
@@ -55,3 +51,4 @@ app.use(categoryRoutes)
 app.use(productRoutes)
 app.use(cartRoutes)
 app.use(orderRoutes)
+app.use(wishlistRoutes)

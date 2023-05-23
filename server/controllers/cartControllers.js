@@ -13,7 +13,7 @@ const getMyCart = async (req, res) => {
   try {
     let cart = await getCart(userId)
     cart = await getCartWithProductDetails(cart._id)
-
+    
     res.json(cart)
   } catch (err) {
     console.log(err)
