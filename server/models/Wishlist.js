@@ -12,11 +12,10 @@ const wishlistSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'product',
         required: true,
-      }
-  },
-    ],
+      },
+    },
+  ],
 })
-
 
 const Wishlist = mongoose.model('wishlist', wishlistSchema)
 
