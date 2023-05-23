@@ -1,5 +1,6 @@
 import { Carousel } from '@mantine/carousel'
-import { Carousel1 } from './../../../assets'
+import { Carousel1, Carousel2, Carousel3 } from './../../../assets'
+import { Link } from 'react-router-dom'
 const HeroCarousel = () => {
   return (
     <div className="mb-20 mt-12">
@@ -14,15 +15,21 @@ const HeroCarousel = () => {
       >
         <Carousel.Slide className="flex justify-center">
           {' '}
-          <img className=" h-fit " src={Carousel1} alt="carousel" />
+          <Link to="/categories">
+            <img className=" h-fit " src={Carousel1} alt="carousel" />
+          </Link>
         </Carousel.Slide>
         <Carousel.Slide className="flex justify-center">
           {' '}
-          <img className=" h-fit " src={Carousel1} alt="carousel" />
+          <Link to="/categories">
+            <img className=" h-fit " src={Carousel2} alt="carousel" />
+          </Link>
         </Carousel.Slide>
         <Carousel.Slide className="flex justify-center">
           {' '}
-          <img className=" h-fit " src={Carousel1} alt="carousel" />
+          <Link to="/categories">
+            <img className=" h-fit " src={Carousel3} alt="carousel" />
+          </Link>
         </Carousel.Slide>
       </Carousel>
     </div>

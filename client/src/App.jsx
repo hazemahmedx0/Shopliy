@@ -28,6 +28,8 @@ import AddNewProduct from './components/common/AdminPanal/AddNewProduct'
 import Categories from './pages/Categories'
 import CategoryPage from './pages/CategoryPage'
 import AdminCategories from './pages/Admin/AdminCategories'
+import WishList from './pages/WishList'
+import SearchItems from './pages/SearchItems'
 
 function App() {
   return (
@@ -46,6 +48,8 @@ function App() {
 
           <Route path="products/:productId" element={<ProductPage />} />
           <Route path="cart/order/confirm/:orderid" element={<ConfimOrder />} />
+          <Route path="/wishlist" element={<WishList />} />
+          <Route path="/search/:searchName" element={<SearchItems />} />
 
           <Route path="" element={<Private />}>
             <Route path="/Cart" element={<Cart />} />

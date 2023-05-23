@@ -88,7 +88,7 @@ const AdminDashboard = () => {
             </p>
           </span>
           <p className="text-left font-semibold text-4xl text-[#054F31]">
-            ${totSales ? totSales : 0}
+            ${totSales ? totSales.toFixed(2) : 0}
           </p>
         </div>
 

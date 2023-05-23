@@ -193,6 +193,36 @@ const ProductPage = () => {
     }
   }
 
+  const addTowishList = () => {
+    const x = localStorage.getItem('wishList')
+    let productExists = false
+
+    if (x) {
+      const wishList = JSON.parse(x)
+
+      for (const product of wishList) {
+        if (product._id === productId) {
+          productExists = true
+          break
+        }
+      }
+
+      if (!productExists) {
+        localStorage.setItem(
+          'wishList',
+          JSON.stringify([...wishList, currentProduct])
+        )
+      }
+    } else {
+      localStorage.setItem('wishList', JSON.stringify([currentProduct]))
+    }
+
+    notifications.show({
+      title: 'Product Added',
+      message: 'The product has been added to your wishlist.🧞‍♂️',
+    })
+  }
+
   return (
     <>
       <Container className=" mt-8 mb-28">
@@ -238,7 +268,12 @@ const ProductPage = () => {
                 >
                   Add to cart
                 </Button>
-                <Button variant="outline" className="  shrink-1" radius="md">
+                <Button
+                  variant="outline"
+                  className="  shrink-1"
+                  radius="md"
+                  onClick={addTowishList}
+                >
                   <Heart />
                 </Button>
               </div>

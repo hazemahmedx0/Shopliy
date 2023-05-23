@@ -42,6 +42,9 @@ const CategoryPage = () => {
       <div className="flex flex-row justify-between mb-6">
         <p className=" text-gray-500 font-medium text-xl">Products</p>
       </div>
+      {products.length === 0 ? (
+        <p className="text-center text-2xl w-full">Could not find product </p>
+      ) : null}
       <div className="grid grid-cols-3 gap-6 max-md:grid-cols-2 max-md:gap-3">
         {products.map((item) => (
           <ProductCard

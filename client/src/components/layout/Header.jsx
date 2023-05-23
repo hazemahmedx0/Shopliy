@@ -41,14 +41,14 @@ const links = [
     link: '/categories',
     label: 'Categories',
   },
-  {
-    link: '/deals',
-    label: 'Top Deals',
-  },
-  {
-    link: '/offers',
-    label: 'Offers',
-  },
+  // {
+  //   link: '/deals',
+  //   label: 'Top Deals',
+  // },
+  // {
+  //   link: '/offers',
+  //   label: 'Offers',
+  // },
 ]
 const HEADER_HEIGHT = '110px'
 
@@ -178,6 +178,40 @@ function MainHeader() {
     }
   }
 
+  const [wishList, setWishList] = useState(0)
+
+  useEffect(() => {
+    const updateWishlist = () => {
+      const wishlist = JSON.parse(localStorage.getItem('wishList')) || []
+      setWishList(wishlist.length)
+    }
+
+    // Update wishlist when storage changes
+    window.addEventListener('storage', updateWishlist)
+
+    // Initial update
+    updateWishlist()
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener('storage', updateWishlist)
+    }
+  }, [])
+  const [searchValue, setSearchValue] = useState('')
+  const handleInputChange = (e) => {
+    setSearchValue(e.target.value)
+  }
+
+  const handleSearch = () => {
+    navigate(`/search/${searchValue}`)
+  }
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch()
+    }
+  }
+
   return (
     <Header height={HEADER_HEIGHT} mb={20} className={classes.root}>
       <Container className={classes.header}>
@@ -206,13 +240,27 @@ function MainHeader() {
             className="  w-[300px] flex max-w-sm rounded-full mr-3"
             placeholder="What you are looking for?"
             radius="xl"
+            value={searchValue}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
             rightSection={
-              <div className=" p-2 rounded-full bg-primary">
+              <div
+                className=" p-2 rounded-full bg-primary cursor-pointer"
+                onClick={handleSearch}
+              >
                 <Search color="white" height={16} width={16} />
               </div>
             }
           />
-          <Heart color="#98A2B3" strokeWidth={2} />
+          <Link to="/wishlist" className="relative">
+            <Badge
+              className="!p-1 !px-[6px] absolute top-[-8px]"
+              variant="filled"
+            >
+              {wishList ? wishList : 0}
+            </Badge>
+            <Heart color="#98A2B3" strokeWidth={2} />
+          </Link>
           <Link to="/cart" className="relative">
             <Badge
               className="!p-1 !px-[6px] absolute top-[-8px]"
