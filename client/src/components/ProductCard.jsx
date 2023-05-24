@@ -17,7 +17,7 @@ import { useContext, useEffect, useState } from 'react'
 import cartApi from '../api/cartApi'
 import { useCart } from '../context/cartctx'
 import { useAuth } from '../context/auth'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useWishList } from '../context/wishListCTX'
 import wishListApi from '../api/wishListApi'
 const useStyles = createStyles((theme) => ({
@@ -48,6 +48,7 @@ const useStyles = createStyles((theme) => ({
 
 const ProductCard = (props) => {
   const [auth, setAuth] = useAuth()
+  const navigate = useNavigate()
   const [Loading, setLoading] = useState(false)
   const { bag, incBag } = useContext(BagContext)
   const { wishListNumber, incWishList } = useContext(WishListContext)
@@ -70,13 +71,14 @@ const ProductCard = (props) => {
       addProductToCart(props.item)
       incBag(props.id)
       addTocartApi()
+      notifications.show({
+        title: `📦 ${props.title} added to cart`,
+        message: 'You can review it in the cart section',
+      })
     } else {
-      addProductToCartLocal(props.item)
+      navigate('/login')
+      // addProductToCartLocal(props.item)
     }
-    notifications.show({
-      title: `📦 ${props.title} added to cart`,
-      message: 'You can review it in the cart section',
-    })
   }
 
   const addProductToCartLocal = (product) => {
@@ -150,6 +152,10 @@ const ProductCard = (props) => {
   const [WishList, setWishList] = useWishList()
 
   const addTowishList = () => {
+    if (!auth.user) {
+      navigate('/login')
+      return
+    }
     let productExists = false
 
     if (WishList) {

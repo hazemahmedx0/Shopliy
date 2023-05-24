@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Breadcrumbs, Anchor, Container, Button } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 
@@ -17,6 +17,13 @@ const WishList = () => {
 
   const [WishList, setWishList] = useWishList()
   const handlers = useRef()
+
+  useEffect(() => {
+    if (!auth?.user) {
+      navigate('/login')
+      return
+    }
+  }, [navigate, auth.user])
 
   const items = [
     { title: 'Home', href: '/' },
