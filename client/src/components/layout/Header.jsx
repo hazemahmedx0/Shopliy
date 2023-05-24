@@ -28,6 +28,7 @@ import {
 import { logo } from './../../assets'
 import { Link, redirect, useNavigate, useParams } from 'react-router-dom'
 import BagContext from '../../context/BagContext'
+import WishListContext from '../../context/WishListContext'
 import { useContext } from 'react'
 import authAPI from '../../api/AuthAPI'
 // Static values
@@ -139,6 +140,7 @@ function MainHeader() {
   const [CartProducts, setCartProducts] = useCart()
 
   const { bag, setthebag } = useContext(BagContext)
+  const { wishListNumber, incWishList } = useContext(WishListContext)
   useEffect(() => {
     setthebag(CartProducts?.items?.length)
   }, [CartProducts, navigate])
@@ -257,7 +259,7 @@ function MainHeader() {
               className="!p-1 !px-[6px] absolute top-[-8px]"
               variant="filled"
             >
-              {wishList ? wishList : 0}
+              {wishListNumber ? wishListNumber : 0}
             </Badge>
             <Heart color="#98A2B3" strokeWidth={2} />
           </Link>

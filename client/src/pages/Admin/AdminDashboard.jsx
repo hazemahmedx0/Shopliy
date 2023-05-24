@@ -16,8 +16,6 @@ const AdminDashboard = () => {
 
   const [customers, setcustomers] = useState(0)
   const [products, setproducts] = useState(0)
-  console.log(ordersNo)
-  console.log(totSales)
 
   const getOrders = async () => {
     try {

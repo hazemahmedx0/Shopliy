@@ -1,4 +1,4 @@
-import { SimpleCart, Heart } from 'iconoir-react'
+import { SimpleCart, Heart, DeleteCircle } from 'iconoir-react'
 import {
   Card,
   Image,
@@ -12,11 +12,14 @@ import {
 import { notifications } from '@mantine/notifications'
 
 import BagContext from '../context/BagContext'
+import WishListContext from '../context/WishListContext'
 import { useContext, useEffect, useState } from 'react'
 import cartApi from '../api/cartApi'
 import { useCart } from '../context/cartctx'
 import { useAuth } from '../context/auth'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useWishList } from '../context/wishListCTX'
+import wishListApi from '../api/wishListApi'
 const useStyles = createStyles((theme) => ({
   card: {
     backgroundColor:
@@ -45,8 +48,10 @@ const useStyles = createStyles((theme) => ({
 
 const ProductCard = (props) => {
   const [auth, setAuth] = useAuth()
+  const navigate = useNavigate()
   const [Loading, setLoading] = useState(false)
   const { bag, incBag } = useContext(BagContext)
+  const { wishListNumber, incWishList } = useContext(WishListContext)
   const { classes, theme } = useStyles()
   const [CartProducts, setCartProducts] = useCart()
 
@@ -66,13 +71,14 @@ const ProductCard = (props) => {
       addProductToCart(props.item)
       incBag(props.id)
       addTocartApi()
+      notifications.show({
+        title: `📦 ${props.title} added to cart`,
+        message: 'You can review it in the cart section',
+      })
     } else {
-      addProductToCartLocal(props.item)
+      navigate('/login')
+      // addProductToCartLocal(props.item)
     }
-    notifications.show({
-      title: `📦 ${props.title} added to cart`,
-      message: 'You can review it in the cart section',
-    })
   }
 
   const addProductToCartLocal = (product) => {
@@ -143,35 +149,53 @@ const ProductCard = (props) => {
       setCartProducts(updatedCart)
     }
   }
+  const [WishList, setWishList] = useWishList()
 
   const addTowishList = () => {
-    const x = localStorage.getItem('wishList')
+    if (!auth.user) {
+      navigate('/login')
+      return
+    }
     let productExists = false
 
-    if (x) {
-      const wishList = JSON.parse(x)
-
-      for (const product of wishList) {
-        if (product._id === props?.item?._id) {
+    if (WishList) {
+      for (const product of WishList) {
+        if (product._id === props?.id) {
           productExists = true
           break
         }
       }
 
       if (!productExists) {
-        localStorage.setItem(
-          'wishList',
-          JSON.stringify([...wishList, props.item])
-        )
+        const addToWishlist = async () => {
+          try {
+            const res = await wishListApi.addToWishlist(props?.id)
+            incWishList(props?.id)
+          } catch (err) {
+            console.log(err)
+          }
+        }
+        addToWishlist()
       }
     } else {
-      localStorage.setItem('wishList', JSON.stringify([props.item]))
+      null
     }
 
     notifications.show({
       title: 'Product Added',
       message: 'The product has been added to your wishlist.🧞‍♂️',
     })
+  }
+
+  const deleteFromtheWishList = async () => {
+    try {
+      const res = await wishListApi.delfromWishlist(props?.id)
+      setWishList((prevList) =>
+        prevList.filter((item) => item.productId._id !== props?.id)
+      )
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   return (
@@ -186,13 +210,29 @@ const ProductCard = (props) => {
       }
     >
       <Card.Section>
-        <ActionIcon
-          className=" addToWishListbtn transition-all w-9 h-9 bg-red-100  hover:bg-red-50"
-          variant="light"
-          onClick={addTowishList}
-        >
-          <Heart color="#F34141" strokeWidth={2} height={20} width={20} />
-        </ActionIcon>
+        {!props.WishListCard ? (
+          <ActionIcon
+            className=" addToWishListbtn transition-all w-9 h-9 bg-red-100  hover:bg-red-50"
+            variant="light"
+            onClick={addTowishList}
+          >
+            <Heart color="#F34141" strokeWidth={2} height={20} width={20} />
+          </ActionIcon>
+        ) : (
+          <ActionIcon
+            className=" addToWishListbtn transition-all w-9 h-9 bg-red-100  hover:bg-red-50"
+            variant="light"
+            onClick={deleteFromtheWishList}
+          >
+            <DeleteCircle
+              color="#F34141"
+              strokeWidth={2}
+              height={20}
+              width={20}
+            />
+          </ActionIcon>
+        )}
+
         <Link to={`/products/${props.id}`}>
           <Image src={props.image[0]} alt={props.title} height={380} />
         </Link>

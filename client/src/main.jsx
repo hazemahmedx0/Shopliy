@@ -11,6 +11,8 @@ import { AuthProvider } from './context/auth'
 import { CartProvider } from './context/cartctx'
 import { BagProvider } from './context/BagContext.jsx'
 import { CatProvider } from './context/catCtx.jsx'
+import { WishListBagProvider } from './context/WishListContext.jsx'
+import { WishListProvider } from './context/wishListCTX.jsx'
 ReactDOM.createRoot(document.getElementById('root')).render(
   <AuthProvider>
     <BrowserRouter>
@@ -49,7 +51,11 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <CartProvider>
               <BagProvider>
                 <CatProvider>
-                  <App />
+                  <WishListProvider>
+                    <WishListBagProvider>
+                      <App />
+                    </WishListBagProvider>
+                  </WishListProvider>
                 </CatProvider>
               </BagProvider>
             </CartProvider>
