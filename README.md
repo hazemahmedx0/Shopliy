@@ -34,7 +34,6 @@ Shopliy is an electronic e-commerce website built with the MERN (MongoDB, Expres
 - JWT
 - bcrypt
 - Cors
-- Socket.IO
 - MongoDB
 - Mongoose
 
