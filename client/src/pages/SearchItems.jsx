@@ -6,7 +6,6 @@ import ProductCard from '../components/ProductCard'
 
 const SearchItems = () => {
   const { searchName } = useParams()
-  console.log(searchName)
   const navigate = useNavigate()
   const [products, setProducts] = useState([])
   const [filteredProducts, setFilteredProducts] = useState([])
@@ -16,19 +15,13 @@ const SearchItems = () => {
       setProducts(res.products)
     } catch (error) {}
   }
-  useEffect(() => {
-    const p = allProducts()
-    console.log(p)
-  }, [navigate])
 
   useEffect(() => {
-    console.log(products)
     const filteredProductsx = products.filter((product) =>
       product.name.includes(searchName)
     )
 
     setFilteredProducts(filteredProductsx)
-    console.log(filteredProductsx)
   }, [navigate, products])
 
   return (

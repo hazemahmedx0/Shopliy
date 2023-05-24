@@ -26,7 +26,6 @@ const ProductsList = () => {
   }))
 
   const [value, setValue] = useState('')
-  console.log(categoryOptions)
   const allProducts = async () => {
     try {
       const res = await productApi.getAllProducts()
