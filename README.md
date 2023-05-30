@@ -3,6 +3,11 @@ Shopliy is an electronic e-commerce website built with the MERN (MongoDB, Expres
 
 ![Frame 170](https://github.com/Hazemmahdyx/Shopliy/assets/88671390/bdb1142b-0806-4bb3-8f9d-0e969ec0485c)
 
+# Demo video
+
+https://github.com/Hazemmahdyx/Shopliy/assets/88671390/b5a71ef7-0c8b-4fb7-ae4d-51a86f51d889
+
+
 ## Features
 
 - User Authentication: Users can sign up, log in, and log out.
