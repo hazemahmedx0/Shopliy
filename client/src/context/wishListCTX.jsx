@@ -13,7 +13,7 @@ const WishListProvider = ({ children }) => {
     const getProducts = async () => {
       try {
         const res = await wishListApi.getall()
-        setWishList(res[0].items)
+        setWishList(res[0]?.items)
       } catch (error) {
         console.log(error)
       }

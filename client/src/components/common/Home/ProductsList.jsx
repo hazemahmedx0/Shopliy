@@ -62,11 +62,11 @@ const ProductsList = () => {
         />
       </div>
 
-      {filteredProducts.length === 0 ? (
+      {filteredProducts?.length === 0 ? (
         <p className="text-center text-2xl w-full">Could not find product </p>
       ) : null}
       <div className="grid grid-cols-3 gap-6 max-md:grid-cols-2 max-md:gap-3">
-        {filteredProducts.map((item) => (
+        {filteredProducts?.map((item) => (
           <ProductCard
             item={item}
             key={item._id}
