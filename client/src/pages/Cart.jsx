@@ -15,6 +15,8 @@ import { useAuth } from '../context/auth'
 import NewAddress from '../components/common/Cart/NewAddress'
 import orderApi from '../api/orderApi'
 import { useNavigate } from 'react-router-dom'
+import { loadStripe } from '@stripe/stripe-js'
+import axiosClient from '../api/axiosClient'
 
 const Cart = () => {
   const navigate = useNavigate()
@@ -37,7 +39,7 @@ const Cart = () => {
   ))
   const [opened, { open, close }] = useDisclosure(false)
 
-  const confimOrderHandler = (address) => {
+  const confimOrderHandler = async (address) => {
     const addTheOrder = async () => {
       try {
         const res = await orderApi.addOrder({
@@ -49,9 +51,9 @@ const Cart = () => {
             country: address.country,
           },
         })
-        navigate(`order/confirm/${res._id}`, {
-          state: { id: 1, orderId: res._id },
-        })
+        // navigate(`order/confirm/${res._id}`, {
+        //   state: { id: 1, orderId: res._id },
+        // })
 
         close()
       } catch (err) {
@@ -59,6 +61,51 @@ const Cart = () => {
       }
     }
     addTheOrder()
+
+    console.log(CartProducts)
+    // return
+
+    const stripe = await loadStripe('')
+
+    const body = {
+      products: CartProducts?.items,
+    }
+
+    const headres = {
+      'Content-Type': 'application/json',
+    }
+
+    const response = await axiosClient.post(
+      'cart/create-checkout-session',
+      body
+    )
+
+    // const response = await fetch(
+    //   'http://localhost:3000/cart/create-checkout-session',
+    //   {
+    //     method: 'POST',
+    //     headers: headres,
+    //     body: JSON.stringify(body),
+    //   }
+    // )
+
+    console.log(response)
+    stripe
+      .redirectToCheckout({
+        sessionId: response.id,
+      })
+      .then((result) => {
+        addTheOrder()
+        if (result.error) {
+          // If `redirectToCheckout` fails due to a browser or network
+          // error, display the localized error message to your customer.
+          alert(result.error.message)
+        }
+      })
+      .catch((error) => {
+        // Handle any other errors
+        console.error(error)
+      })
   }
 
   return (

@@ -27,11 +27,11 @@ const SearchItems = () => {
   return (
     <Container className=" mt-8 mb-28">
       <h1 className="text-left font-bold text-zinc-800 mt-6">
-        {filteredProducts.length} Results for {searchName}
+        {filteredProducts?.length} Results for {searchName}
       </h1>
       <div className="flex flex-row justify-between mt-4 gap-7 items-start">
         <div className="grid grid-cols-3 gap-6 max-md:grid-cols-2 max-md:gap-3">
-          {filteredProducts.map((item) => (
+          {filteredProducts?.map((item) => (
             <ProductCard
               item={item}
               key={item._id}

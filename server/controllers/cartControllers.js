@@ -7,13 +7,14 @@ const {
   deleteProduct,
   getCartWithProductDetails,
 } = require('../utils/cartUtils')
+const stripe = require('stripe')('')
 
 const getMyCart = async (req, res) => {
   const userId = res.locals.user._id
   try {
     let cart = await getCart(userId)
     cart = await getCartWithProductDetails(cart._id)
-    
+
     res.json(cart)
   } catch (err) {
     console.log(err)
@@ -91,10 +92,47 @@ const deleteProductFromCart = async (req, res) => {
   }
 }
 
+const cartSession = async (req, res) => {
+  function makeRandomID() {
+    let id = ''
+    let characters =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+
+    for (let i = 0; i < 10; i++) {
+      id += characters.charAt(Math.floor(Math.random() * characters.length))
+    }
+
+    return id
+  }
+
+  const { products } = req.body
+  const lineItems = products.map((product) => ({
+    price_data: {
+      currency: 'usd',
+      product_data: {
+        name: product.productId.name,
+        // images: [product.productId.image],
+      },
+      unit_amount: Math.round(product.price * 100),
+    },
+    quantity: product.quantity,
+  }))
+  const session = await stripe.checkout.sessions.create({
+    payment_method_types: ['card'],
+    line_items: lineItems,
+    mode: 'payment',
+    success_url: `http://localhost:5173/`,
+    cancel_url: 'http://localhost:3000/cancel',
+  })
+  console.log('seeees', session)
+  res.json({ id: session.id })
+}
+
 module.exports = {
   getMyCart,
   addProductToCart,
   incProductQuantity,
   decProductQuantity,
   deleteProductFromCart,
+  cartSession,
 }
